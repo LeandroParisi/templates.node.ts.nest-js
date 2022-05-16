@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString, IsEmail, Max } from "class-validator";
+import { IsNotEmpty, IsString, IsEmail, MaxLength, MinLength } from "class-validator";
 
 export class CreateUserRequest {
     @ApiProperty({ required: true })
@@ -21,6 +21,7 @@ export class CreateUserRequest {
     @ApiProperty({ required: true })
     @IsNotEmpty()
     @IsString()
-    @Max(8)
+    @MaxLength(8)
+    @MinLength(8)
     public readonly password: string;
 }

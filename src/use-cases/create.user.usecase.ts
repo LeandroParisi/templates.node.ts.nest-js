@@ -1,13 +1,15 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { UserDatabaseGatewayImpl } from "../gateways/database/user/user.database.gateway.impl";
+import { UserDatabaseGateway } from "../gateways/database/user/user.database.gateway";
 
 @Injectable()
 export class CreateUserUseCase {
-    constructor(private readonly UserRepositoryImpl: UserDatabaseGatewayImpl) {}
+    constructor(
+        @Inject(UserDatabaseGateway) private readonly userDatabaseGateway: UserDatabaseGateway
+    ) {}
 
     public async create(userToCreate: User): Promise<void> {
-        await this.UserRepositoryImpl.insert(userToCreate);
+        await this.userDatabaseGateway.insert(userToCreate);
     }
 }
