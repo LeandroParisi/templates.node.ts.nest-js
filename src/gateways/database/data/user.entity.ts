@@ -1,18 +1,11 @@
-import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-} from "typeorm";
+import { Entity, Column } from "typeorm";
 
 import { Builder, IBuilder } from "@utils/builder";
 
-@Entity("user")
-export class UserEntity {
-    @PrimaryGeneratedColumn({ type: "integer" })
-    public id: number;
+import { GenericEntity } from "./generic.entity";
 
+@Entity("user")
+export class UserEntity extends GenericEntity {
     @Column("varchar", { name: "first_name", length: 255, nullable: true })
     public firstName: string;
 
@@ -24,20 +17,6 @@ export class UserEntity {
 
     @Column("varchar", { length: 8, nullable: true })
     public password: string;
-
-    @CreateDateColumn({
-        name: "created_at",
-        type: "timestamptz",
-        default: () => "CURRENT_TIMESTAMP",
-    })
-    public createdAt: Date;
-
-    @UpdateDateColumn({
-        name: "last_update",
-        type: "timestamptz",
-        default: () => "CURRENT_TIMESTAMP",
-    })
-    public lastUpdate: Date;
 
     public static builder(): IBuilder<UserEntity> {
         return Builder<UserEntity>();
