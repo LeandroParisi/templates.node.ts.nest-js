@@ -12,7 +12,7 @@ export class UserEntity extends GenericEntity {
     @Column("varchar", { name: "last_name", length: 255, nullable: true })
     public lastName: string;
 
-    @Column("varchar", { length: 255, nullable: true })
+    @Column("varchar", { length: 255, nullable: true, unique: true })
     public email: string;
 
     @Column("varchar", { length: 8, nullable: true })

@@ -6,7 +6,6 @@ import { ControllersModule } from "@gateways/http/controllers/user/user.controll
 import { UseCasesModule } from "@use-cases/usecase.module";
 
 import { EnvironmentConfigModule } from "@configs/environment/environment-config.module";
-import { ExceptionsModule } from "@configs/exceptions/exceptions.module";
 import { LoggerModule } from "@configs/logger/logger.module";
 import { TypeOrmConfigModule } from "@configs/typeorm/typeorm.module";
 
@@ -16,7 +15,6 @@ import { TypeOrmConfigModule } from "@configs/typeorm/typeorm.module";
         EnvironmentConfigModule,
         TypeOrmConfigModule,
         LoggerModule,
-        ExceptionsModule,
         UserDataBaseGatewayModule,
         UseCasesModule,
     ],

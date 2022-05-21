@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { ExceptionsModule } from "@configs/exceptions/exceptions.module";
 import { LoggerModule } from "@configs/logger/logger.module";
 import { TypeOrmConfigModule } from "@configs/typeorm/typeorm.module";
 
@@ -10,12 +9,7 @@ import { UserDatabaseGateway } from "./user.database.gateway";
 import { UserDatabaseGatewayImpl } from "./user.database.gateway.impl";
 
 @Module({
-    imports: [
-        TypeOrmConfigModule,
-        TypeOrmModule.forFeature([UserEntity]),
-        ExceptionsModule,
-        LoggerModule,
-    ],
+    imports: [TypeOrmConfigModule, TypeOrmModule.forFeature([UserEntity]), LoggerModule],
     providers: [
         {
             provide: UserDatabaseGateway,

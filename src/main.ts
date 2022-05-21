@@ -3,7 +3,7 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as cookieParser from "cookie-parser";
 
-import { AllExceptionFilter } from "@configs/exeception-handler/exception.filter";
+import { ExceptionHandler } from "@configs/exeception-handler/exception.handler";
 import { ResponseInterceptor, ResponseFormat } from "@configs/interceptor/response.interceptor";
 import { LoggerService } from "@configs/logger/logger.service";
 
@@ -16,7 +16,7 @@ async function bootstrap() {
 
     app.use(cookieParser());
 
-    app.useGlobalFilters(new AllExceptionFilter(new LoggerService()));
+    app.useGlobalFilters(new ExceptionHandler(new LoggerService()));
 
     app.useGlobalPipes(new ValidationPipe());
 

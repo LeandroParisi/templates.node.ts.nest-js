@@ -25,7 +25,10 @@ export function Builder<T>(type: Clazz<T>, template?: Partial<T>): IBuilder<T>;
  */
 export function Builder<T>(template?: Partial<T>): IBuilder<T>;
 
-export function Builder<T>(typeOrTemplate?: Clazz<T> | Partial<T>, template?: Partial<T>): IBuilder<T> {
+export function Builder<T>(
+    typeOrTemplate?: Clazz<T> | Partial<T>,
+    template?: Partial<T>
+): IBuilder<T> {
     let type: Clazz<T> | undefined;
     if (typeOrTemplate instanceof Function) {
         type = typeOrTemplate;

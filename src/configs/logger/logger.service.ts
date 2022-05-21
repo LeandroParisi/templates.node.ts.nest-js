@@ -6,25 +6,25 @@ import { ILogger } from "./logger.interface";
 export class LoggerService extends Logger implements ILogger {
     public debug(context: string, message: string) {
         if (process.env.NODE_ENV !== "production") {
-            super.debug(`[DEBUG] ${message}`, context);
+            super.debug(message, context);
         }
     }
 
-    public log(context: string, message: string) {
-        super.log(`[INFO] ${message}`, context);
+    public log(context: string, message: string | any) {
+        super.log(message, context);
     }
 
-    public error(context: string, message: string, trace?: string) {
-        super.error(`[ERROR] ${message}`, trace, context);
+    public error(context: string | unknown, message: string, trace?: string) {
+        super.error(message, trace, context);
     }
 
     public warn(context: string, message: string) {
-        super.warn(`[WARN] ${message}`, context);
+        super.warn(message, context);
     }
 
     public verbose(context: string, message: string) {
         if (process.env.NODE_ENV !== "production") {
-            super.verbose(`[VERBOSE] ${message}`, context);
+            super.verbose(message, context);
         }
     }
 }
