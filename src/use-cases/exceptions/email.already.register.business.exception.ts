@@ -3,23 +3,23 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { BaseException } from "@configs/exceptions/base-exception";
 
-const code = "open.finance.error.database.create.user";
-const message = "Error to create user.";
+const code = "open.finance.error.business.email.already.register";
+const message = "Email Already register.";
 
-export class CreateUserGatewayException extends BaseException {
+export class EmailAlreadyExistsBusinessException extends BaseException {
     @ApiProperty({ default: code })
     public readonly code: string;
 
     @ApiProperty({ default: message })
     public readonly message: string;
 
-    @ApiProperty({ default: HttpStatus.INTERNAL_SERVER_ERROR })
+    @ApiProperty({ default: HttpStatus.UNPROCESSABLE_ENTITY })
     public statusCode: HttpStatus;
 
-    constructor(stack: any) {
-        super(stack);
+    constructor() {
+        super(null);
         this.code = code;
         this.message = message;
-        this.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        this.statusCode = HttpStatus.UNPROCESSABLE_ENTITY;
     }
 }

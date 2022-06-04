@@ -1,7 +1,7 @@
 import { Builder, IBuilder } from "@utils/builder";
 
 export class User {
-    public readonly id: number;
+    public readonly id?: number;
     public readonly firstName: string;
     public readonly lastName: string;
     public readonly email: string;

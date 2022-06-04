@@ -1,29 +1,13 @@
 import faker from "@faker-js/faker";
-import { Test, TestingModule } from "@nestjs/testing";
-import { when, resetAllWhenMocks } from "jest-when";
+import { mock } from "jest-mock-extended";
 
+import { LoggerService } from "../../../../../src/configs/logger/logger.service";
 import { User } from "../../../../../src/domain/user";
-import { UserDatabaseGatewayImpl } from "../../../../../src/gateways/database/user/user.database.gateway.impl";
 import { CreateUserRequest } from "../../../../../src/gateways/http/controllers/user/json/create.user.request";
 import { UserController } from "../../../../../src/gateways/http/controllers/user/user.controller";
-import { CreateUserUseCase } from "../../../../../src/use-cases/create.user.usecase";
+import { UserFacade } from "../../../../../src/use-cases/user/user.facade";
 
 describe("Tests of UserController", () => {
-    let userController: UserController;
-    let createUserUseCase: CreateUserUseCase;
-
-    beforeEach(async () => {
-        resetAllWhenMocks();
-
-        const module: TestingModule = await Test.createTestingModule({
-            controllers: [UserController],
-            providers: [CreateUserUseCase, UserDatabaseGatewayImpl],
-        }).compile();
-
-        userController = module.get<UserController>(UserController);
-        createUserUseCase = module.get<CreateUserUseCase>(CreateUserUseCase);
-    });
-
     it("should be defined", async () => {
         const createUserRequest: CreateUserRequest = {
             email: faker.internet.email(),
@@ -40,11 +24,16 @@ describe("Tests of UserController", () => {
             .password(createUserRequest.password)
             .build();
 
-        const mockedCreate = jest.spyOn(createUserUseCase, "create");
-        when(mockedCreate).calledWith(userToCreate).mockResolvedValue();
+        const mockedUserFacade = mock<UserFacade>();
+        mockedUserFacade.create.calledWith(userToCreate).mockResolvedValue();
+
+        const mockedLoggerService = mock<LoggerService>();
+
+        const userController = new UserController(mockedUserFacade, mockedLoggerService);
 
         await userController.create(createUserRequest);
 
-        expect(mockedCreate).toBeCalledWith(userToCreate);
+        expect(mockedUserFacade.create).toBeCalledWith(userToCreate);
+        expect(mockedLoggerService.log).toBeCalledWith("CREATE USER CONTROLLER", createUserRequest);
     });
 });

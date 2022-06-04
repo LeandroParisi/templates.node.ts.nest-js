@@ -12,4 +12,16 @@ export class UserDatabaseMapper {
             .password(user.password)
             .build();
     }
+
+    public static mapperUserFromUserEntity(userEntity: UserEntity | null) {
+        if (!userEntity) return null;
+
+        return User.builder()
+            .email(userEntity.email)
+            .firstName(userEntity.firstName)
+            .lastName(userEntity.lastName)
+            .id(userEntity.id)
+            .password(userEntity.password)
+            .build();
+    }
 }

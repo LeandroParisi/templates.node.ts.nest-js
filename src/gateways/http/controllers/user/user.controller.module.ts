@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 
-import { UseCasesModule } from "@use-cases/usecase.module";
+import { UseCasesModule } from "@use-cases/user/usecase.module";
 
 import { LoggerModule } from "@configs/logger/logger.module";
 

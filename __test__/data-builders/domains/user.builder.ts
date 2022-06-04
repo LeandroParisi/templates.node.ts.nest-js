@@ -18,3 +18,11 @@ export const createdUser = factory.Sync.makeFactory<User>({
     lastName: factory.each(() => faker.name.lastName()),
     password: undefined,
 });
+
+export const userToCreate = factory.Sync.makeFactory<User>({
+    email: factory.each(() => faker.internet.email()),
+    firstName: factory.each(() => faker.name.firstName()),
+    id: undefined,
+    lastName: factory.each(() => faker.name.lastName()),
+    password: factory.each(() => faker.internet.password()),
+});
