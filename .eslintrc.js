@@ -31,6 +31,7 @@ module.exports = {
               "/@use-cases/",
               "/@domain/", 
               "/@configs/",    
+              "/@common/",
               ["parent", "sibling", "index"],
           ],
           alphabetize: { order: "asc", ignoreCase: true },

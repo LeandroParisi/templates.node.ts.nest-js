@@ -3,7 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { LoggerModule } from "@gateways/logger/logger.module";
 
-import { TypeOrmConfigModule } from "@configs/typeorm/typeorm.module";
+import { TypeOrmConfigModule } from "@common/typeorm/typeorm.module";
 
 import { UserEntity } from "../data/user.entity";
 import { CreateUserDatabaseGateway } from "./crate.user.database.gateway";

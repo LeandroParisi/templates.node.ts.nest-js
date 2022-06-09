@@ -6,8 +6,8 @@ import { LoggerModule } from "@gateways/logger/logger.module";
 
 import { UseCasesModule } from "@use-cases/user/usecase.module";
 
-import { EnvironmentConfigModule } from "@configs/environment/environment-config.module";
-import { TypeOrmConfigModule } from "@configs/typeorm/typeorm.module";
+import { EnvironmentConfigModule } from "@common/environment/environment-config.module";
+import { TypeOrmConfigModule } from "@common/typeorm/typeorm.module";
 
 @Module({
     imports: [

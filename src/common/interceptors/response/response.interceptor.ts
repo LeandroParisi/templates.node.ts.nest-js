@@ -1,19 +1,8 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from "@nestjs/common";
-import { ApiProperty } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-export class ResponseFormat<T> {
-    @ApiProperty()
-    isArray: boolean;
-    @ApiProperty()
-    path: string;
-    @ApiProperty()
-    duration: string;
-    @ApiProperty()
-    method: string;
-    data: T;
-}
+import { ResponseFormat } from "./response.format";
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<T, ResponseFormat<T>> {

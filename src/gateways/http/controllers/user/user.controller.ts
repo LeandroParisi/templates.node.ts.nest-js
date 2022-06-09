@@ -13,7 +13,7 @@ import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 import { EmailAlreadyExistsBusinessException } from "@use-cases/exceptions/email.already.register.business.exception";
 import { UserFacade } from "@use-cases/user/user.facade";
 
-import { ErrorResponseHandler } from "@configs/exeception-handler/error.response.handler";
+import { ErrorResponseHandler } from "@common/filters/exception/error.response.handler";
 
 import { CreateUserRequest } from "./json";
 import { UserMapper } from "./mappers";

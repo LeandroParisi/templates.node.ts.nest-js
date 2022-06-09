@@ -13,6 +13,7 @@
     "incremental": true,
     "skipLibCheck": true,
     "paths": {
+      "@common/*": ["./src/common/*"],
       "@gateways/*": ["./src/gateways/*"],
       "@use-cases/*": ["./src/use-cases/*"],
       "@domain/*": ["src/domain/*"],

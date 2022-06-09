@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 
-import { EnvironmentConfigModule } from "../environment/environment-config.module";
-import { EnvironmentConfigService } from "../environment/environment-config.service";
+import { EnvironmentConfigModule } from "@common/environment/environment-config.module";
+import { EnvironmentConfigService } from "@common/environment/environment-config.service";
 
 export const getTypeOrmModuleOptions = (config: EnvironmentConfigService): TypeOrmModuleOptions =>
     ({

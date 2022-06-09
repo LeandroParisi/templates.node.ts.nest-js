@@ -2,7 +2,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor, Inject } fr
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
-import { LoggerLogGateway } from "../../gateways/logger/logger.log.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {

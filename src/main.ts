@@ -1,16 +1,14 @@
 import { ValidationPipe } from "@nestjs/common";
-import { NestFactory, ModuleRef } from "@nestjs/core";
+import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as cookieParser from "cookie-parser";
-
-import { ExceptionHandler } from "@configs/exeception-handler/exception.handler";
-import { ResponseInterceptor, ResponseFormat } from "@configs/interceptor/response.interceptor";
+import { ExceptionHandler } from "src/common/filters/exception/exception.handler";
+import { ResponseFormat } from "src/common/interceptors/response/response.format";
+import { ResponseInterceptor } from "src/common/interceptors/response/response.interceptor";
 
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
-    const env = process.env.NODE_ENV;
-
     const app = await NestFactory.create(AppModule);
 
     app.use(cookieParser());
@@ -23,19 +21,17 @@ async function bootstrap() {
 
     app.setGlobalPrefix("api_v1");
 
-    if (env !== "production") {
-        const config = new DocumentBuilder()
-            .addBearerAuth()
-            .setTitle("Clean Architecture Nestjs")
-            .setDescription("Example with todo list")
-            .setVersion("1.0")
-            .build();
-        const document = SwaggerModule.createDocument(app, config, {
-            extraModels: [ResponseFormat],
-            deepScanRoutes: true,
-        });
-        SwaggerModule.setup("api", app, document);
-    }
+    const config = new DocumentBuilder()
+        .addBearerAuth()
+        .setTitle("Clean Architecture Nestjs")
+        .setDescription("Example with user")
+        .setVersion("1.0")
+        .build();
+    const document = SwaggerModule.createDocument(app, config, {
+        extraModels: [ResponseFormat],
+        deepScanRoutes: true,
+    });
+    SwaggerModule.setup("api", app, document);
 
     await app.listen(process.env.PORT);
 }
