@@ -1,9 +1,10 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { LoggerService } from "@configs/logger/logger.service";
+import { CreateUserDatabaseGateway } from "@gateways/database/user/crate.user.database.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import { LoggerWarnGateway } from "@gateways/logger/logger.warn.gateway";
 
-import { CreateUserDatabaseGateway } from "../../gateways/database/user/crate.user.database.gateway";
 import { EmailAlreadyExistsBusinessException } from "../exceptions/email.already.register.business.exception";
 import { FindUserByEmailUseCase } from "./find.user.by.email.usecase";
 
@@ -12,12 +13,15 @@ export class CreateUserUseCase {
     constructor(
         @Inject(CreateUserDatabaseGateway)
         private readonly createUserDatabaseGateway: CreateUserDatabaseGateway,
-        private readonly findUserByEmailUseCase: FindUserByEmailUseCase,
-        private readonly loggerService: LoggerService
+        @Inject(LoggerLogGateway)
+        private readonly loggerLogGateway: LoggerLogGateway,
+        @Inject(LoggerLogGateway)
+        private readonly loggerWarnGateway: LoggerWarnGateway,
+        private readonly findUserByEmailUseCase: FindUserByEmailUseCase
     ) {}
 
     public async create(userToCreate: User): Promise<void> {
-        this.loggerService.log("CREATE USER USE CASE", userToCreate);
+        this.loggerLogGateway.log(userToCreate, "CREATE USER USE CASE");
 
         await this.verifyEmailAlreadyRegister(userToCreate.email);
 
@@ -26,9 +30,10 @@ export class CreateUserUseCase {
 
     private async verifyEmailAlreadyRegister(email: string) {
         const userFinded = await this.findUserByEmailUseCase.find(email);
+        console.log(userFinded);
 
         if (userFinded) {
-            this.loggerService.warn("EMAIL ALREADY REGISTER", email);
+            this.loggerWarnGateway.warn(email, "EMAIL ALREADY REGISTER");
             throw new EmailAlreadyExistsBusinessException();
         }
     }

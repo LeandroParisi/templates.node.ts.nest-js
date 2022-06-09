@@ -1,7 +1,7 @@
 import { mock } from "jest-mock-extended";
 
-import { LoggerService } from "../../../../src/configs/logger/logger.service";
 import { FindUserByEmailDatabaseGateway } from "../../../../src/gateways/database/user/find.user.by.email.gateway";
+import { LoggerLogGateway } from "../../../../src/gateways/logger/logger.log.gateway";
 import { FindUserByEmailUseCase } from "../../../../src/use-cases/user/find.user.by.email.usecase";
 import { UserDataBuilder } from "../../../data-builders/domains/index";
 
@@ -15,20 +15,20 @@ describe("Tests of FindUserByEmailUseCase", () => {
             .calledWith(emailToFinded)
             .mockResolvedValue(userFinded);
 
-        const mockedLoggerService = mock<LoggerService>();
+        const mockedLoggerLogGateway = mock<LoggerLogGateway>();
 
         const findUserByEmailUseCase = new FindUserByEmailUseCase(
             findUserByEmailDatabaseGatewayMocked,
-            mockedLoggerService
+            mockedLoggerLogGateway
         );
 
         const userFindedResponse = await findUserByEmailUseCase.find(emailToFinded);
 
         expect(userFindedResponse).toBe(userFinded);
 
-        expect(mockedLoggerService.log).toBeCalledWith(
-            "FIND USER BY EMAIL USE CASE",
-            emailToFinded
+        expect(mockedLoggerLogGateway.log).toBeCalledWith(
+            emailToFinded,
+            "FIND USER BY EMAIL USE CASE"
         );
     });
 });

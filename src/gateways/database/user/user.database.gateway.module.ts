@@ -1,7 +1,8 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { LoggerModule } from "@configs/logger/logger.module";
+import { LoggerModule } from "@gateways/logger/logger.module";
+
 import { TypeOrmConfigModule } from "@configs/typeorm/typeorm.module";
 
 import { UserEntity } from "../data/user.entity";

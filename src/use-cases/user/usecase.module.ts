@@ -1,8 +1,7 @@
 import { Module } from "@nestjs/common";
 
 import { UserDataBaseGatewayModule } from "@gateways/database/user/user.database.gateway.module";
-
-import { LoggerModule } from "@configs/logger/logger.module";
+import { LoggerModule } from "@gateways/logger/logger.module";
 
 import { CreateUserUseCase } from "./create.user.usecase";
 import { FindUserByEmailUseCase } from "./find.user.by.email.usecase";

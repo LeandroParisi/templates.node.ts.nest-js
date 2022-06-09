@@ -1,11 +1,10 @@
 import { ValidationPipe } from "@nestjs/common";
-import { NestFactory } from "@nestjs/core";
+import { NestFactory, ModuleRef } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as cookieParser from "cookie-parser";
 
 import { ExceptionHandler } from "@configs/exeception-handler/exception.handler";
 import { ResponseInterceptor, ResponseFormat } from "@configs/interceptor/response.interceptor";
-import { LoggerService } from "@configs/logger/logger.service";
 
 import { AppModule } from "./app.module";
 
@@ -16,7 +15,7 @@ async function bootstrap() {
 
     app.use(cookieParser());
 
-    app.useGlobalFilters(new ExceptionHandler(new LoggerService()));
+    app.useGlobalFilters(new ExceptionHandler());
 
     app.useGlobalPipes(new ValidationPipe());
 

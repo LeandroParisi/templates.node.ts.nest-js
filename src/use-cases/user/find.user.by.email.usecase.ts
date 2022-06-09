@@ -1,20 +1,20 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { LoggerService } from "@configs/logger/logger.service";
-
-import { FindUserByEmailDatabaseGateway } from "../../gateways/database/user/find.user.by.email.gateway";
+import { FindUserByEmailDatabaseGateway } from "@gateways/database/user/find.user.by.email.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 @Injectable()
 export class FindUserByEmailUseCase {
     constructor(
         @Inject(FindUserByEmailDatabaseGateway)
         private readonly findUserByEmailDatabaseGateway: FindUserByEmailDatabaseGateway,
-        private readonly loggerService: LoggerService
+        @Inject(LoggerLogGateway)
+        private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 
     public async find(email: string): Promise<User | null> {
-        this.loggerService.log("FIND USER BY EMAIL USE CASE", email);
+        this.loggerLogGateway.log(email, "FIND USER BY EMAIL USE CASE");
 
         return await this.findUserByEmailDatabaseGateway.findByEmail(email);
     }

@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 
-import { UseCasesModule } from "@use-cases/user/usecase.module";
+import { LoggerModule } from "@gateways/logger/logger.module";
 
-import { LoggerModule } from "@configs/logger/logger.module";
+import { UseCasesModule } from "@use-cases/user/usecase.module";
 
 import { UserController } from "./user.controller";
 

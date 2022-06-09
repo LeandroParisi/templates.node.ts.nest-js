@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { LoggerService } from "@configs/logger/logger.service";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { CreateUserUseCase } from "./create.user.usecase";
 
@@ -9,11 +9,12 @@ import { CreateUserUseCase } from "./create.user.usecase";
 export class UserFacade {
     constructor(
         private readonly createUserUseCase: CreateUserUseCase,
-        private readonly loggerService: LoggerService
+        @Inject(LoggerLogGateway)
+        private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 
     public async create(userToCreate: User): Promise<void> {
-        this.loggerService.log("CREATE USER FACADE", userToCreate);
+        this.loggerLogGateway.log(userToCreate, "CREATE USER FACADE");
 
         await this.createUserUseCase.create(userToCreate);
     }

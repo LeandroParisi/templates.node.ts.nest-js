@@ -1,6 +1,6 @@
 import { mock } from "jest-mock-extended";
 
-import { LoggerService } from "../../../../src/configs/logger/logger.service";
+import { LoggerLogGateway } from "../../../../src/gateways/logger/logger.log.gateway";
 import { CreateUserUseCase } from "../../../../src/use-cases/user/create.user.usecase";
 import { UserFacade } from "../../../../src/use-cases/user/user.facade";
 import { UserDataBuilder } from "../../../data-builders/domains/index";
@@ -12,12 +12,12 @@ describe("Tests of UserFacade", () => {
         const mockedCreateUserUseCase = mock<CreateUserUseCase>();
         mockedCreateUserUseCase.create.calledWith(userToCreate).mockResolvedValue();
 
-        const mockedLoggerService = mock<LoggerService>();
+        const mockedLoggerLogGateway = mock<LoggerLogGateway>();
 
-        await new UserFacade(mockedCreateUserUseCase, mockedLoggerService).create(userToCreate);
+        await new UserFacade(mockedCreateUserUseCase, mockedLoggerLogGateway).create(userToCreate);
 
         expect(mockedCreateUserUseCase.create).toBeCalledWith(userToCreate);
 
-        expect(mockedLoggerService.log).toBeCalledWith("CREATE USER FACADE", userToCreate);
+        expect(mockedLoggerLogGateway.log).toBeCalledWith(userToCreate, "CREATE USER FACADE");
     });
 });

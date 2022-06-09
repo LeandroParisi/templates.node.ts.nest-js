@@ -1,10 +1,10 @@
 import faker from "@faker-js/faker";
 import { mock } from "jest-mock-extended";
 
-import { LoggerService } from "../../../../../src/configs/logger/logger.service";
 import { User } from "../../../../../src/domain/user";
 import { CreateUserRequest } from "../../../../../src/gateways/http/controllers/user/json/create.user.request";
 import { UserController } from "../../../../../src/gateways/http/controllers/user/user.controller";
+import { LoggerLogGateway } from "../../../../../src/gateways/logger/logger.log.gateway";
 import { UserFacade } from "../../../../../src/use-cases/user/user.facade";
 
 describe("Tests of UserController", () => {
@@ -27,13 +27,16 @@ describe("Tests of UserController", () => {
         const mockedUserFacade = mock<UserFacade>();
         mockedUserFacade.create.calledWith(userToCreate).mockResolvedValue();
 
-        const mockedLoggerService = mock<LoggerService>();
+        const mockedLoggerLogGateway = mock<LoggerLogGateway>();
 
-        const userController = new UserController(mockedUserFacade, mockedLoggerService);
+        const userController = new UserController(mockedUserFacade, mockedLoggerLogGateway);
 
         await userController.create(createUserRequest);
 
         expect(mockedUserFacade.create).toBeCalledWith(userToCreate);
-        expect(mockedLoggerService.log).toBeCalledWith("CREATE USER CONTROLLER", createUserRequest);
+        expect(mockedLoggerLogGateway.log).toBeCalledWith(
+            createUserRequest,
+            "CREATE USER CONTROLLER"
+        );
     });
 });

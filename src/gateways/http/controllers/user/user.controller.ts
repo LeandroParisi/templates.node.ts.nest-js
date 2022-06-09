@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import { Controller, Post, Body, Inject } from "@nestjs/common";
 import {
     ApiTags,
     ApiInternalServerErrorResponse,
@@ -8,12 +8,12 @@ import {
 } from "@nestjs/swagger";
 
 import { UserDatabaseGatewayException } from "@gateways/exceptions/user.database.gateway.exception";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { EmailAlreadyExistsBusinessException } from "@use-cases/exceptions/email.already.register.business.exception";
 import { UserFacade } from "@use-cases/user/user.facade";
 
 import { ErrorResponseHandler } from "@configs/exeception-handler/error.response.handler";
-import { LoggerService } from "@configs/logger/logger.service";
 
 import { CreateUserRequest } from "./json";
 import { UserMapper } from "./mappers";
@@ -24,7 +24,8 @@ import { UserMapper } from "./mappers";
 export class UserController {
     constructor(
         private readonly userFacade: UserFacade,
-        private readonly loggerService: LoggerService
+        @Inject(LoggerLogGateway)
+        private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 
     @Post("create")
@@ -34,7 +35,7 @@ export class UserController {
         type: () => EmailAlreadyExistsBusinessException,
     })
     public async create(@Body() createUserRequest: CreateUserRequest): Promise<void> {
-        this.loggerService.log("CREATE USER CONTROLLER", createUserRequest);
+        this.loggerLogGateway.log(createUserRequest, "CREATE USER CONTROLLER");
 
         const userToCreate = UserMapper.mapperUserFromCreateRequest(createUserRequest);
 

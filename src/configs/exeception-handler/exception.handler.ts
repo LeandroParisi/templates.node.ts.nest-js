@@ -1,8 +1,9 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus, HttpException } from "@nestjs/common";
 import { Response, Request } from "express";
 
+import { LoggerErrorGateway } from "../../gateways/logger/logger.error.gateway";
+import { LoggerGatewayNest } from "../../gateways/logger/nest-js/logger.gateway.nest";
 import { BaseException } from "../exceptions/base-exception";
-import { LoggerService } from "../logger/logger.service";
 import { ErrorResponseHandler } from "./error.response.handler";
 
 @Catch()
@@ -10,7 +11,12 @@ export class ExceptionHandler implements ExceptionFilter {
     private readonly defaultErrorMessage = "Open Finance Default Error.";
     private readonly defaultErrorCode = "open.finance.error.default";
 
-    constructor(private readonly logger: LoggerService) {}
+    private loggerErrorGateway: LoggerErrorGateway;
+
+    constructor() {
+        this.loggerErrorGateway = new LoggerGatewayNest();
+    }
+
     catch(exception: any, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
@@ -71,7 +77,7 @@ export class ExceptionHandler implements ExceptionFilter {
     private logBaseExceptionError(request: Request, baseException: BaseException) {
         const { statusCode, stack } = baseException;
 
-        this.logger.error(
+        this.loggerErrorGateway.error(
             `End Request for ${request.path}`,
             `method=${request.method} status=${statusCode} code=${
                 baseException.code ? baseException.code : null
@@ -84,7 +90,7 @@ export class ExceptionHandler implements ExceptionFilter {
         const { stack } = httpException;
         const { statusCode, message, error } = (httpException as any).response;
 
-        this.logger.error(
+        this.loggerErrorGateway.error(
             `End Request for ${request.path}`,
             `method=${request.method} status=${
                 statusCode || HttpStatus.INTERNAL_SERVER_ERROR
@@ -96,7 +102,7 @@ export class ExceptionHandler implements ExceptionFilter {
     private logOtherError(request: Request, error: Error) {
         const { stack, message } = error;
 
-        this.logger.error(
+        this.loggerErrorGateway.error(
             `End Request for ${request.path}`,
             `method=${request.method} message=${message ? message : null}`,
             stack || ""

@@ -1,12 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Inject } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { User } from "@domain/user";
 
-import { LoggerService } from "@configs/logger/logger.service";
-
 import { UserDatabaseGatewayException } from "../../exceptions/user.database.gateway.exception";
+import { LoggerLogGateway } from "../../logger/logger.log.gateway";
 import { UserEntity } from "../data/user.entity";
 import { CreateUserDatabaseGateway } from "./crate.user.database.gateway";
 import { FindUserByEmailDatabaseGateway } from "./find.user.by.email.gateway";
@@ -19,12 +18,13 @@ export class UserDatabaseGatewayImpl
     constructor(
         @InjectRepository(UserEntity)
         private readonly userEntityRepository: Repository<UserEntity>,
-        private readonly loggerService: LoggerService
+        @Inject(LoggerLogGateway)
+        private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 
     public async findByEmail(email: string): Promise<User | null> {
         try {
-            this.loggerService.log("FIND USER BY EMAIL DATABASE", email);
+            this.loggerLogGateway.log(email, "FIND USER BY EMAIL DATABASE");
 
             const userEntity = await this.userEntityRepository.findOneBy({ email });
 
@@ -36,7 +36,7 @@ export class UserDatabaseGatewayImpl
 
     public async create(user: User): Promise<void> {
         try {
-            this.loggerService.log("CREATE USER DATABASE", user);
+            this.loggerLogGateway.log(user, "CREATE USER DATABASE");
 
             await this.userEntityRepository.insert(
                 UserDatabaseMapper.mapperUserEntityFromUser(user)
