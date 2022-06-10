@@ -1,11 +1,13 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from "@nestjs/common";
-import { mock } from "jest-mock-extended";
+import { ExecutionContext, CallHandler } from "@nestjs/common";
+import { mock, anyFunction } from "jest-mock-extended";
+import * as Operations from "rxjs/operators";
 
 import { ResponseInterceptor } from "../../../../../src/common/interceptors/response/response.interceptor";
 
 describe("Tests of ResponseInterceptor", () => {
     it("Should return response", () => {
         const responseInterceptor = new ResponseInterceptor();
+        const spyOperations = jest.spyOn(Operations, "tap");
 
         const getRequest = jest.fn().mockReturnValue({
             path: "anyPath",
@@ -24,6 +26,8 @@ describe("Tests of ResponseInterceptor", () => {
 
         responseInterceptor.intercept(mockedExecutionContext, mockedCallHandler);
 
-        expect(mockedPipe).toBeCalled();
+        expect(mockedPipe).toBeCalledWith(anyFunction);
+
+        expect(spyOperations).toBeCalledWith(anyFunction());
     });
 });

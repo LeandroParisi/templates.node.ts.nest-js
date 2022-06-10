@@ -30,7 +30,6 @@ export class CreateUserUseCase {
 
     private async verifyEmailAlreadyRegister(email: string) {
         const userFinded = await this.findUserByEmailUseCase.find(email);
-        console.log(userFinded);
 
         if (userFinded) {
             this.loggerWarnGateway.warn(email, "EMAIL ALREADY REGISTER");

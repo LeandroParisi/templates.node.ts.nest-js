@@ -1,4 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor, Inject } from "@nestjs/common";
+import * as requestIp from "request-ip";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
@@ -13,32 +14,20 @@ export class LoggingInterceptor implements NestInterceptor {
         const httpContext = context.switchToHttp();
         const request = httpContext.getRequest();
 
-        const ip = this.getIP(request);
+        const ip = requestIp.getClientIp(request);
 
         this.LoggerLogGateway.log(
             `method=${request.method} ip=${ip}`,
             `Incoming Request on ${request.path}`
         );
 
-        return next.handle().pipe(
-            tap(() => {
-                this.LoggerLogGateway.log(
-                    `method=${request.method} ip=${ip} duration=${Date.now() - now}ms`,
-                    `End Request for ${request.path}`
-                );
-            })
-        );
-    }
+        const tapPipe = tap(() => {
+            this.LoggerLogGateway.log(
+                `method=${request.method} ip=${ip} duration=${Date.now() - now}ms`,
+                `End Request for ${request.path}`
+            );
+        });
 
-    private getIP(request: any): string {
-        let ip: string;
-        const ipAddr = request.headers["x-forwarded-for"];
-        if (ipAddr) {
-            const list = ipAddr.split(",");
-            ip = list[list.length - 1];
-        } else {
-            ip = request.connection.remoteAddress;
-        }
-        return ip.replace("::ffff:", "");
+        return next.handle().pipe(tapPipe);
     }
 }
