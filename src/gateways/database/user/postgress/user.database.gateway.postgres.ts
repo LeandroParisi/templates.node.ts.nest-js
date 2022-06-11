@@ -4,15 +4,15 @@ import { Repository } from "typeorm";
 
 import { User } from "@domain/user";
 
-import { UserDatabaseGatewayException } from "../../exceptions/user.database.gateway.exception";
-import { LoggerLogGateway } from "../../logger/logger.log.gateway";
-import { UserEntity } from "../data/user.entity";
-import { CreateUserDatabaseGateway } from "./crate.user.database.gateway";
-import { FindUserByEmailDatabaseGateway } from "./find.user.by.email.gateway";
-import { UserDatabaseMapper } from "./mapper/user.database.mapper";
+import { UserDatabaseGatewayException } from "../../../exceptions/user.database.gateway.exception";
+import { LoggerLogGateway } from "../../../logger/interfaces/logger.log.gateway";
+import { UserEntity } from "../../data/user.entity";
+import { CreateUserDatabaseGateway } from "../interfaces/crate.user.database.gateway";
+import { FindUserByEmailDatabaseGateway } from "../interfaces/find.user.by.email.gateway";
+import { UserDatabaseMapper } from "../mapper/user.database.mapper";
 
 @Injectable()
-export class UserDatabaseGatewayImpl
+export class UserDatabaseGatewayPostgres
     implements CreateUserDatabaseGateway, FindUserByEmailDatabaseGateway
 {
     constructor(

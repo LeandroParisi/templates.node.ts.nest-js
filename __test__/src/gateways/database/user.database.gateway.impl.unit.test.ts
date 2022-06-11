@@ -3,13 +3,13 @@ import { Repository, InsertResult } from "typeorm";
 
 import { User } from "../../../../src/domain/user";
 import { UserEntity } from "../../../../src/gateways/database/data/user.entity";
-import { UserDatabaseGatewayImpl } from "../../../../src/gateways/database/user/user.database.gateway.impl";
+import { UserDatabaseGatewayPostgres } from "../../../../src/gateways/database/user/postgress/user.database.gateway.postgres";
 import { UserDatabaseGatewayException } from "../../../../src/gateways/exceptions/user.database.gateway.exception";
-import { LoggerLogGateway } from "../../../../src/gateways/logger/logger.log.gateway";
+import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
 import { UserEntityDataBuilder } from "../../../data-builders/data/index";
 import { UserDataBuilder } from "../../../data-builders/domains/index";
 
-describe("Tests of UserDatabaseGatewayImpl", () => {
+describe("Tests of UserDatabaseGatewayPostgres", () => {
     let mockedLoggerLogGateway: MockProxy<LoggerLogGateway>;
     let userRepositoryMocked: MockProxy<Repository<UserEntity>>;
 
@@ -23,7 +23,7 @@ describe("Tests of UserDatabaseGatewayImpl", () => {
 
         userRepositoryMocked.insert.calledWith(userToCreate).mockResolvedValue(new InsertResult());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayImpl(
+        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
             mockedLoggerLogGateway
         );
@@ -42,7 +42,7 @@ describe("Tests of UserDatabaseGatewayImpl", () => {
             .calledWith(anyObject(UserEntity))
             .mockRejectedValue(new Error());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayImpl(
+        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
             mockedLoggerLogGateway
         );
@@ -70,7 +70,7 @@ describe("Tests of UserDatabaseGatewayImpl", () => {
             .calledWith(anyObject())
             .mockResolvedValue(userEntityToFinded);
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayImpl(
+        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
             mockedLoggerLogGateway
         );
@@ -89,7 +89,7 @@ describe("Tests of UserDatabaseGatewayImpl", () => {
 
         userRepositoryMocked.findOneBy.calledWith(anyObject()).mockResolvedValue(undefined);
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayImpl(
+        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
             mockedLoggerLogGateway
         );
@@ -108,7 +108,7 @@ describe("Tests of UserDatabaseGatewayImpl", () => {
 
         userRepositoryMocked.findOneBy.calledWith(anyObject()).mockRejectedValue(new Error());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayImpl(
+        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
             mockedLoggerLogGateway
         );

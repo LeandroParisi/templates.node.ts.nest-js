@@ -1,10 +1,10 @@
 import { Injectable, Logger } from "@nestjs/common";
 
-import { LoggerDebugGateway } from "../logger.debug.gateway";
-import { LoggerErrorGateway } from "../logger.error.gateway";
-import { LoggerLogGateway } from "../logger.log.gateway";
-import { LoggerVerboseGateway } from "../logger.verbose.gateway";
-import { LoggerWarnGateway } from "../logger.warn.gateway";
+import { LoggerDebugGateway } from "../interfaces/logger.debug.gateway";
+import { LoggerErrorGateway } from "../interfaces/logger.error.gateway";
+import { LoggerLogGateway } from "../interfaces/logger.log.gateway";
+import { LoggerVerboseGateway } from "../interfaces/logger.verbose.gateway";
+import { LoggerWarnGateway } from "../interfaces/logger.warn.gateway";
 
 @Injectable()
 export class LoggerGatewayNest

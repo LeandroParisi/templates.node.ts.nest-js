@@ -1,8 +1,8 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { FindUserByEmailDatabaseGateway } from "@gateways/database/user/find.user.by.email.gateway";
-import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import { FindUserByEmailDatabaseGateway } from "@gateways/database/user/interfaces/find.user.by.email.gateway";
+import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
 
 @Injectable()
 export class FindUserByEmailUseCase {

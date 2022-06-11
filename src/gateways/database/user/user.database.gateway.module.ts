@@ -1,25 +1,24 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { TypeOrmConfigModule } from "@gateways/database/user/postgress/typeorm.module";
 import { LoggerModule } from "@gateways/logger/logger.module";
 
-import { TypeOrmConfigModule } from "@common/typeorm/typeorm.module";
-
 import { UserEntity } from "../data/user.entity";
-import { CreateUserDatabaseGateway } from "./crate.user.database.gateway";
-import { FindUserByEmailDatabaseGateway } from "./find.user.by.email.gateway";
-import { UserDatabaseGatewayImpl } from "./user.database.gateway.impl";
+import { CreateUserDatabaseGateway } from "./interfaces/crate.user.database.gateway";
+import { FindUserByEmailDatabaseGateway } from "./interfaces/find.user.by.email.gateway";
+import { UserDatabaseGatewayPostgres } from "./postgress/user.database.gateway.postgres";
 
 @Module({
     imports: [TypeOrmConfigModule, TypeOrmModule.forFeature([UserEntity]), LoggerModule],
     providers: [
         {
             provide: CreateUserDatabaseGateway,
-            useClass: UserDatabaseGatewayImpl,
+            useClass: UserDatabaseGatewayPostgres,
         },
         {
             provide: FindUserByEmailDatabaseGateway,
-            useClass: UserDatabaseGatewayImpl,
+            useClass: UserDatabaseGatewayPostgres,
         },
     ],
     exports: [CreateUserDatabaseGateway, FindUserByEmailDatabaseGateway],

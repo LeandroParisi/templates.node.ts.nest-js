@@ -1,8 +1,8 @@
 import { mock, mockReset } from "jest-mock-extended";
 
-import { CreateUserDatabaseGateway } from "../../../../src/gateways/database/user/crate.user.database.gateway";
-import { LoggerLogGateway } from "../../../../src/gateways/logger/logger.log.gateway";
-import { LoggerWarnGateway } from "../../../../src/gateways/logger/logger.warn.gateway";
+import { CreateUserDatabaseGateway } from "../../../../src/gateways/database/user/interfaces/crate.user.database.gateway";
+import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { LoggerWarnGateway } from "../../../../src/gateways/logger/interfaces/logger.warn.gateway";
 import { EmailAlreadyExistsBusinessException } from "../../../../src/use-cases/exceptions/email.already.register.business.exception";
 import { CreateUserUseCase } from "../../../../src/use-cases/user/create.user.usecase";
 import { FindUserByEmailUseCase } from "../../../../src/use-cases/user/find.user.by.email.usecase";
