@@ -1,4 +1,4 @@
-import { Module, Logger } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 
 import { LoggerDebugGateway } from "./logger.debug.gateway";
 import { LoggerErrorGateway } from "./logger.error.gateway";
@@ -8,7 +8,6 @@ import { LoggerWarnGateway } from "./logger.warn.gateway";
 import { LoggerGatewayNest } from "./nest-js/logger.gateway.nest";
 
 @Module({
-    imports: [Logger],
     providers: [
         {
             provide: LoggerDebugGateway,

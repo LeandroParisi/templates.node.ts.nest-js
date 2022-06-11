@@ -1,10 +1,10 @@
-import { ValidationPipe } from "@nestjs/common";
+import { ValidationPipe, Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as cookieParser from "cookie-parser";
-import { ExceptionHandler } from "src/common/filters/exception/exception.handler";
-import { ResponseFormat } from "src/common/interceptors/response/response.format";
-import { ResponseInterceptor } from "src/common/interceptors/response/response.interceptor";
+
+import { ExceptionHandler } from "@common/filters/exception.filter";
+import { LoggingInterceptor } from "@common/interceptors/logger.interceptor";
 
 import { AppModule } from "./app.module";
 
@@ -13,11 +13,11 @@ async function bootstrap() {
 
     app.use(cookieParser());
 
-    app.useGlobalFilters(new ExceptionHandler());
+    app.useGlobalFilters(new ExceptionHandler(new Logger()));
 
     app.useGlobalPipes(new ValidationPipe());
 
-    app.useGlobalInterceptors(new ResponseInterceptor());
+    app.useGlobalInterceptors(new LoggingInterceptor());
 
     app.setGlobalPrefix("api_v1");
 
@@ -28,7 +28,6 @@ async function bootstrap() {
         .setVersion("1.0")
         .build();
     const document = SwaggerModule.createDocument(app, config, {
-        extraModels: [ResponseFormat],
         deepScanRoutes: true,
     });
     SwaggerModule.setup("api", app, document);

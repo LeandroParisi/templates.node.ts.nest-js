@@ -1,18 +1,20 @@
-import { ExecutionContext, CallHandler } from "@nestjs/common";
-import { mock, anyFunction } from "jest-mock-extended";
+import { ExecutionContext, CallHandler, Logger } from "@nestjs/common";
+import { mock } from "jest-mock-extended";
 import { when } from "jest-when";
 import * as RequestIp from "request-ip";
-import * as Operations from "rxjs/operators";
 
-import { LoggerLogGateway } from "../../../../../dist/gateways/logger/logger.log.gateway";
-import { LoggingInterceptor } from "../../../../../src/common/interceptors/logger/logger.interceptor";
+import { LoggingInterceptor } from "../../../../src/common/interceptors/logger.interceptor";
+
+jest.mock("rxjs/operators", () => {
+    const operation = jest.fn();
+
+    return { tap: jest.fn(() => operation) };
+});
 
 describe("Tests of LoggingInterceptor", () => {
     it("Should return response", () => {
-        const mockedLoggerLogGateway = mock<LoggerLogGateway>();
-        const loggingInterceptor = new LoggingInterceptor(mockedLoggerLogGateway);
-
-        const spyOperations = jest.spyOn(Operations, "tap");
+        const mockedLogger = jest.spyOn(Logger.prototype, "log");
+        const loggingInterceptor = new LoggingInterceptor();
 
         const spyRequestIP = jest.spyOn(RequestIp, "getClientIp");
 
@@ -25,8 +27,6 @@ describe("Tests of LoggingInterceptor", () => {
             method,
         });
 
-        const mockedPipe = jest.fn();
-
         when(spyRequestIP).calledWith(getRequest()).mockReturnValue(ip);
 
         const mockedExecutionContext = mock<ExecutionContext>();
@@ -35,17 +35,12 @@ describe("Tests of LoggingInterceptor", () => {
         } as any);
 
         const mockedCallHandler = mock<CallHandler>();
-        mockedCallHandler.handle.calledWith().mockReturnValue({ pipe: mockedPipe } as any);
 
         loggingInterceptor.intercept(mockedExecutionContext, mockedCallHandler);
 
-        expect(mockedPipe).toBeCalledWith(anyFunction());
-
-        expect(mockedLoggerLogGateway.log).toBeCalledWith(
+        expect(mockedLogger).toBeCalledWith(
             `method=${method} ip=${ip}`,
             `Incoming Request on ${path}`
         );
-
-        expect(spyOperations).toBeCalledWith(anyFunction());
     });
 });

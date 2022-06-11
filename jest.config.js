@@ -7,14 +7,14 @@ module.exports = {
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
     coveragePathIgnorePatterns: [
         "<rootDir>/node_modules/",
-        "<rootDir>/__tests__/__mocks__/",
-        "<rootDir>/__tests__/__fixture__/",
+        "<rootDir>/__test__/",
         "<rootDir>/src/assets/",
         "<rootDir>/src/configs/",
         "<rootDir>/src/utils/",
         "<rootDir>/src/domains/",
         "<rootDir>/src/main.ts",
         "<rootDir>/src/app.ts",
+        "<rootDir>/src/gateways/database/data",
         "/json/",
     ],
     transform: {
