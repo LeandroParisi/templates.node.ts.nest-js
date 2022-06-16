@@ -1,6 +1,6 @@
 import { User } from "@domain/user";
 
-import { CreateUserRequest } from "../json";
+import { CreateUserRequest } from "../../json";
 
 export class UserMapper {
     public static mapperUserFromCreateRequest(createUserRequest: CreateUserRequest): User {

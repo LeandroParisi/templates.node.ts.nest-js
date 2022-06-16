@@ -3,7 +3,7 @@ import { mock } from "jest-mock-extended";
 import { when } from "jest-when";
 import * as RequestIp from "request-ip";
 
-import { LoggingInterceptor } from "../../../../src/common/interceptors/logger.interceptor";
+import { LoggerRequestInterceptor } from "../../../../src/common/interceptors/logger.request.interceptor";
 
 jest.mock("rxjs/operators", () => {
     const operation = jest.fn();
@@ -14,7 +14,7 @@ jest.mock("rxjs/operators", () => {
 describe("Tests of LoggingInterceptor", () => {
     it("Should return response", () => {
         const mockedLogger = jest.spyOn(Logger.prototype, "log");
-        const loggingInterceptor = new LoggingInterceptor();
+        const loggingInterceptor = new LoggerRequestInterceptor();
 
         const spyRequestIP = jest.spyOn(RequestIp, "getClientIp");
 

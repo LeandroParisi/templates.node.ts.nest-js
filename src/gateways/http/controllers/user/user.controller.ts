@@ -7,8 +7,9 @@ import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway
 import { EmailAlreadyExistsBusinessException } from "@use-cases/exceptions/email.already.register.business.exception";
 import { UserFacade } from "@use-cases/user/user.facade";
 
-import { CreateUserRequest } from "./json";
-import { UserMapper } from "./mappers";
+import { User } from "@domain/user";
+
+import { UserValidationTransformPipe } from "./pipes/user.validation.transform.pipe";
 
 @Controller("user")
 @ApiTags("User")
@@ -23,11 +24,8 @@ export class UserController {
     @ApiResponse({ status: 201, description: "No response object" })
     @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
     @ApiResponse({ status: 422, type: EmailAlreadyExistsBusinessException })
-    public async create(@Body() createUserRequest: CreateUserRequest): Promise<void> {
-        this.loggerLogGateway.log(createUserRequest, "CREATE USER CONTROLLER");
-
-        const userToCreate = UserMapper.mapperUserFromCreateRequest(createUserRequest);
-
+    public async create(@Body(UserValidationTransformPipe) userToCreate: User): Promise<void> {
+        this.loggerLogGateway.log(userToCreate, "CREATE USER CONTROLLER");
         await this.userFacade.create(userToCreate);
     }
 }

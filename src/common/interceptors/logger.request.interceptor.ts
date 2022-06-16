@@ -3,7 +3,7 @@ import * as requestIp from "request-ip";
 import { Observable } from "rxjs";
 
 @Injectable()
-export class LoggingInterceptor implements NestInterceptor {
+export class LoggerRequestInterceptor implements NestInterceptor {
     private logger: Logger;
 
     constructor() {
