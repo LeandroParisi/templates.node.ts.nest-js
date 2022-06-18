@@ -1,5 +1,7 @@
+import { LoggerMessage } from "./logger.message";
+
 export interface LoggerDebugGateway {
-    debug(context: string, message: string): void;
+    debug(loggerMessage: LoggerMessage): void;
 }
 
 export const LoggerDebugGateway = Symbol("LoggerDebugGateway");

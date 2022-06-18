@@ -1,35 +1,44 @@
 import { Module } from "@nestjs/common";
+import { WinstonModule } from "nest-winston";
 
 import { LoggerDebugGateway } from "./interfaces/logger.debug.gateway";
 import { LoggerErrorGateway } from "./interfaces/logger.error.gateway";
 import { LoggerLogGateway } from "./interfaces/logger.log.gateway";
 import { LoggerVerboseGateway } from "./interfaces/logger.verbose.gateway";
 import { LoggerWarnGateway } from "./interfaces/logger.warn.gateway";
-import { LoggerGatewayNest } from "./nest-js/logger.gateway.nest";
+import { configuration } from "./winston/configutation/configuration.logger.winston";
+import { LoggerGatewayWinston } from "./winston/logger.gateway.winston";
 
 @Module({
     providers: [
         {
             provide: LoggerDebugGateway,
-            useClass: LoggerGatewayNest,
+            useClass: LoggerGatewayWinston,
         },
         {
             provide: LoggerLogGateway,
-            useClass: LoggerGatewayNest,
+            useClass: LoggerGatewayWinston,
         },
         {
             provide: LoggerVerboseGateway,
-            useClass: LoggerGatewayNest,
+            useClass: LoggerGatewayWinston,
         },
         {
             provide: LoggerWarnGateway,
-            useClass: LoggerGatewayNest,
+            useClass: LoggerGatewayWinston,
         },
         {
             provide: LoggerErrorGateway,
-            useClass: LoggerGatewayNest,
+            useClass: LoggerGatewayWinston,
         },
     ],
-    exports: [LoggerDebugGateway, LoggerLogGateway, LoggerVerboseGateway, LoggerWarnGateway],
+    exports: [
+        LoggerDebugGateway,
+        LoggerLogGateway,
+        LoggerVerboseGateway,
+        LoggerWarnGateway,
+        LoggerErrorGateway,
+    ],
+    imports: [WinstonModule.forRoot(configuration)],
 })
 export class LoggerModule {}

@@ -1,14 +1,20 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Logger } from "@nestjs/common";
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Inject } from "@nestjs/common";
 import { Response, Request } from "express";
+
+import { LoggerErrorGateway } from "@gateways/logger/interfaces/logger.error.gateway";
 
 import { BaseException } from "@common/exceptions/base.exception";
 
-import { DefaultException } from "../exceptions/default.exception";
-import { PipeException } from "../exceptions/pipe.exception";
+import { DefaultException } from "../../exceptions/default.exception";
+import { PipeException } from "../../exceptions/pipe.exception";
+import { FilterMeta } from "./filter.meta";
 
 @Catch()
 export class ExceptionHandler implements ExceptionFilter {
-    constructor(private readonly logger: Logger) {}
+    constructor(
+        @Inject(LoggerErrorGateway)
+        private readonly loggerErrorGateway: LoggerErrorGateway
+    ) {}
 
     catch(exception: any, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
@@ -43,12 +49,17 @@ export class ExceptionHandler implements ExceptionFilter {
         const codes =
             (httpException as PipeException).codes && (httpException as PipeException).codes;
 
-        this.logger.error(
-            `End Request for ${request.path}`,
-            `method=${request.method} status=${statusCode} message=${message}${
-                codes ? ` errors=${codes}` : ""
-            }`,
-            stack
-        );
+        this.loggerErrorGateway.error({
+            class: ExceptionHandler.name,
+            meta: FilterMeta.builder()
+                .path(request.path)
+                .method(request.method)
+                .statusCode(statusCode)
+                .message(message)
+                .stack(stack)
+                .codes(codes)
+                .build(),
+            method: undefined,
+        });
     }
 }

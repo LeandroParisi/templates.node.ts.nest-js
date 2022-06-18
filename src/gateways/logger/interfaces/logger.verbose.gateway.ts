@@ -1,5 +1,7 @@
+import { LoggerMessage } from "./logger.message";
+
 export interface LoggerVerboseGateway {
-    verbose(context: string, message: string): void;
+    verbose(loggerMessage: LoggerMessage): void;
 }
 
 export const LoggerVerboseGateway = Symbol("LoggerVerboseGateway");

@@ -26,9 +26,10 @@ describe("Tests of FindUserByEmailUseCase", () => {
 
         expect(userFindedResponse).toBe(userFinded);
 
-        expect(mockedLoggerLogGateway.log).toBeCalledWith(
-            emailToFinded,
-            "FIND USER BY EMAIL USE CASE"
-        );
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "FindUserByEmailUseCase",
+            meta: emailToFinded,
+            method: "find",
+        });
     });
 });

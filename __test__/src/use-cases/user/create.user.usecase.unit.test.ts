@@ -37,7 +37,11 @@ describe("Tests of CreateUserUseCase", () => {
 
         expect(mockedCreateUserDatabaseGateway.create).toBeCalledWith(userToCreate);
 
-        expect(mockedLoggerLogGateway.log).toBeCalledWith(userToCreate, "CREATE USER USE CASE");
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "CreateUserUseCase",
+            meta: userToCreate,
+            method: "create",
+        });
     });
 
     it("Should create user with error user Already exists", async () => {
@@ -59,9 +63,10 @@ describe("Tests of CreateUserUseCase", () => {
             EmailAlreadyExistsBusinessException
         );
 
-        expect(mockedLoggerWarnGateway.warn).toBeCalledWith(
-            userToCreate.email,
-            "EMAIL ALREADY REGISTER"
-        );
+        expect(mockedLoggerWarnGateway.warn).toBeCalledWith({
+            class: "CreateUserUseCase",
+            meta: userToCreate.email,
+            method: "verifyEmailAlreadyRegister",
+        });
     });
 });

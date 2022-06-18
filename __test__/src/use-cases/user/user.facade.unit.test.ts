@@ -18,6 +18,10 @@ describe("Tests of UserFacade", () => {
 
         expect(mockedCreateUserUseCase.create).toBeCalledWith(userToCreate);
 
-        expect(mockedLoggerLogGateway.log).toBeCalledWith(userToCreate, "CREATE USER FACADE");
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserFacade",
+            meta: userToCreate,
+            method: "create",
+        });
     });
 });

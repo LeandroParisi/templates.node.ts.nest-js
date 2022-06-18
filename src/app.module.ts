@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
 
 import { TypeOrmConfigModule } from "@gateways/database/user/postgress/typeorm.module";
 import { UserDataBaseGatewayModule } from "@gateways/database/user/user.database.gateway.module";
@@ -8,6 +8,7 @@ import { LoggerModule } from "@gateways/logger/logger.module";
 import { UseCasesModule } from "@use-cases/user/usecase.module";
 
 import { EnvironmentConfigModule } from "@common/environment/environment-config.module";
+import { LoggerMiddleware } from "@common/middlewares/logger/logger.middleware";
 
 @Module({
     imports: [
@@ -19,4 +20,8 @@ import { EnvironmentConfigModule } from "@common/environment/environment-config.
         UseCasesModule,
     ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer): void {
+        consumer.apply(LoggerMiddleware).forRoutes("*");
+    }
+}

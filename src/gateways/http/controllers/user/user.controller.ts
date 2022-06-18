@@ -25,7 +25,11 @@ export class UserController {
     @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
     @ApiResponse({ status: 422, type: EmailAlreadyExistsBusinessException })
     public async create(@Body(UserValidationTransformPipe) userToCreate: User): Promise<void> {
-        this.loggerLogGateway.log(userToCreate, "CREATE USER CONTROLLER");
+        this.loggerLogGateway.log({
+            class: UserController.name,
+            meta: userToCreate,
+            method: "create",
+        });
         await this.userFacade.create(userToCreate);
     }
 }

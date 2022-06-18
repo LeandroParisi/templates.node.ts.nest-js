@@ -5,6 +5,7 @@ import { User } from "../../../../src/domain/user";
 import { UserEntity } from "../../../../src/gateways/database/data/user.entity";
 import { UserDatabaseGatewayPostgres } from "../../../../src/gateways/database/user/postgress/user.database.gateway.postgres";
 import { UserDatabaseGatewayException } from "../../../../src/gateways/exceptions/user.database.gateway.exception";
+import { LoggerErrorGateway } from "../../../../src/gateways/logger/interfaces/logger.error.gateway";
 import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
 import { UserEntityDataBuilder } from "../../../data-builders/data/index";
 import { UserDataBuilder } from "../../../data-builders/domains/index";
@@ -12,10 +13,12 @@ import { UserDataBuilder } from "../../../data-builders/domains/index";
 describe("Tests of UserDatabaseGatewayPostgres", () => {
     let mockedLoggerLogGateway: MockProxy<LoggerLogGateway>;
     let userRepositoryMocked: MockProxy<Repository<UserEntity>>;
+    let logErrorGateway: MockProxy<LoggerErrorGateway>;
 
     beforeEach(() => {
         mockedLoggerLogGateway = mock<LoggerLogGateway>();
         userRepositoryMocked = mock<Repository<UserEntity>>();
+        logErrorGateway = mock<LoggerErrorGateway>();
     });
 
     it("Should create user with success", async () => {
@@ -25,14 +28,19 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
-            mockedLoggerLogGateway
+            mockedLoggerLogGateway,
+            logErrorGateway
         );
 
         await userDatabaseGatewayImpl.create(userToCreate);
 
         expect(userRepositoryMocked.insert).toBeCalledWith(userToCreate);
 
-        expect(mockedLoggerLogGateway.log).toBeCalledWith(userToCreate, "CREATE USER DATABASE");
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserDatabaseGatewayPostgres",
+            meta: userToCreate,
+            method: "create",
+        });
     });
 
     it("Should create user with database error", async () => {
@@ -44,7 +52,8 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
-            mockedLoggerLogGateway
+            mockedLoggerLogGateway,
+            logErrorGateway
         );
 
         await expect(userDatabaseGatewayImpl.create(userToCreate)).rejects.toBeInstanceOf(
@@ -52,6 +61,12 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
         );
 
         expect(userRepositoryMocked.insert).toBeCalledWith(userToCreate);
+
+        expect(logErrorGateway.error).toBeCalledWith({
+            class: "UserDatabaseGatewayPostgres",
+            method: "create",
+            meta: anyObject(),
+        });
     });
 
     it("Should find by email with success", async () => {
@@ -72,7 +87,8 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
-            mockedLoggerLogGateway
+            mockedLoggerLogGateway,
+            logErrorGateway
         );
 
         const userToFindedResponse = await userDatabaseGatewayImpl.findByEmail(email);
@@ -81,7 +97,11 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         expect(userRepositoryMocked.findOneBy).toBeCalledWith({ email });
 
-        expect(mockedLoggerLogGateway.log).toBeCalledWith(email, "FIND USER BY EMAIL DATABASE");
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserDatabaseGatewayPostgres",
+            meta: "anyEmail",
+            method: "findByEmail",
+        });
     });
 
     it("Should find by email with user null", async () => {
@@ -91,7 +111,8 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
-            mockedLoggerLogGateway
+            mockedLoggerLogGateway,
+            logErrorGateway
         );
 
         const userToFindedResponse = await userDatabaseGatewayImpl.findByEmail(email);
@@ -100,7 +121,11 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         expect(userRepositoryMocked.findOneBy).toBeCalledWith({ email });
 
-        expect(mockedLoggerLogGateway.log).toBeCalledWith(email, "FIND USER BY EMAIL DATABASE");
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserDatabaseGatewayPostgres",
+            meta: "anyEmail",
+            method: "findByEmail",
+        });
     });
 
     it("Should find by email with error", async () => {
@@ -110,7 +135,8 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
             userRepositoryMocked,
-            mockedLoggerLogGateway
+            mockedLoggerLogGateway,
+            logErrorGateway
         );
 
         await expect(userDatabaseGatewayImpl.findByEmail(email)).rejects.toBeInstanceOf(
@@ -119,6 +145,16 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         expect(userRepositoryMocked.findOneBy).toBeCalledWith({ email });
 
-        expect(mockedLoggerLogGateway.log).toBeCalledWith(email, "FIND USER BY EMAIL DATABASE");
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserDatabaseGatewayPostgres",
+            meta: "anyEmail",
+            method: "findByEmail",
+        });
+
+        expect(logErrorGateway.error).toBeCalledWith({
+            class: "UserDatabaseGatewayPostgres",
+            method: "findByEmail",
+            meta: anyObject(),
+        });
     });
 });

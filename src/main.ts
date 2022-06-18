@@ -1,10 +1,10 @@
-import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as cookieParser from "cookie-parser";
 
-import { ExceptionHandler } from "@common/filters/exception.filter";
-import { LoggerRequestInterceptor } from "@common/interceptors/logger.request.interceptor";
+import { LoggerErrorGateway } from "@gateways/logger/interfaces/logger.error.gateway";
+
+import { ExceptionHandler } from "@common/filters/exception/exception.filter";
 
 import { AppModule } from "./app.module";
 
@@ -13,9 +13,7 @@ async function bootstrap() {
 
     app.use(cookieParser());
 
-    app.useGlobalFilters(new ExceptionHandler(new Logger()));
-
-    app.useGlobalInterceptors(new LoggerRequestInterceptor());
+    app.useGlobalFilters(new ExceptionHandler(app.get(LoggerErrorGateway)));
 
     app.setGlobalPrefix("api_v1");
 

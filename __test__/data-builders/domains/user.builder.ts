@@ -12,7 +12,7 @@ export const fullUser = factory.Sync.makeFactory<User>({
 });
 
 export const createdUser = factory.Sync.makeFactory<User>({
-    email: undefined,
+    email: factory.each(() => faker.internet.email()),
     firstName: factory.each(() => faker.name.firstName()),
     id: factory.each(() => faker.datatype.number()),
     lastName: factory.each(() => faker.name.lastName()),

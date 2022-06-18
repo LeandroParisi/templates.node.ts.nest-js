@@ -34,9 +34,11 @@ describe("Tests of UserController", () => {
         await userController.create(createUserRequest);
 
         expect(mockedUserFacade.create).toBeCalledWith(userToCreate);
-        expect(mockedLoggerLogGateway.log).toBeCalledWith(
-            createUserRequest,
-            "CREATE USER CONTROLLER"
-        );
+
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserController",
+            meta: userToCreate,
+            method: "create",
+        });
     });
 });

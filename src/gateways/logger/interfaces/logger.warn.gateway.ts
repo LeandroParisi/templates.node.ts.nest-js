@@ -1,5 +1,7 @@
+import { LoggerMessage } from "./logger.message";
+
 export interface LoggerWarnGateway {
-    warn(message: string | unknown, context: string): void;
+    warn(LoggerMessage: LoggerMessage): void;
 }
 
 export const LoggerWarnGateway = Symbol("LoggerWarnGateway");

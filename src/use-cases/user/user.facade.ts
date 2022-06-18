@@ -14,7 +14,11 @@ export class UserFacade {
     ) {}
 
     public async create(userToCreate: User): Promise<void> {
-        this.loggerLogGateway.log(userToCreate, "CREATE USER FACADE");
+        this.loggerLogGateway.log({
+            class: UserFacade.name,
+            meta: userToCreate,
+            method: "create",
+        });
 
         await this.createUserUseCase.create(userToCreate);
     }

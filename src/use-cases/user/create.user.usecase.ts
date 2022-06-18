@@ -21,7 +21,11 @@ export class CreateUserUseCase {
     ) {}
 
     public async create(userToCreate: User): Promise<void> {
-        this.loggerLogGateway.log(userToCreate, "CREATE USER USE CASE");
+        this.loggerLogGateway.log({
+            class: CreateUserUseCase.name,
+            meta: userToCreate,
+            method: "create",
+        });
 
         await this.verifyEmailAlreadyRegister(userToCreate.email);
 
@@ -32,7 +36,12 @@ export class CreateUserUseCase {
         const userFinded = await this.findUserByEmailUseCase.find(email);
 
         if (userFinded) {
-            this.loggerWarnGateway.warn(email, "EMAIL ALREADY REGISTER");
+            this.loggerWarnGateway.warn({
+                class: CreateUserUseCase.name,
+                meta: email,
+                method: "verifyEmailAlreadyRegister",
+            });
+
             throw new EmailAlreadyExistsBusinessException();
         }
     }

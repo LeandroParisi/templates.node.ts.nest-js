@@ -14,7 +14,11 @@ export class FindUserByEmailUseCase {
     ) {}
 
     public async find(email: string): Promise<User | null> {
-        this.loggerLogGateway.log(email, "FIND USER BY EMAIL USE CASE");
+        this.loggerLogGateway.log({
+            class: FindUserByEmailUseCase.name,
+            meta: email,
+            method: "find",
+        });
 
         return await this.findUserByEmailDatabaseGateway.findByEmail(email);
     }
