@@ -1,6 +1,5 @@
+import { Builder, IBuilder } from "builder-pattern";
 import { Entity, Column } from "typeorm";
-
-import { Builder, IBuilder } from "@utils/builder";
 
 import { GenericEntity } from "./generic.entity";
 

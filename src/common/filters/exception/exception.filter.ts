@@ -59,7 +59,7 @@ export class ExceptionHandler implements ExceptionFilter {
                 .stack(stack)
                 .codes(codes)
                 .build(),
-            method: undefined,
+            method: "logError",
         });
     }
 }

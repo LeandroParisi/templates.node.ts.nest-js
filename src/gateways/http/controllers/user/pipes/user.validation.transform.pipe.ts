@@ -2,7 +2,7 @@ import { Injectable, PipeTransform } from "@nestjs/common";
 
 import { User } from "@domain/user";
 
-import { RequestValidationBase } from "@common/utils/request.validation.base";
+import { RequestValidationBase } from "@common/pipes/request.validation.base";
 
 import { CreateUserRequest } from "../json/create.user.request";
 import { UserMapper } from "./mappers/user.mapper";

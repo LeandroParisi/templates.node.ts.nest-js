@@ -20,7 +20,7 @@ describe("Tests of CreateUserUseCase", () => {
     const mockedFindUserByEmailUseCase = mock<FindUserByEmailUseCase>();
 
     it("Should create user with success", async () => {
-        const userToCreate = UserDataBuilder.createdUser.build();
+        const userToCreate = UserDataBuilder.userToCreate.build();
 
         mockedFindUserByEmailUseCase.find
             .calledWith(userToCreate.email)

@@ -45,7 +45,7 @@ describe("Tests of ExceptionHandler", () => {
                 stack: stack,
                 codes: undefined,
             },
-            method: undefined,
+            method: "logError",
         });
 
         expect(status).toBeCalledWith(500);
@@ -67,7 +67,7 @@ describe("Tests of ExceptionHandler", () => {
                 stack: anyString(),
                 codes: undefined,
             },
-            method: undefined,
+            method: "logError",
         });
 
         expect(status).toBeCalledWith(500);
@@ -97,7 +97,7 @@ describe("Tests of ExceptionHandler", () => {
                 stack: anyString(),
                 codes: response.message,
             },
-            method: undefined,
+            method: "logError",
         });
 
         expect(status).toBeCalledWith(422);
@@ -120,7 +120,7 @@ describe("Tests of ExceptionHandler", () => {
                 stack: anyString(),
                 codes: undefined,
             },
-            method: undefined,
+            method: "logError",
         });
 
         expect(status).toBeCalledWith(500);

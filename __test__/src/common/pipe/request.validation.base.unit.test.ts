@@ -1,6 +1,6 @@
 import faker from "@faker-js/faker";
 
-import { RequestValidationBase } from "../../../../src/common/utils/request.validation.base";
+import { RequestValidationBase } from "../../../../src/common/pipes/request.validation.base";
 import { CreateUserRequest } from "../../../../src/gateways/http/controllers/user/json/create.user.request";
 
 describe("Tests of RequestValidationBase", () => {

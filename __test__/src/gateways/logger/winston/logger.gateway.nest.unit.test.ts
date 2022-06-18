@@ -9,11 +9,11 @@ describe("Tests of LoggerGatewayNest", () => {
 
     let loggerGatewayWinston: LoggerGatewayWinston;
 
-    const loggerMessage: LoggerMessage = {
-        class: "AnyClass",
-        meta: "anyMeta",
-        method: "anyMethod",
-    };
+    const loggerMessage: LoggerMessage = LoggerMessage.builder()
+        .class("anyClass")
+        .meta("anyMeta")
+        .method("anyMethod")
+        .build();
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -77,6 +77,23 @@ describe("Tests of LoggerGatewayNest", () => {
         expect(mockedLoggerWinston.verbose).toBeCalledWith({
             message: `${loggerMessage.class}:${loggerMessage.method}`,
             meta: loggerMessage.meta,
+        });
+    });
+
+    it("Should execute verbose with success meta string", () => {
+        process.env.NODE_ENV = "development";
+
+        const message = LoggerMessage.builder()
+            .class("anyClass")
+            .meta({ any: "any" })
+            .method("anyMethod")
+            .build();
+
+        loggerGatewayWinston.verbose(message);
+
+        expect(mockedLoggerWinston.verbose).toBeCalledWith({
+            message: `${message.class}:${message.method}`,
+            meta: message.meta,
         });
     });
 
