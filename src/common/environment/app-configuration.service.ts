@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
+import { AppConfiguration } from "./app.configuration";
 import { AppProperties } from "./app.properties";
-import { AppConfig } from "./app.properties.interface";
 
 @Injectable()
-export class EnvironmentConfigService implements AppConfig {
+export class EnvironmentConfigService implements AppConfiguration {
     constructor(private configService: ConfigService<AppProperties>) {}
 
     public getDatabaseHost(): string {
@@ -34,5 +34,20 @@ export class EnvironmentConfigService implements AppConfig {
 
     public getDatabaseSync(): boolean {
         return this.configService.get<boolean>("DATABASE_SYNCHRONIZE");
+    }
+
+    getPasswordEncryptionKey(): string {
+        return this.configService.get<string>("PASSWORD_ENCRYPTION_KEY");
+    }
+
+    getPasswordEncryptionKeyAlgorithm(): string {
+        return this.configService.get<string>("PASSWORD_ENCRYPTION_ALGORITHM");
+    }
+
+    getPasswordEncryptionLength(): number {
+        return this.configService.get<number>("PASSWORD_ENCRYPTION_LENGTH");
+    }
+    getPasswordIv(): string {
+        return this.configService.get<string>("PASSWORD_ENCRYPTION_IV");
     }
 }

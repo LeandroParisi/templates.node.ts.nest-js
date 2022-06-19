@@ -7,7 +7,7 @@ import { LoggerModule } from "@gateways/logger/logger.module";
 
 import { UseCasesModule } from "@use-cases/user/usecase.module";
 
-import { EnvironmentConfigModule } from "@common/environment/environment-config.module";
+import { EnvironmentConfigModule } from "@common/environment/app.configuration.module";
 import { LoggerMiddleware } from "@common/middlewares/logger/logger.middleware";
 
 @Module({

@@ -7150,6 +7150,11 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
+typeorm-encrypted@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/typeorm-encrypted/-/typeorm-encrypted-0.7.0.tgz#d70adadf70a1bf118e7fe1a68fff0d9d6a47294f"
+  integrity sha512-itREf4TZ4dMa0jn3f/DHJ/pPZjeNX9e40AeAEj2+KWaIeX204Us918hFPEH1m+ELJuhIzSDihKgvBKFfH4L4Gw==
+
 typeorm@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.3.6.tgz#65203443a1b684bb746785913fe2b0877aa991c0"
