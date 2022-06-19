@@ -1,6 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
 
-import { TypeOrmConfigModule } from "@gateways/database/user/postgress/typeorm.module";
+import { TypeOrmConfigModule } from "@gateways/database/user/postgres/typeorm.module";
 import { UserDataBaseGatewayModule } from "@gateways/database/user/user.database.gateway.module";
 import { ControllersModule } from "@gateways/http/controllers/user/user.controller.module";
 import { LoggerModule } from "@gateways/logger/logger.module";

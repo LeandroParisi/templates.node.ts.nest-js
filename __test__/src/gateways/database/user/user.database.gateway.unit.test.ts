@@ -1,14 +1,14 @@
 import { mock, anyObject, MockProxy } from "jest-mock-extended";
 import { Repository, InsertResult } from "typeorm";
 
-import { User } from "../../../../src/domain/user";
-import { UserEntity } from "../../../../src/gateways/database/data/user.entity";
-import { UserDatabaseGatewayPostgres } from "../../../../src/gateways/database/user/postgress/user.database.gateway.postgres";
-import { UserDatabaseGatewayException } from "../../../../src/gateways/exceptions/user.database.gateway.exception";
-import { LoggerErrorGateway } from "../../../../src/gateways/logger/interfaces/logger.error.gateway";
-import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
-import { UserEntityDataBuilder } from "../../../data-builders/data/index";
-import { UserDataBuilder } from "../../../data-builders/domains/index";
+import { User } from "../../../../../src/domain/user";
+import { UserEntity } from "../../../../../src/gateways/database/data/user.entity";
+import { UserDatabaseGateway } from "../../../../../src/gateways/database/user/postgres/user.database.gateway";
+import { UserDatabaseGatewayException } from "../../../../../src/gateways/exceptions/user.database.gateway.exception";
+import { LoggerErrorGateway } from "../../../../../src/gateways/logger/interfaces/logger.error.gateway";
+import { LoggerLogGateway } from "../../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { UserEntityDataBuilder } from "../../../../data-builders/data/index";
+import { UserDataBuilder } from "../../../../data-builders/domains/index";
 
 describe("Tests of UserDatabaseGatewayPostgres", () => {
     let mockedLoggerLogGateway: MockProxy<LoggerLogGateway>;
@@ -26,7 +26,7 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         userRepositoryMocked.insert.calledWith(userToCreate).mockResolvedValue(new InsertResult());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
+        const userDatabaseGatewayImpl = new UserDatabaseGateway(
             userRepositoryMocked,
             mockedLoggerLogGateway,
             logErrorGateway
@@ -37,7 +37,7 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
         expect(userRepositoryMocked.insert).toBeCalledWith(userToCreate);
 
         expect(mockedLoggerLogGateway.log).toBeCalledWith({
-            class: "UserDatabaseGatewayPostgres",
+            class: "UserDatabaseGateway",
             meta: userToCreate,
             method: "create",
         });
@@ -50,7 +50,7 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
             .calledWith(anyObject(UserEntity))
             .mockRejectedValue(new Error());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
+        const userDatabaseGatewayImpl = new UserDatabaseGateway(
             userRepositoryMocked,
             mockedLoggerLogGateway,
             logErrorGateway
@@ -63,7 +63,7 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
         expect(userRepositoryMocked.insert).toBeCalledWith(userToCreate);
 
         expect(logErrorGateway.error).toBeCalledWith({
-            class: "UserDatabaseGatewayPostgres",
+            class: "UserDatabaseGateway",
             method: "create",
             meta: anyObject(),
         });
@@ -85,7 +85,7 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
             .calledWith(anyObject())
             .mockResolvedValue(userEntityToFinded);
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
+        const userDatabaseGatewayImpl = new UserDatabaseGateway(
             userRepositoryMocked,
             mockedLoggerLogGateway,
             logErrorGateway
@@ -98,7 +98,7 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
         expect(userRepositoryMocked.findOneBy).toBeCalledWith({ email });
 
         expect(mockedLoggerLogGateway.log).toBeCalledWith({
-            class: "UserDatabaseGatewayPostgres",
+            class: "UserDatabaseGateway",
             meta: "anyEmail",
             method: "findByEmail",
         });
@@ -107,9 +107,9 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
     it("Should find by email with user null", async () => {
         const email = "anyEmail";
 
-        userRepositoryMocked.findOneBy.calledWith(anyObject()).mockResolvedValue(undefined);
+        userRepositoryMocked.findOneBy.calledWith(anyObject()).mockResolvedValue(null);
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
+        const userDatabaseGatewayImpl = new UserDatabaseGateway(
             userRepositoryMocked,
             mockedLoggerLogGateway,
             logErrorGateway
@@ -122,7 +122,7 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
         expect(userRepositoryMocked.findOneBy).toBeCalledWith({ email });
 
         expect(mockedLoggerLogGateway.log).toBeCalledWith({
-            class: "UserDatabaseGatewayPostgres",
+            class: "UserDatabaseGateway",
             meta: "anyEmail",
             method: "findByEmail",
         });
@@ -133,7 +133,7 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
 
         userRepositoryMocked.findOneBy.calledWith(anyObject()).mockRejectedValue(new Error());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGatewayPostgres(
+        const userDatabaseGatewayImpl = new UserDatabaseGateway(
             userRepositoryMocked,
             mockedLoggerLogGateway,
             logErrorGateway
@@ -146,13 +146,13 @@ describe("Tests of UserDatabaseGatewayPostgres", () => {
         expect(userRepositoryMocked.findOneBy).toBeCalledWith({ email });
 
         expect(mockedLoggerLogGateway.log).toBeCalledWith({
-            class: "UserDatabaseGatewayPostgres",
+            class: "UserDatabaseGateway",
             meta: "anyEmail",
             method: "findByEmail",
         });
 
         expect(logErrorGateway.error).toBeCalledWith({
-            class: "UserDatabaseGatewayPostgres",
+            class: "UserDatabaseGateway",
             method: "findByEmail",
             meta: anyObject(),
         });

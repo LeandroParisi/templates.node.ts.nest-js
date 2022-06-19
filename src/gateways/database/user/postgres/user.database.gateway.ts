@@ -9,12 +9,12 @@ import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway
 import { User } from "@domain/user";
 
 import { UserEntity } from "../../data/user.entity";
-import { CreateUserDatabaseGateway } from "../interfaces/crate.user.database.gateway";
-import { FindUserByEmailDatabaseGateway } from "../interfaces/find.user.by.email.gateway";
+import { CreateUserDatabaseGateway } from "../crate.user.database.gateway";
+import { FindUserByEmailDatabaseGateway } from "../find.user.by.email.gateway";
 import { UserDatabaseMapper } from "../mapper/user.database.mapper";
 
 @Injectable()
-export class UserDatabaseGatewayPostgres
+export class UserDatabaseGateway
     implements CreateUserDatabaseGateway, FindUserByEmailDatabaseGateway
 {
     constructor(
@@ -29,7 +29,7 @@ export class UserDatabaseGatewayPostgres
     public async findByEmail(email: string): Promise<User | null> {
         try {
             this.loggerLogGateway.log({
-                class: UserDatabaseGatewayPostgres.name,
+                class: UserDatabaseGateway.name,
                 meta: email,
                 method: "findByEmail",
             });
@@ -39,7 +39,7 @@ export class UserDatabaseGatewayPostgres
             return UserDatabaseMapper.mapperUserFromUserEntity(userEntity);
         } catch (error) {
             this.loggerErrorGateway.error({
-                class: UserDatabaseGatewayPostgres.name,
+                class: UserDatabaseGateway.name,
                 method: "findByEmail",
                 meta: error,
             });
@@ -51,7 +51,7 @@ export class UserDatabaseGatewayPostgres
     public async create(user: User): Promise<void> {
         try {
             this.loggerLogGateway.log({
-                class: UserDatabaseGatewayPostgres.name,
+                class: UserDatabaseGateway.name,
                 meta: user,
                 method: "create",
             });
@@ -61,7 +61,7 @@ export class UserDatabaseGatewayPostgres
             );
         } catch (error) {
             this.loggerErrorGateway.error({
-                class: UserDatabaseGatewayPostgres.name,
+                class: UserDatabaseGateway.name,
                 method: "create",
                 meta: error,
             });

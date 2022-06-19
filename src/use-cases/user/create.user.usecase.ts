@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { CreateUserDatabaseGateway } from "@gateways/database/user/interfaces/crate.user.database.gateway";
+import { CreateUserDatabaseGateway } from "@gateways/database/user/crate.user.database.gateway";
 import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
 import { LoggerWarnGateway } from "@gateways/logger/interfaces/logger.warn.gateway";
 
