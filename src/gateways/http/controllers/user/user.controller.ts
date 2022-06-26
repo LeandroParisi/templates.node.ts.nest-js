@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Inject } from "@nestjs/common";
+import { Controller, Post, Body, Inject, Get } from "@nestjs/common";
 import { ApiTags, ApiResponse } from "@nestjs/swagger";
 
 import { UserDatabaseGatewayException } from "@gateways/exceptions/user.database.gateway.exception";
@@ -9,6 +9,8 @@ import { UserFacade } from "@use-cases/user/user.facade";
 
 import { User } from "@domain/user";
 
+import { FindAllResponse } from "./json/find.all.response";
+import { UserMapper } from "./mappers/user.mapper";
 import { UserValidationTransformPipe } from "./pipes/user.validation.transform.pipe";
 
 @Controller("user")
@@ -31,5 +33,19 @@ export class UserController {
             method: "create",
         });
         await this.userFacade.create(userToCreate);
+    }
+
+    @Get()
+    @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
+    @ApiResponse({ status: 200, type: FindAllResponse, isArray: true })
+    public async findAll(): Promise<FindAllResponse[]> {
+        this.loggerLogGateway.log({
+            class: UserController.name,
+            method: "findAll",
+        });
+
+        const users = await this.userFacade.findAll();
+
+        return UserMapper.mapperUserToFindAllResponse(users);
     }
 }

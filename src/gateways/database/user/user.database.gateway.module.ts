@@ -6,6 +6,7 @@ import { LoggerModule } from "@gateways/logger/logger.module";
 import { UserEntity } from "../data/user.entity";
 import { CreateUserDatabaseGateway } from "./crate.user.database.gateway";
 import { FindUserByEmailDatabaseGateway } from "./find.user.by.email.gateway";
+import { FindAllUserDatabaseGateway } from "./findall.user.database.gateway";
 import { UserDatabaseGateway } from "./postgres/user.database.gateway";
 
 @Module({
@@ -19,7 +20,15 @@ import { UserDatabaseGateway } from "./postgres/user.database.gateway";
             provide: FindUserByEmailDatabaseGateway,
             useClass: UserDatabaseGateway,
         },
+        {
+            provide: FindAllUserDatabaseGateway,
+            useClass: UserDatabaseGateway,
+        },
     ],
-    exports: [CreateUserDatabaseGateway, FindUserByEmailDatabaseGateway],
+    exports: [
+        CreateUserDatabaseGateway,
+        FindUserByEmailDatabaseGateway,
+        FindAllUserDatabaseGateway,
+    ],
 })
 export class UserDataBaseGatewayModule {}

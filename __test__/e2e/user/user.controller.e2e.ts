@@ -7,8 +7,10 @@ import { Repository } from "typeorm";
 import { AppModule } from "../../../src/app.module";
 import { UserEntity } from "../../../src/gateways/database/data/user.entity";
 import { CreateUserRequest } from "../../../src/gateways/http/controllers/user/json/create.user.request";
+import { FindAllResponse } from "../../../src/gateways/http/controllers/user/json/find.all.response";
+import { UserEntityDataBuilder } from "../../data-builders/data/index";
 
-describe("AppController (e2e)", () => {
+describe("userController (e2e)", () => {
     let app: INestApplication;
     let userRepository: Repository<UserEntity>;
 
@@ -69,5 +71,24 @@ describe("AppController (e2e)", () => {
             .expect(422);
 
         expect(response.statusCode).toEqual(422);
+    });
+
+    it("Should find all users with success", async () => {
+        const userEntities = UserEntityDataBuilder.create.buildList(3);
+
+        const usersSaved = await userRepository.save(userEntities);
+
+        const expectedUsersResponse = usersSaved.map((userEntity) => {
+            return FindAllResponse.builder()
+                .email(userEntity.email)
+                .firstName(userEntity.firstName)
+                .id(userEntity.id)
+                .lastName(userEntity.lastName)
+                .build();
+        });
+
+        const response = await request(app.getHttpServer()).get("/user").send().expect(200);
+
+        expect(response.body).toEqual(expectedUsersResponse);
     });
 });

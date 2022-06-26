@@ -2,7 +2,7 @@ import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "type
 
 export class GenericEntity {
     @PrimaryGeneratedColumn({ type: "integer" })
-    public id: number;
+    public id?: number;
 
     @CreateDateColumn({
         name: "created_at",

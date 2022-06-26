@@ -157,4 +157,60 @@ describe("Tests of UserDatabaseGateway", () => {
             meta: anyObject(),
         });
     });
+
+    it("Should find all user", async () => {
+        const usersEntity = UserEntityDataBuilder.createdUser.buildList(2);
+
+        const usersResponseExpected = usersEntity.map((userEntity) => {
+            return User.builder()
+                .email(userEntity.email)
+                .firstName(userEntity.firstName)
+                .lastName(userEntity.lastName)
+                .id(userEntity.id)
+                .password(userEntity.password)
+                .build();
+        });
+
+        userRepositoryMocked.find.calledWith().mockResolvedValue(usersEntity);
+
+        const userDatabaseGatewayImpl = new UserDatabaseGateway(
+            userRepositoryMocked,
+            mockedLoggerLogGateway,
+            logErrorGateway
+        );
+
+        const userToFindedResponse = await userDatabaseGatewayImpl.findAll();
+
+        expect(userToFindedResponse).toEqual(usersResponseExpected);
+
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserDatabaseGateway",
+            method: "findAll",
+        });
+    });
+
+    it("Should find all user with database error", async () => {
+        userRepositoryMocked.find.calledWith().mockRejectedValue(new Error());
+
+        const userDatabaseGatewayImpl = new UserDatabaseGateway(
+            userRepositoryMocked,
+            mockedLoggerLogGateway,
+            logErrorGateway
+        );
+
+        await expect(userDatabaseGatewayImpl.findAll()).rejects.toBeInstanceOf(
+            UserDatabaseGatewayException
+        );
+
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserDatabaseGateway",
+            method: "findAll",
+        });
+
+        expect(logErrorGateway.error).toBeCalledWith({
+            class: "UserDatabaseGateway",
+            method: "findAll",
+            meta: anyObject(),
+        });
+    });
 });

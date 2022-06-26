@@ -11,11 +11,15 @@ import { User } from "@domain/user";
 import { UserEntity } from "../../data/user.entity";
 import { CreateUserDatabaseGateway } from "../crate.user.database.gateway";
 import { FindUserByEmailDatabaseGateway } from "../find.user.by.email.gateway";
+import { FindAllUserDatabaseGateway } from "../findall.user.database.gateway";
 import { UserDatabaseMapper } from "../mapper/user.database.mapper";
 
 @Injectable()
 export class UserDatabaseGateway
-    implements CreateUserDatabaseGateway, FindUserByEmailDatabaseGateway
+    implements
+        CreateUserDatabaseGateway,
+        FindUserByEmailDatabaseGateway,
+        FindAllUserDatabaseGateway
 {
     constructor(
         @InjectRepository(UserEntity)
@@ -25,6 +29,28 @@ export class UserDatabaseGateway
         @Inject(LoggerErrorGateway)
         private readonly loggerErrorGateway: LoggerErrorGateway
     ) {}
+
+    public async findAll(): Promise<User[]> {
+        try {
+            this.loggerLogGateway.log({
+                class: UserDatabaseGateway.name,
+                method: "findAll",
+            });
+
+            const usersEntity = await this.userEntityRepository.find();
+
+            return usersEntity.map((userEntity) => {
+                return UserDatabaseMapper.mapperUserFromUserEntity(userEntity);
+            });
+        } catch (error) {
+            this.loggerErrorGateway.error({
+                class: UserDatabaseGateway.name,
+                method: "findAll",
+                meta: error,
+            });
+            throw new UserDatabaseGatewayException(error.stack);
+        }
+    }
 
     public async findByEmail(email: string): Promise<User | null> {
         try {
