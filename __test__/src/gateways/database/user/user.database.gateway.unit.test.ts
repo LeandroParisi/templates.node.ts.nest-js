@@ -1,4 +1,4 @@
-import { mock, anyObject, MockProxy } from "jest-mock-extended";
+import { mock, anyObject, mockReset } from "jest-mock-extended";
 import { Repository, InsertResult } from "typeorm";
 
 import { User } from "../../../../../src/domain/user";
@@ -10,15 +10,15 @@ import { LoggerLogGateway } from "../../../../../src/gateways/logger/interfaces/
 import { UserEntityDataBuilder } from "../../../../data-builders/data/index";
 import { UserDataBuilder } from "../../../../data-builders/domains/index";
 
-describe("Tests of UserDatabaseGatewayPostgres", () => {
-    let mockedLoggerLogGateway: MockProxy<LoggerLogGateway>;
-    let userRepositoryMocked: MockProxy<Repository<UserEntity>>;
-    let logErrorGateway: MockProxy<LoggerErrorGateway>;
+describe("Tests of UserDatabaseGateway", () => {
+    const mockedLoggerLogGateway = mock<LoggerLogGateway>();
+    const userRepositoryMocked = mock<Repository<UserEntity>>();
+    const logErrorGateway = mock<LoggerErrorGateway>();
 
     beforeEach(() => {
-        mockedLoggerLogGateway = mock<LoggerLogGateway>();
-        userRepositoryMocked = mock<Repository<UserEntity>>();
-        logErrorGateway = mock<LoggerErrorGateway>();
+        mockReset(mockedLoggerLogGateway);
+        mockReset(userRepositoryMocked);
+        mockReset(logErrorGateway);
     });
 
     it("Should create user with success", async () => {

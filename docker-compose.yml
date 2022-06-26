@@ -2,6 +2,8 @@ version: '3'
 
 services:
   pgsql:
+    env_file:
+      - .env
     image: postgres:alpine
     ports:
       - '5432:5432'
@@ -10,8 +12,8 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
 
   adminer:
     image: adminer

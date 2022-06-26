@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: openfinance
+    build:
+      context: .
+      target: openfinance
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    working_dir: /usr/src/app
+    command: yarn test:e2e
+    networks:
+      - webnet
+    depends_on:
+      - redis
+      - postgres
+
+  redis:
+    container_name: redis
+    image: redis:5
+    networks:
+      - webnet
+
+  postgres:
+    env_file:
+      - .env
+    container_name: 'postgres'
+    image: postgres:14
+    ports:
+      - '5433:5432'
+    networks:
+      - webnet
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      PG_DATA: /var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+networks:
+  webnet:
+
+volumes:
+  pgdata:
+  logs:

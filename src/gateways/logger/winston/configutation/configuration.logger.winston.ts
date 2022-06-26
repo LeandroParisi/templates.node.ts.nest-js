@@ -8,5 +8,8 @@ export const configuration = {
             maxsize: 20000000,
             filename: "logs/app.log",
         }),
+        new transports.Console({
+            format: format.simple(),
+        }),
     ],
 };
