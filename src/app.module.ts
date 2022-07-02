@@ -1,23 +1,49 @@
-import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
+import {
+    Module,
+    NestModule,
+    MiddlewareConsumer,
+    CacheModule,
+    CacheModuleOptions,
+} from "@nestjs/common";
+import { CacheInterceptor } from "@nestjs/common";
+import { APP_INTERCEPTOR } from "@nestjs/core";
+import * as redisStore from "cache-manager-redis-store";
 
 import { TypeOrmConfigModule } from "@gateways/database/user/postgres/typeorm.module";
-import { UserDataBaseGatewayModule } from "@gateways/database/user/user.database.gateway.module";
-import { ControllersModule } from "@gateways/http/controllers/user/user.controller.module";
+import { UserControllerModule } from "@gateways/http/controllers/user/user.controller.module";
 import { LoggerModule } from "@gateways/logger/logger.module";
 
-import { UseCasesModule } from "@use-cases/usecase.module";
-
+import { EnvironmentConfigService } from "@common/environment/app-configuration.service";
 import { EnvironmentConfigModule } from "@common/environment/app.configuration.module";
 import { LoggerMiddleware } from "@common/middlewares/logger/logger.middleware";
 
+const redisFactory = (config: EnvironmentConfigService): CacheModuleOptions => {
+    return {
+        store: redisStore,
+        host: config.getRedisHost(),
+        port: config.getRedisPort(),
+        auth_pass: config.getRedisPassword(),
+        isGlobal: true,
+    };
+};
+
 @Module({
     imports: [
-        ControllersModule,
+        UserControllerModule,
         EnvironmentConfigModule,
         TypeOrmConfigModule,
         LoggerModule,
-        UserDataBaseGatewayModule,
-        UseCasesModule,
+        CacheModule.registerAsync({
+            imports: [EnvironmentConfigModule],
+            inject: [EnvironmentConfigService],
+            useFactory: redisFactory,
+        }),
+    ],
+    providers: [
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: CacheInterceptor,
+        },
     ],
 })
 export class AppModule implements NestModule {

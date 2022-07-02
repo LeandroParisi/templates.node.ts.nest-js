@@ -1,4 +1,4 @@
-FROM node:latest As openfinance
+FROM node:alpine As openfinance
 
 RUN apk update && apk upgrade
 RUN apk add python3 g++ make
@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 USER node
 
 COPY --chown=node:node package*.json ./
-RUN npm install
+RUN yarn
 
 COPY --chown=node:node . .
 

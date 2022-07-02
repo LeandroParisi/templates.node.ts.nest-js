@@ -10,4 +10,7 @@ export type AppProperties = {
     PASSWORD_ENCRYPTION_ALGORITHM: string;
     PASSWORD_ENCRYPTION_LENGTH: number;
     PASSWORD_ENCRYPTION_IV: string;
+    REDIS_HOST: string;
+    REDIS_PORT: number;
+    REDIS_PASSWORD: string;
 };

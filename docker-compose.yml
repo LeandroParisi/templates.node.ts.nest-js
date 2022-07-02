@@ -1,9 +1,23 @@
 version: '3'
 
 services:
+  redis:
+    container_name: redis
+    hostname: redis
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    restart: always
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+
+  redis-manager:
+    container_name: redis-manager
+    restart: always
+    image: redislabs/redisinsight:latest
+    ports:
+      - '8001:8001'
+
   pgsql:
-    env_file:
-      - .env
     image: postgres:alpine
     ports:
       - '5432:5432'
@@ -16,6 +30,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
 
   adminer:
+    container_name: postgres-manager
     image: adminer
     restart: always
     ports:

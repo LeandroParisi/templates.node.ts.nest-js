@@ -397,6 +397,6 @@ Temporary Items
 
 =======
 # Local
-.env
+.env.*
 dist
 ./log

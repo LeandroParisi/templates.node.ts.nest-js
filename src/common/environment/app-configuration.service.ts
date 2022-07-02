@@ -8,6 +8,18 @@ import { AppProperties } from "./app.properties";
 export class EnvironmentConfigService implements AppConfiguration {
     constructor(private configService: ConfigService<AppProperties>) {}
 
+    public getRedisHost(): string {
+        return this.configService.get<string>("REDIS_HOST");
+    }
+
+    public getRedisPort(): number {
+        return this.configService.get<number>("REDIS_PORT");
+    }
+
+    public getRedisPassword(): string {
+        return this.configService.get<string>("REDIS_PASSWORD");
+    }
+
     public getDatabaseHost(): string {
         return this.configService.get<string>("DATABASE_HOST");
     }
@@ -36,18 +48,19 @@ export class EnvironmentConfigService implements AppConfiguration {
         return this.configService.get<boolean>("DATABASE_SYNCHRONIZE");
     }
 
-    getPasswordEncryptionKey(): string {
+    public getPasswordEncryptionKey(): string {
         return this.configService.get<string>("PASSWORD_ENCRYPTION_KEY");
     }
 
-    getPasswordEncryptionKeyAlgorithm(): string {
+    public getPasswordEncryptionKeyAlgorithm(): string {
         return this.configService.get<string>("PASSWORD_ENCRYPTION_ALGORITHM");
     }
 
-    getPasswordEncryptionLength(): number {
+    public getPasswordEncryptionLength(): number {
         return this.configService.get<number>("PASSWORD_ENCRYPTION_LENGTH");
     }
-    getPasswordIv(): string {
+
+    public getPasswordIv(): string {
         return this.configService.get<string>("PASSWORD_ENCRYPTION_IV");
     }
 }

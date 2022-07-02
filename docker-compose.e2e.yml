@@ -3,6 +3,7 @@ version: '3.8'
 services:
   app:
     container_name: openfinance
+    image: node:alpine
     build:
       context: .
       target: openfinance
@@ -14,19 +15,22 @@ services:
     networks:
       - webnet
     depends_on:
-      - redis
-      - postgres
+      - redis-test
+      - postgres-test
 
-  redis:
-    container_name: redis
-    image: redis:5
+  redis-test:
+    container_name: redis-test
+    hostname: redis-test
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    restart: always
+    image: redis:alpine
+    ports:
+      - '6380:6380'
     networks:
       - webnet
 
-  postgres:
-    env_file:
-      - .env
-    container_name: 'postgres'
+  postgres-test:
+    container_name: postgres-test
     image: postgres:14
     ports:
       - '5433:5432'

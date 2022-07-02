@@ -10,4 +10,7 @@ export interface AppConfiguration {
     getPasswordEncryptionKeyAlgorithm(): string;
     getPasswordEncryptionLength(): number;
     getPasswordIv(): string;
+    getRedisHost(): string;
+    getRedisPort(): number;
+    getRedisPassword(): string;
 }

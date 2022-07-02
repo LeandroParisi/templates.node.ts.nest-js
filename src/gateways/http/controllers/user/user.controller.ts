@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Inject, Get } from "@nestjs/common";
+import { Controller, Post, Body, Inject, Get, CacheKey, CacheTTL } from "@nestjs/common";
 import { ApiTags, ApiResponse } from "@nestjs/swagger";
 
 import { UserDatabaseGatewayException } from "@gateways/exceptions/user.database.gateway.exception";
@@ -23,7 +23,7 @@ export class UserController {
     ) {}
 
     @Post("create")
-    @ApiResponse({ status: 201, description: "No response object" })
+    @ApiResponse({ status: 201 })
     @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
     @ApiResponse({ status: 422, type: EmailAlreadyExistsBusinessException })
     public async create(@Body(UserValidationTransformPipe) userToCreate: User): Promise<void> {
@@ -38,6 +38,8 @@ export class UserController {
     @Get()
     @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
     @ApiResponse({ status: 200, type: FindAllResponse, isArray: true })
+    @CacheKey(process.env.CACHE_USERS_KEY)
+    @CacheTTL(Number(process.env.CACHE_USERS_TTL))
     public async findAll(): Promise<FindAllResponse[]> {
         this.loggerLogGateway.log({
             class: UserController.name,

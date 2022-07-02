@@ -23,11 +23,14 @@ async function bootstrap() {
         .setDescription("Example with user")
         .setVersion("1.0")
         .build();
+
     const document = SwaggerModule.createDocument(app, config, {
         deepScanRoutes: true,
     });
+
     SwaggerModule.setup("api", app, document);
 
     await app.listen(process.env.PORT);
 }
+
 bootstrap();

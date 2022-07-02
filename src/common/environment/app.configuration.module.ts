@@ -6,8 +6,8 @@ import { EnvironmentConfigService } from "./app-configuration.service";
 @Module({
     imports: [
         ConfigModule.forRoot({
-            envFilePath: ".env",
-            ignoreEnvFile: process.env.NODE_ENV === "production" ? true : false,
+            envFilePath: `.env.${process.env.NODE_ENV}`,
+            ignoreEnvFile: process.env.NODE_ENV === "production",
             isGlobal: true,
         }),
     ],
