@@ -1,7 +1,7 @@
 import faker from "@faker-js/faker";
 
-import { UpdateUserRequest } from "../../../../../../src/gateways/http/controllers/user/json/update.user.request";
-import { UserUpdatePipe } from "../../../../../../src/gateways/http/controllers/user/pipes/user.update.pipe";
+import { UpdateUserRequest } from "../../../../../../../src/gateways/http/controllers/user/json/update.user.request";
+import { UserUpdatePipe } from "../../../../../../../src/gateways/http/controllers/user/pipes/user.update.pipe";
 
 describe("Tests of UserUpdatePipe", () => {
     it("Should return user mapped", async () => {
