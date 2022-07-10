@@ -7,6 +7,7 @@ import { Repository } from "typeorm";
 import { UserEntity } from "../../../src/gateways/database/data/user.entity";
 import { CreateUserRequest } from "../../../src/gateways/http/controllers/user/json/create.user.request";
 import { FindAllResponse } from "../../../src/gateways/http/controllers/user/json/find.all.response";
+import { UpdateUserRequest } from "../../../src/gateways/http/controllers/user/json/update.user.request";
 import { UserEntityDataBuilder } from "../../data-builders/data/index";
 import { startTestServer } from "../utils";
 
@@ -38,10 +39,7 @@ describe("Tests e2e UserController", () => {
                 .password(faker.internet.password(8))
                 .build();
 
-            await request(server.getHttpServer())
-                .post("/user/create")
-                .send(createUserRequest)
-                .expect(201);
+            await request(server.getHttpServer()).post("/user").send(createUserRequest).expect(201);
 
             const userCreate = await userRepository.findOne({
                 where: { email: createUserRequest.email },
@@ -58,13 +56,10 @@ describe("Tests e2e UserController", () => {
                 .password(faker.internet.password(8))
                 .build();
 
-            await request(server.getHttpServer())
-                .post("/user/create")
-                .send(createUserRequest)
-                .expect(201);
+            await request(server.getHttpServer()).post("/user").send(createUserRequest).expect(201);
 
             const response = await request(server.getHttpServer())
-                .post("/user/create")
+                .post("/user")
                 .send(createUserRequest)
                 .expect(422);
 
@@ -84,11 +79,16 @@ describe("Tests e2e UserController", () => {
 
             await deleteAllUsersBeforeTests(userRepository);
 
-            expectedUsersResponse = await crateUserToUseOnTests(
-                userRepository,
-                userEntities,
-                expectedUsersResponse
-            );
+            const usersSaved = await crateUserToUseOnTests(userRepository, userEntities);
+
+            expectedUsersResponse = usersSaved.map((userEntity) => {
+                return FindAllResponse.builder()
+                    .email(userEntity.email)
+                    .firstName(userEntity.firstName)
+                    .id(userEntity.id)
+                    .lastName(userEntity.lastName)
+                    .build();
+            });
 
             await server.init();
         });
@@ -107,24 +107,49 @@ describe("Tests e2e UserController", () => {
             expect(response.body).toEqual(expectedUsersResponse);
         });
     });
+
+    describe("Should be executed tests to update user", () => {
+        const userEntities = UserEntityDataBuilder.create.buildList(1);
+
+        let usersCreated: UserEntity[];
+
+        beforeAll(async () => {
+            await deleteAllUsersBeforeTests(userRepository);
+
+            usersCreated = await crateUserToUseOnTests(userRepository, userEntities);
+
+            await server.init();
+        });
+
+        it("Should update user with success", async () => {
+            const userToUpdate = UpdateUserRequest.builder()
+                .email(usersCreated[0].email)
+                .firstName(usersCreated[0].firstName)
+                .lastName(faker.name.findName())
+                .password(usersCreated[0].password)
+                .id(usersCreated[0].id || 0)
+                .build();
+
+            await request(server.getHttpServer()).put("/user").send(userToUpdate).expect(200);
+
+            const userToUpdateFinded = await userRepository.findOne({
+                where: { id: userToUpdate.id },
+            });
+
+            expect(userToUpdateFinded?.id).toEqual(userToUpdate.id);
+            expect(userToUpdateFinded?.firstName).toEqual(userToUpdate.firstName);
+            expect(userToUpdateFinded?.lastName).toEqual(userToUpdate.lastName);
+            expect(userToUpdateFinded?.email).toEqual(userToUpdate.email);
+            expect(userToUpdateFinded?.password).toEqual(userToUpdate.password);
+        });
+    });
 });
 
 async function crateUserToUseOnTests(
     userRepository: Repository<UserEntity>,
-    userEntities: UserEntity[],
-    expectedUsersResponse: FindAllResponse[]
+    userEntities: UserEntity[]
 ) {
-    const usersSaved = await userRepository.save(userEntities);
-
-    expectedUsersResponse = usersSaved.map((userEntity) => {
-        return FindAllResponse.builder()
-            .email(userEntity.email)
-            .firstName(userEntity.firstName)
-            .id(userEntity.id)
-            .lastName(userEntity.lastName)
-            .build();
-    });
-    return expectedUsersResponse;
+    return await userRepository.save(userEntities);
 }
 
 async function deleteAllUsersBeforeTests(userRepository: Repository<UserEntity>) {

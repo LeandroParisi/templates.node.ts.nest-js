@@ -8,7 +8,7 @@ import { CreateUserRequest } from "../json/create.user.request";
 import { UserMapper } from "./mappers/user.mapper";
 
 @Injectable()
-export class UserValidationTransformPipe
+export class UserCreatePipe
     extends RequestValidationBase
     implements PipeTransform<CreateUserRequest, Promise<User>>
 {

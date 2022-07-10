@@ -3,7 +3,7 @@ import { Module } from "@nestjs/common";
 import { UserDataBaseGatewayModule } from "@gateways/database/user/user.database.gateway.module";
 import { LoggerModule } from "@gateways/logger/logger.module";
 
-import { UserUseCasesModule } from "@use-cases/user/usecase.module";
+import { UserUseCasesModule } from "@use-cases/user/user.usecase.module";
 
 import { EnvironmentConfigModule } from "@common/environment/app.configuration.module";
 

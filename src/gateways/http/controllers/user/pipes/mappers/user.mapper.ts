@@ -1,6 +1,6 @@
 import { User } from "@domain/user";
 
-import { CreateUserRequest } from "../../json";
+import { CreateUserRequest, UpdateUserRequest } from "../../json";
 
 export class UserMapper {
     public static mapperUserFromCreateRequest(createUserRequest: CreateUserRequest): User {
@@ -9,6 +9,16 @@ export class UserMapper {
             .firstName(createUserRequest.firstName)
             .lastName(createUserRequest.lastName)
             .password(createUserRequest.password)
+            .build();
+    }
+
+    public static mapperUserFromUpdateRequest(updateUserRequest: UpdateUserRequest): User {
+        return User.builder()
+            .email(updateUserRequest.email)
+            .id(updateUserRequest.id)
+            .firstName(updateUserRequest.firstName)
+            .lastName(updateUserRequest.lastName)
+            .password(updateUserRequest.password)
             .build();
     }
 }

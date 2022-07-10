@@ -9,7 +9,7 @@ import { CacheInterceptor } from "@nestjs/common";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import * as redisStore from "cache-manager-redis-store";
 
-import { TypeOrmConfigModule } from "@gateways/database/user/postgres/typeorm.module";
+import { TypeOrmPostgresConfigModule } from "@gateways/database/user/postgres/typeorm.postgres.module";
 import { UserControllerModule } from "@gateways/http/controllers/user/user.controller.module";
 import { LoggerModule } from "@gateways/logger/logger.module";
 
@@ -31,7 +31,7 @@ const redisFactory = (config: EnvironmentConfigService): CacheModuleOptions => {
     imports: [
         UserControllerModule,
         EnvironmentConfigModule,
-        TypeOrmConfigModule,
+        TypeOrmPostgresConfigModule,
         LoggerModule,
         CacheModule.registerAsync({
             imports: [EnvironmentConfigModule],

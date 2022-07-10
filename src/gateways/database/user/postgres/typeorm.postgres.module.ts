@@ -27,4 +27,4 @@ const getTypeOrmModuleOptions = (config: EnvironmentConfigService): TypeOrmModul
         }),
     ],
 })
-export class TypeOrmConfigModule {}
+export class TypeOrmPostgresConfigModule {}

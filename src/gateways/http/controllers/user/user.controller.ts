@@ -1,5 +1,5 @@
-import { Controller, Post, Body, Inject, Get, CacheKey, CacheTTL } from "@nestjs/common";
-import { ApiTags, ApiResponse } from "@nestjs/swagger";
+import { Controller, Post, Body, Inject, Get, CacheKey, CacheTTL, Put } from "@nestjs/common";
+import { ApiTags, ApiResponse, ApiBody } from "@nestjs/swagger";
 
 import { UserDatabaseGatewayException } from "@gateways/exceptions/user.database.gateway.exception";
 import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
@@ -9,9 +9,9 @@ import { UserFacade } from "@use-cases/user/user.facade";
 
 import { User } from "@domain/user";
 
-import { FindAllResponse } from "./json/find.all.response";
+import { CreateUserRequest, FindAllResponse, UpdateUserRequest } from "./json";
 import { UserMapper } from "./mappers/user.mapper";
-import { UserValidationTransformPipe } from "./pipes/user.validation.transform.pipe";
+import { UserCreatePipe, UserUpdatePipe } from "./pipes";
 
 @Controller("user")
 @ApiTags("User")
@@ -22,11 +22,12 @@ export class UserController {
         private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 
-    @Post("create")
+    @Post()
     @ApiResponse({ status: 201 })
     @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
     @ApiResponse({ status: 422, type: EmailAlreadyExistsBusinessException })
-    public async create(@Body(UserValidationTransformPipe) userToCreate: User): Promise<void> {
+    @ApiBody({ type: CreateUserRequest })
+    public async create(@Body(UserCreatePipe) userToCreate: User): Promise<void> {
         this.loggerLogGateway.log({
             class: UserController.name,
             meta: userToCreate,
@@ -49,5 +50,19 @@ export class UserController {
         const users = await this.userFacade.findAll();
 
         return UserMapper.mapperUserToFindAllResponse(users);
+    }
+
+    @Put()
+    @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
+    @ApiResponse({ status: 200 })
+    @ApiBody({ type: UpdateUserRequest })
+    public async update(@Body(UserUpdatePipe) userToUpdate: User): Promise<void> {
+        this.loggerLogGateway.log({
+            class: UserController.name,
+            method: "update",
+            meta: userToUpdate,
+        });
+
+        await this.userFacade.update(userToUpdate);
     }
 }

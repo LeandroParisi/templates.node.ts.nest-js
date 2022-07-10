@@ -1,5 +1,5 @@
 import faker from "@faker-js/faker";
-import { mock } from "jest-mock-extended";
+import { mock, mockReset } from "jest-mock-extended";
 
 import { User } from "../../../../../src/domain/user";
 import { CreateUserRequest } from "../../../../../src/gateways/http/controllers/user/json/create.user.request";
@@ -10,6 +10,18 @@ import { UserFacade } from "../../../../../src/use-cases/user/user.facade";
 import { UserDataBuilder } from "../../../../data-builders/domains/index";
 
 describe("Tests of UserController", () => {
+    const mockedUserFacade = mock<UserFacade>();
+    const mockedLoggerLogGateway = mock<LoggerLogGateway>();
+
+    let userController: UserController;
+
+    beforeEach(() => {
+        mockReset(mockedUserFacade);
+        mockReset(mockedLoggerLogGateway);
+
+        userController = new UserController(mockedUserFacade, mockedLoggerLogGateway);
+    });
+
     it("should be crated a user", async () => {
         const createUserRequest: CreateUserRequest = {
             email: faker.internet.email(),
@@ -26,12 +38,7 @@ describe("Tests of UserController", () => {
             .password(createUserRequest.password)
             .build();
 
-        const mockedUserFacade = mock<UserFacade>();
         mockedUserFacade.create.calledWith(userToCreate).mockResolvedValue();
-
-        const mockedLoggerLogGateway = mock<LoggerLogGateway>();
-
-        const userController = new UserController(mockedUserFacade, mockedLoggerLogGateway);
 
         await userController.create(createUserRequest);
 
@@ -56,12 +63,7 @@ describe("Tests of UserController", () => {
                 .build();
         });
 
-        const mockedUserFacade = mock<UserFacade>();
         mockedUserFacade.findAll.calledWith().mockResolvedValue(users);
-
-        const mockedLoggerLogGateway = mock<LoggerLogGateway>();
-
-        const userController = new UserController(mockedUserFacade, mockedLoggerLogGateway);
 
         const usersResponse = await userController.findAll();
 
@@ -71,5 +73,15 @@ describe("Tests of UserController", () => {
             class: "UserController",
             method: "findAll",
         });
+    });
+
+    it("should by update user", async () => {
+        const userToUpdate = UserDataBuilder.fullUser.build();
+
+        mockedUserFacade.update.calledWith(userToUpdate).mockResolvedValue();
+
+        await userController.update(userToUpdate);
+
+        expect(mockedUserFacade.update).toBeCalledWith(userToUpdate);
     });
 });

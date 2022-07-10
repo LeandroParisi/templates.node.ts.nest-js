@@ -15,10 +15,18 @@ describe("Tests of UserDatabaseGateway", () => {
     const userRepositoryMocked = mock<Repository<UserEntity>>();
     const logErrorGateway = mock<LoggerErrorGateway>();
 
+    let userDatabaseGateway: UserDatabaseGateway;
+
     beforeEach(() => {
         mockReset(mockedLoggerLogGateway);
         mockReset(userRepositoryMocked);
         mockReset(logErrorGateway);
+
+        userDatabaseGateway = new UserDatabaseGateway(
+            userRepositoryMocked,
+            mockedLoggerLogGateway,
+            logErrorGateway
+        );
     });
 
     it("Should create user with success", async () => {
@@ -26,13 +34,7 @@ describe("Tests of UserDatabaseGateway", () => {
 
         userRepositoryMocked.insert.calledWith(userToCreate).mockResolvedValue(new InsertResult());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGateway(
-            userRepositoryMocked,
-            mockedLoggerLogGateway,
-            logErrorGateway
-        );
-
-        await userDatabaseGatewayImpl.create(userToCreate);
+        await userDatabaseGateway.create(userToCreate);
 
         expect(userRepositoryMocked.insert).toBeCalledWith(userToCreate);
 
@@ -50,13 +52,7 @@ describe("Tests of UserDatabaseGateway", () => {
             .calledWith(anyObject(UserEntity))
             .mockRejectedValue(new Error());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGateway(
-            userRepositoryMocked,
-            mockedLoggerLogGateway,
-            logErrorGateway
-        );
-
-        await expect(userDatabaseGatewayImpl.create(userToCreate)).rejects.toBeInstanceOf(
+        await expect(userDatabaseGateway.create(userToCreate)).rejects.toBeInstanceOf(
             UserDatabaseGatewayException
         );
 
@@ -85,13 +81,7 @@ describe("Tests of UserDatabaseGateway", () => {
             .calledWith(anyObject())
             .mockResolvedValue(userEntityToFinded);
 
-        const userDatabaseGatewayImpl = new UserDatabaseGateway(
-            userRepositoryMocked,
-            mockedLoggerLogGateway,
-            logErrorGateway
-        );
-
-        const userToFindedResponse = await userDatabaseGatewayImpl.findByEmail(email);
+        const userToFindedResponse = await userDatabaseGateway.findByEmail(email);
 
         expect(userToFindedResponse).toEqual(expectedUserResponse);
 
@@ -109,13 +99,7 @@ describe("Tests of UserDatabaseGateway", () => {
 
         userRepositoryMocked.findOneBy.calledWith(anyObject()).mockResolvedValue(null);
 
-        const userDatabaseGatewayImpl = new UserDatabaseGateway(
-            userRepositoryMocked,
-            mockedLoggerLogGateway,
-            logErrorGateway
-        );
-
-        const userToFindedResponse = await userDatabaseGatewayImpl.findByEmail(email);
+        const userToFindedResponse = await userDatabaseGateway.findByEmail(email);
 
         expect(userToFindedResponse).toEqual(null);
 
@@ -133,13 +117,7 @@ describe("Tests of UserDatabaseGateway", () => {
 
         userRepositoryMocked.findOneBy.calledWith(anyObject()).mockRejectedValue(new Error());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGateway(
-            userRepositoryMocked,
-            mockedLoggerLogGateway,
-            logErrorGateway
-        );
-
-        await expect(userDatabaseGatewayImpl.findByEmail(email)).rejects.toBeInstanceOf(
+        await expect(userDatabaseGateway.findByEmail(email)).rejects.toBeInstanceOf(
             UserDatabaseGatewayException
         );
 
@@ -173,13 +151,7 @@ describe("Tests of UserDatabaseGateway", () => {
 
         userRepositoryMocked.find.calledWith().mockResolvedValue(usersEntity);
 
-        const userDatabaseGatewayImpl = new UserDatabaseGateway(
-            userRepositoryMocked,
-            mockedLoggerLogGateway,
-            logErrorGateway
-        );
-
-        const userToFindedResponse = await userDatabaseGatewayImpl.findAll();
+        const userToFindedResponse = await userDatabaseGateway.findAll();
 
         expect(userToFindedResponse).toEqual(usersResponseExpected);
 
@@ -192,13 +164,7 @@ describe("Tests of UserDatabaseGateway", () => {
     it("Should find all user with database error", async () => {
         userRepositoryMocked.find.calledWith().mockRejectedValue(new Error());
 
-        const userDatabaseGatewayImpl = new UserDatabaseGateway(
-            userRepositoryMocked,
-            mockedLoggerLogGateway,
-            logErrorGateway
-        );
-
-        await expect(userDatabaseGatewayImpl.findAll()).rejects.toBeInstanceOf(
+        await expect(userDatabaseGateway.findAll()).rejects.toBeInstanceOf(
             UserDatabaseGatewayException
         );
 
@@ -210,6 +176,49 @@ describe("Tests of UserDatabaseGateway", () => {
         expect(logErrorGateway.error).toBeCalledWith({
             class: "UserDatabaseGateway",
             method: "findAll",
+            meta: anyObject(),
+        });
+    });
+
+    it("Should update user with success", async () => {
+        const userToUpdate = UserDataBuilder.fullUser.build();
+
+        await userDatabaseGateway.update(userToUpdate);
+
+        expect(userRepositoryMocked.update).toBeCalledWith(
+            {
+                id: userToUpdate.id,
+            },
+            userToUpdate
+        );
+
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserDatabaseGateway",
+            method: "update",
+            meta: userToUpdate,
+        });
+    });
+
+    it("Should update user with database error", async () => {
+        const userToUpdate = UserDataBuilder.fullUser.build();
+
+        userRepositoryMocked.update
+            .calledWith(anyObject(), anyObject(UserEntity))
+            .mockRejectedValue(new Error());
+
+        await expect(userDatabaseGateway.update(userToUpdate)).rejects.toBeInstanceOf(
+            UserDatabaseGatewayException
+        );
+
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserDatabaseGateway",
+            method: "update",
+            meta: userToUpdate,
+        });
+
+        expect(logErrorGateway.error).toBeCalledWith({
+            class: "UserDatabaseGateway",
+            method: "update",
             meta: anyObject(),
         });
     });
