@@ -1,11 +1,11 @@
 import { mock, mockClear } from "jest-mock-extended";
 
 import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { UserFacade } from "../../../../src/use-cases/facade/user.facade";
 import { CreateUserUseCase } from "../../../../src/use-cases/user/create.user.usecase";
 import { FindAllUserUseCase } from "../../../../src/use-cases/user/findall.user.usecase";
 import { UpdateUserUseCase } from "../../../../src/use-cases/user/update.user.usecase";
-import { UserFacade } from "../../../../src/use-cases/user/user.facade";
-import { UserDataBuilder } from "../../../data-builders/domains/index";
+import { UserDataBuilder } from "../../../data-builders/domains";
 
 describe("Tests of UserFacade", () => {
     const mockedCreateUserUseCase = mock<CreateUserUseCase>();

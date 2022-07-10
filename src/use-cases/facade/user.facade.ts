@@ -3,9 +3,7 @@ import { User } from "src/domain/index";
 
 import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
 
-import { CreateUserUseCase } from "./create.user.usecase";
-import { FindAllUserUseCase } from "./findall.user.usecase";
-import { UpdateUserUseCase } from "./update.user.usecase";
+import { CreateUserUseCase, FindAllUserUseCase, UpdateUserUseCase } from "../user";
 
 @Injectable()
 export class UserFacade {

@@ -5,7 +5,7 @@ import { UserDatabaseGatewayException } from "@gateways/exceptions/user.database
 import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
 
 import { EmailAlreadyExistsBusinessException } from "@use-cases/exceptions/email.already.register.business.exception";
-import { UserFacade } from "@use-cases/user/user.facade";
+import { UserFacade } from "@use-cases/facade";
 
 import { User } from "@domain/user";
 

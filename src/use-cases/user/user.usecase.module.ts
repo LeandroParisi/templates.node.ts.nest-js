@@ -7,17 +7,10 @@ import { CreateUserUseCase } from "./create.user.usecase";
 import { FindUserByEmailUseCase } from "./find.user.by.email.usecase";
 import { FindAllUserUseCase } from "./findall.user.usecase";
 import { UpdateUserUseCase } from "./update.user.usecase";
-import { UserFacade } from "./user.facade";
 
 @Module({
     imports: [UserDataBaseGatewayModule, LoggerModule],
-    providers: [
-        CreateUserUseCase,
-        FindUserByEmailUseCase,
-        UserFacade,
-        FindAllUserUseCase,
-        UpdateUserUseCase,
-    ],
-    exports: [UserFacade],
+    providers: [CreateUserUseCase, FindUserByEmailUseCase, FindAllUserUseCase, UpdateUserUseCase],
+    exports: [CreateUserUseCase, FindUserByEmailUseCase, FindAllUserUseCase, UpdateUserUseCase],
 })
 export class UserUseCasesModule {}
