@@ -1,11 +1,11 @@
 import faker from "@faker-js/faker";
 
-import { UpdateUserRequest } from "../../../../../../../src/gateways/http/controllers/user/json/update.user.request";
+import { UpdateUserRequestJson } from "../../../../../../../src/gateways/http/controllers/user/json/update.user.request.json";
 import { UserUpdatePipe } from "../../../../../../../src/gateways/http/controllers/user/pipes/user.update.pipe";
 
 describe("Tests of UserUpdatePipe", () => {
     it("Should return user mapped", async () => {
-        const updateUserRequest = UpdateUserRequest.builder()
+        const updateUserRequest = UpdateUserRequestJson.builder()
             .email(faker.internet.email())
             .firstName(faker.name.firstName())
             .lastName(faker.name.lastName())

@@ -2,8 +2,7 @@ import faker from "@faker-js/faker";
 import { mock, mockReset } from "jest-mock-extended";
 
 import { User } from "../../../../../../src/domain/user";
-import { CreateUserRequest } from "../../../../../../src/gateways/http/controllers/user/json/create.user.request";
-import { FindAllResponse } from "../../../../../../src/gateways/http/controllers/user/json/find.all.response";
+import { CreateUserRequestJson } from "../../../../../../src/gateways/http/controllers/user/json/create.user.request.json";
 import { UserController } from "../../../../../../src/gateways/http/controllers/user/user.controller";
 import { UserFacade } from "../../../../../../src/use-cases/facade/user.facade";
 import { UserDataBuilder } from "../../../../../data-builders/domains/index";
@@ -20,7 +19,7 @@ describe("Tests of UserController", () => {
     });
 
     it("should be crated a user", async () => {
-        const createUserRequest: CreateUserRequest = {
+        const createUserRequest: CreateUserRequestJson = {
             email: faker.internet.email(),
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
@@ -45,20 +44,11 @@ describe("Tests of UserController", () => {
     it("should be recovered a user list", async () => {
         const users = UserDataBuilder.fullUser.buildList(2);
 
-        const expectedUsersResponse = users.map((user) => {
-            return FindAllResponse.builder()
-                .email(user.email)
-                .firstName(user.firstName)
-                .id(user.id)
-                .lastName(user.lastName)
-                .build();
-        });
-
         mockedUserFacade.findAll.calledWith().mockResolvedValue(users);
 
         const usersResponse = await userController.findAll();
 
-        expect(usersResponse).toEqual(expectedUsersResponse);
+        expect(usersResponse).toEqual(users);
     });
 
     it("should by update user", async () => {
