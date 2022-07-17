@@ -18,8 +18,8 @@ import { UserFacade } from "@use-cases/facade";
 import { User } from "@domain/user";
 
 import { RequestLoggerInterceptor } from "../interceptors/request.logger.interceptor";
+import { ResponseMapperInterceptor } from "../interceptors/response.mapper.interceptor";
 import { CreateUserRequest, FindAllResponse, UpdateUserRequest } from "./json";
-import { UserMapper } from "./mappers/user.mapper";
 import { UserCreatePipe, UserUpdatePipe } from "./pipes";
 
 @Controller("user")
@@ -42,10 +42,9 @@ export class UserController {
     @ApiResponse({ status: 200, type: FindAllResponse, isArray: true })
     @CacheKey(process.env.CACHE_USERS_KEY)
     @CacheTTL(Number(process.env.CACHE_USERS_TTL))
-    public async findAll(): Promise<FindAllResponse[]> {
-        const users = await this.userFacade.findAll();
-
-        return UserMapper.mapperUserToFindAllResponse(users);
+    @UseInterceptors(new ResponseMapperInterceptor(FindAllResponse))
+    public async findAll(): Promise<User[]> {
+        return await this.userFacade.findAll();
     }
 
     @Put()

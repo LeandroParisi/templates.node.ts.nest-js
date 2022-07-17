@@ -1,8 +1,8 @@
 import { CallHandler } from "@nestjs/common";
 import { mock } from "jest-mock-extended";
 
-import { LoggerLogGateway } from "../../../../../../dist/gateways/logger/interfaces/logger.log.gateway";
 import { RequestLoggerInterceptor } from "../../../../../../src/gateways/http/controllers/interceptors/request.logger.interceptor";
+import { LoggerLogGateway } from "../../../../../../src/gateways/logger/interfaces/logger.log.gateway";
 
 describe("Tests of RequestLoggerInterceptor", () => {
     it("Should return response", () => {

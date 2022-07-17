@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Builder, IBuilder } from "builder-pattern";
 import { IsNotEmpty, IsString, IsEmail, MaxLength, MinLength, IsNumber } from "class-validator";
 
-export class UpdateUserRequest {
+export class UpdateUserRequestJson {
     @ApiProperty({ required: true })
     @IsNotEmpty()
     @IsNumber()
@@ -31,7 +31,7 @@ export class UpdateUserRequest {
     @MinLength(8)
     public readonly password: string;
 
-    public static builder(): IBuilder<UpdateUserRequest> {
-        return Builder<UpdateUserRequest>();
+    public static builder(): IBuilder<UpdateUserRequestJson> {
+        return Builder<UpdateUserRequestJson>();
     }
 }

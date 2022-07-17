@@ -1,3 +1,3 @@
-export { CreateUserRequest } from "./create.user.request";
-export { FindAllResponse } from "./find.all.response";
-export { UpdateUserRequest } from "./update.user.request";
+export { CreateUserRequestJson as CreateUserRequest } from "./create.user.request.json";
+export { FindAllResponseJson as FindAllResponse } from "./find.all.response.json";
+export { UpdateUserRequestJson as UpdateUserRequest } from "./update.user.request.json";
