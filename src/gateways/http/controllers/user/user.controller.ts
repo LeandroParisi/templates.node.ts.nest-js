@@ -7,19 +7,27 @@ import {
     CacheTTL,
     Put,
     UseInterceptors,
+    ParseIntPipe,
+    Param,
 } from "@nestjs/common";
-import { ApiTags, ApiResponse, ApiBody } from "@nestjs/swagger";
+import { ApiTags, ApiResponse, ApiBody, ApiParam } from "@nestjs/swagger";
 
 import { UserDatabaseGatewayException } from "@gateways/exceptions/user.database.gateway.exception";
 
 import { EmailAlreadyExistsBusinessException } from "@use-cases/exceptions/email.already.register.business.exception";
+import { UserNotFoundBusinessException } from "@use-cases/exceptions/user.not.found.business.execption";
 import { UserFacade } from "@use-cases/facade";
 
 import { User } from "@domain/user";
 
 import { RequestLoggerInterceptor } from "../interceptors/request.logger.interceptor";
 import { ResponseMapperInterceptor } from "../interceptors/response.mapper.interceptor";
-import { CreateUserRequest, FindAllResponse, UpdateUserRequest } from "./json";
+import {
+    CreateUserRequestJson,
+    FindAllResponseJson,
+    UpdateUserRequestJson,
+    FindByIdResponseJson,
+} from "./json";
 import { UserCreatePipe, UserUpdatePipe } from "./pipes";
 
 @Controller("user")
@@ -32,17 +40,17 @@ export class UserController {
     @ApiResponse({ status: 201 })
     @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
     @ApiResponse({ status: 422, type: EmailAlreadyExistsBusinessException })
-    @ApiBody({ type: CreateUserRequest })
+    @ApiBody({ type: CreateUserRequestJson })
     public async create(@Body(UserCreatePipe) userToCreate: User): Promise<void> {
         await this.userFacade.create(userToCreate);
     }
 
     @Get()
     @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
-    @ApiResponse({ status: 200, type: FindAllResponse, isArray: true })
+    @ApiResponse({ status: 200, type: FindAllResponseJson, isArray: true })
     @CacheKey(process.env.CACHE_USERS_KEY)
     @CacheTTL(Number(process.env.CACHE_USERS_TTL))
-    @UseInterceptors(new ResponseMapperInterceptor(FindAllResponse))
+    @UseInterceptors(new ResponseMapperInterceptor(FindAllResponseJson))
     public async findAll(): Promise<User[]> {
         return await this.userFacade.findAll();
     }
@@ -50,8 +58,18 @@ export class UserController {
     @Put()
     @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
     @ApiResponse({ status: 200 })
-    @ApiBody({ type: UpdateUserRequest })
+    @ApiBody({ type: UpdateUserRequestJson })
     public async update(@Body(UserUpdatePipe) userToUpdate: User): Promise<void> {
         await this.userFacade.update(userToUpdate);
+    }
+
+    @Get(":id")
+    @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
+    @ApiResponse({ status: 400, type: UserNotFoundBusinessException })
+    @ApiResponse({ status: 200, type: FindByIdResponseJson })
+    @ApiParam({ name: "id", type: "number", required: true })
+    @UseInterceptors(new ResponseMapperInterceptor(FindByIdResponseJson))
+    public async findById(@Param("id", ParseIntPipe) id: number): Promise<User> {
+        return await this.userFacade.findById(id);
     }
 }

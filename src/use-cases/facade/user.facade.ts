@@ -3,7 +3,12 @@ import { User } from "src/domain/index";
 
 import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
 
-import { CreateUserUseCase, FindAllUserUseCase, UpdateUserUseCase } from "../user";
+import {
+    CreateUserUseCase,
+    FindAllUserUseCase,
+    UpdateUserUseCase,
+    FindUserByIdUserUseCase,
+} from "../user";
 
 @Injectable()
 export class UserFacade {
@@ -11,6 +16,7 @@ export class UserFacade {
         private readonly findAllUserUseCase: FindAllUserUseCase,
         private readonly createUserUseCase: CreateUserUseCase,
         private readonly updateUserUseCase: UpdateUserUseCase,
+        private readonly findUserByIdUserUseCase: FindUserByIdUserUseCase,
         @Inject(LoggerLogGateway)
         private readonly loggerLogGateway: LoggerLogGateway
     ) {}
@@ -42,5 +48,15 @@ export class UserFacade {
         });
 
         await this.updateUserUseCase.update(userToUpdate);
+    }
+
+    public async findById(id: number): Promise<User> {
+        this.loggerLogGateway.log({
+            class: UserFacade.name,
+            method: "findById",
+            meta: { id },
+        });
+
+        return this.findUserByIdUserUseCase.findById(id);
     }
 }

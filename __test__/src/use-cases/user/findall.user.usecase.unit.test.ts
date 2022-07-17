@@ -14,12 +14,12 @@ describe("Tests of FindAllUserUseCase", () => {
 
         mockedFindAllUserDatabaseGateway.findAll.calledWith().mockResolvedValue(users);
 
-        const useFacade = new FindAllUserUseCase(
+        const findAllUserUseCase = new FindAllUserUseCase(
             mockedFindAllUserDatabaseGateway,
             mockedLoggerLogGateway
         );
 
-        const usersResponse = await useFacade.findAll();
+        const usersResponse = await findAllUserUseCase.findAll();
 
         expect(usersResponse).toBe(users);
 

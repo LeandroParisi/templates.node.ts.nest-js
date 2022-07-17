@@ -3,6 +3,7 @@ import { mock, mockClear } from "jest-mock-extended";
 import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
 import { UserFacade } from "../../../../src/use-cases/facade/user.facade";
 import { CreateUserUseCase } from "../../../../src/use-cases/user/create.user.usecase";
+import { FindUserByIdUserUseCase } from "../../../../src/use-cases/user/find.user.by.id.usecase";
 import { FindAllUserUseCase } from "../../../../src/use-cases/user/findall.user.usecase";
 import { UpdateUserUseCase } from "../../../../src/use-cases/user/update.user.usecase";
 import { UserDataBuilder } from "../../../data-builders/domains";
@@ -12,6 +13,7 @@ describe("Tests of UserFacade", () => {
     const mockedLoggerLogGateway = mock<LoggerLogGateway>();
     const mockedFindAllUserUseCase = mock<FindAllUserUseCase>();
     const mockedUpdateUserUseCase = mock<UpdateUserUseCase>();
+    const mockedFindUserByIdUserUseCase = mock<FindUserByIdUserUseCase>();
 
     let userFacade: UserFacade;
 
@@ -25,6 +27,7 @@ describe("Tests of UserFacade", () => {
             mockedFindAllUserUseCase,
             mockedCreateUserUseCase,
             mockedUpdateUserUseCase,
+            mockedFindUserByIdUserUseCase,
             mockedLoggerLogGateway
         );
     });
@@ -73,6 +76,23 @@ describe("Tests of UserFacade", () => {
             class: "UserFacade",
             method: "update",
             meta: userToUpdate,
+        });
+    });
+
+    it("Should be find user by id", async () => {
+        const user = UserDataBuilder.fullUser.build();
+        const id = 1;
+
+        mockedFindUserByIdUserUseCase.findById.calledWith(1).mockResolvedValue(user);
+
+        const userResponse = await userFacade.findById(id);
+
+        expect(userResponse).toEqual(user);
+
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserFacade",
+            method: "findById",
+            meta: { id },
         });
     });
 });

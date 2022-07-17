@@ -11,6 +11,7 @@ import { User } from "@domain/user";
 import { UserEntity } from "../../data/user.entity";
 import { CreateUserDatabaseGateway } from "../crate.user.database.gateway";
 import { FindUserByEmailDatabaseGateway } from "../find.user.by.email.gateway";
+import { FindUserByIdDatabaseGateway } from "../find.user.by.id.database.gateway";
 import { FindAllUserDatabaseGateway } from "../findall.user.database.gateway";
 import { UserDatabaseMapper } from "../mapper/user.database.mapper";
 import { UpdateUserDatabaseGateway } from "../update.user.database.gateway";
@@ -21,7 +22,8 @@ export class UserDatabaseGateway
         CreateUserDatabaseGateway,
         FindUserByEmailDatabaseGateway,
         FindAllUserDatabaseGateway,
-        UpdateUserDatabaseGateway
+        UpdateUserDatabaseGateway,
+        FindUserByIdDatabaseGateway
 {
     constructor(
         @InjectRepository(UserEntity)
@@ -117,6 +119,28 @@ export class UserDatabaseGateway
             this.loggerErrorGateway.error({
                 class: UserDatabaseGateway.name,
                 method: "update",
+                meta: error,
+            });
+
+            throw new UserDatabaseGatewayException(error.stack);
+        }
+    }
+
+    public async findById(id: number): Promise<User | null> {
+        try {
+            this.loggerLogGateway.log({
+                class: UserDatabaseGateway.name,
+                meta: id,
+                method: "findById",
+            });
+
+            const userEntity = await this.userEntityRepository.findOneBy({ id });
+
+            return UserDatabaseMapper.mapperUserFromUserEntity(userEntity);
+        } catch (error) {
+            this.loggerErrorGateway.error({
+                class: UserDatabaseGateway.name,
+                method: "findById",
                 meta: error,
             });
 

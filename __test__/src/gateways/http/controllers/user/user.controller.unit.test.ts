@@ -60,4 +60,15 @@ describe("Tests of UserController", () => {
 
         expect(mockedUserFacade.update).toBeCalledWith(userToUpdate);
     });
+
+    it("should by find by id with success", async () => {
+        const userFinded = UserDataBuilder.fullUser.build();
+        const id = 1;
+
+        mockedUserFacade.findById.calledWith(id).mockResolvedValue(userFinded);
+
+        const userResponse = await userController.findById(id);
+
+        expect(userResponse).toEqual(userFinded);
+    });
 });

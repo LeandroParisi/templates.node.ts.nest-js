@@ -5,9 +5,10 @@ import * as request from "supertest";
 import { Repository } from "typeorm";
 
 import { UserEntity } from "../../../src/gateways/database/data/user.entity";
-import { CreateUserRequest } from "../../../src/gateways/http/controllers/user/json/create.user.request";
-import { FindAllResponse } from "../../../src/gateways/http/controllers/user/json/find.all.response";
-import { UpdateUserRequest } from "../../../src/gateways/http/controllers/user/json/update.user.request";
+import { CreateUserRequestJson } from "../../../src/gateways/http/controllers/user/json/create.user.request.json";
+import { FindAllResponseJson } from "../../../src/gateways/http/controllers/user/json/find.all.response.json";
+import { FindByIdResponseJson } from "../../../src/gateways/http/controllers/user/json/find.by.id.response.json";
+import { UpdateUserRequestJson } from "../../../src/gateways/http/controllers/user/json/update.user.request.json";
 import { UserEntityDataBuilder } from "../../data-builders/data/index";
 import { startTestServer } from "../utils";
 
@@ -32,7 +33,7 @@ describe("Tests e2e UserController", () => {
         });
 
         it("Should create user with success", async () => {
-            const createUserRequest = CreateUserRequest.builder()
+            const createUserRequest = CreateUserRequestJson.builder()
                 .email(faker.internet.email())
                 .firstName(faker.name.firstName())
                 .lastName(faker.name.lastName())
@@ -49,7 +50,7 @@ describe("Tests e2e UserController", () => {
         });
 
         it("Should create user with error user already exists", async () => {
-            const createUserRequest = CreateUserRequest.builder()
+            const createUserRequest = CreateUserRequestJson.builder()
                 .email(faker.internet.email())
                 .firstName(faker.name.firstName())
                 .lastName(faker.name.lastName())
@@ -72,7 +73,7 @@ describe("Tests e2e UserController", () => {
 
         const userEntities = UserEntityDataBuilder.create.buildList(3);
 
-        let expectedUsersResponse: FindAllResponse[];
+        let expectedUsersResponse: FindAllResponseJson[];
 
         beforeAll(async () => {
             cache = server.get(CACHE_MANAGER);
@@ -82,7 +83,7 @@ describe("Tests e2e UserController", () => {
             const usersSaved = await crateUserToUseOnTests(userRepository, userEntities);
 
             expectedUsersResponse = usersSaved.map((userEntity) => {
-                return FindAllResponse.builder()
+                return FindAllResponseJson.builder()
                     .email(userEntity.email)
                     .firstName(userEntity.firstName)
                     .id(userEntity.id)
@@ -122,7 +123,7 @@ describe("Tests e2e UserController", () => {
         });
 
         it("Should update user with success", async () => {
-            const userToUpdate = UpdateUserRequest.builder()
+            const userToUpdate = UpdateUserRequestJson.builder()
                 .email(usersCreated[0].email)
                 .firstName(usersCreated[0].firstName)
                 .lastName(faker.name.findName())
@@ -141,6 +142,42 @@ describe("Tests e2e UserController", () => {
             expect(userToUpdateFinded?.lastName).toEqual(userToUpdate.lastName);
             expect(userToUpdateFinded?.email).toEqual(userToUpdate.email);
             expect(userToUpdateFinded?.password).toEqual(userToUpdate.password);
+        });
+    });
+
+    describe("Should be executed tests to find user by id", () => {
+        const userEntities = UserEntityDataBuilder.create.buildList(3);
+
+        let findByIdResponseJsonExpected: FindByIdResponseJson;
+
+        beforeAll(async () => {
+            await deleteAllUsersBeforeTests(userRepository);
+
+            const usersSaved = await crateUserToUseOnTests(userRepository, userEntities);
+
+            findByIdResponseJsonExpected = FindAllResponseJson.builder()
+                .email(usersSaved[0].email)
+                .firstName(usersSaved[0].firstName)
+                .id(usersSaved[0].id)
+                .lastName(usersSaved[0].lastName)
+                .build();
+
+            await server.init();
+        });
+
+        it("Should find user by id with success", async () => {
+            const response = await request(server.getHttpServer())
+                .get(`/user/${findByIdResponseJsonExpected.id}`)
+                .send()
+                .expect(200);
+
+            expect(response.body).toEqual(findByIdResponseJsonExpected);
+        });
+
+        it("Should find user by id with error user not found", async () => {
+            const response = await request(server.getHttpServer()).get("/user/111").send();
+
+            expect(response.statusCode).toEqual(404);
         });
     });
 });
