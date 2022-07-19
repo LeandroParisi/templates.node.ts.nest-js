@@ -29,7 +29,7 @@ describe("Tests of UserDatabaseGateway", () => {
         );
     });
 
-    it("Should create user with success", async () => {
+    it("Should be create user with success", async () => {
         const userToCreate = UserDataBuilder.userToCreate.build();
 
         userRepositoryMocked.insert.calledWith(userToCreate).mockResolvedValue(new InsertResult());
@@ -45,7 +45,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should create user with database error", async () => {
+    it("Should be create user with database error", async () => {
         const userToCreate = UserDataBuilder.userToCreate.build();
 
         userRepositoryMocked.insert
@@ -65,7 +65,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should find by email with success", async () => {
+    it("Should be find user by email with success", async () => {
         const userEntityToFinded = UserEntityDataBuilder.createdUser.build();
         const email = "anyEmail";
 
@@ -94,7 +94,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should find by email with user null", async () => {
+    it("Should be find user by email with user null", async () => {
         const email = "anyEmail";
 
         userRepositoryMocked.findOneBy.calledWith(anyObject()).mockResolvedValue(null);
@@ -112,7 +112,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should find by email with error", async () => {
+    it("Should be find user by email with error", async () => {
         const email = "anyEmail";
 
         userRepositoryMocked.findOneBy.calledWith(anyObject()).mockRejectedValue(new Error());
@@ -136,7 +136,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should find all user", async () => {
+    it("Should be find all users with success", async () => {
         const usersEntity = UserEntityDataBuilder.createdUser.buildList(2);
 
         const usersResponseExpected = usersEntity.map((userEntity) => {
@@ -161,7 +161,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should find all user with database error", async () => {
+    it("Should be find all users with error", async () => {
         userRepositoryMocked.find.calledWith().mockRejectedValue(new Error());
 
         await expect(userDatabaseGateway.findAll()).rejects.toBeInstanceOf(
@@ -180,7 +180,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should update user with success", async () => {
+    it("Should be update user with success", async () => {
         const userToUpdate = UserDataBuilder.fullUser.build();
 
         await userDatabaseGateway.update(userToUpdate);
@@ -199,7 +199,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should update user with database error", async () => {
+    it("Should be update user with error", async () => {
         const userToUpdate = UserDataBuilder.fullUser.build();
 
         userRepositoryMocked.update
@@ -223,7 +223,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should find by id with success", async () => {
+    it("Should be find user by id with success", async () => {
         const userEntityToFinded = UserEntityDataBuilder.createdUser.build();
         const id = 1;
 
@@ -252,7 +252,7 @@ describe("Tests of UserDatabaseGateway", () => {
         });
     });
 
-    it("Should find by id with error", async () => {
+    it("Should be find user by id with error", async () => {
         const id = 1;
 
         userRepositoryMocked.findOneBy.calledWith(anyObject()).mockRejectedValue(new Error());
@@ -273,6 +273,28 @@ describe("Tests of UserDatabaseGateway", () => {
             class: "UserDatabaseGateway",
             method: "findById",
             meta: anyObject(),
+        });
+    });
+
+    it("Should be deleted user by id with error", async () => {
+        const id = 1;
+
+        userRepositoryMocked.delete.calledWith(anyObject()).mockRejectedValue(new Error());
+
+        await expect(userDatabaseGateway.deleteById(id)).rejects.toBeInstanceOf(
+            UserDatabaseGatewayException
+        );
+
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserDatabaseGateway",
+            meta: id,
+            method: "deleteById",
+        });
+
+        expect(logErrorGateway.error).toBeCalledWith({
+            class: "UserDatabaseGateway",
+            meta: anyObject(),
+            method: "deleteById",
         });
     });
 });

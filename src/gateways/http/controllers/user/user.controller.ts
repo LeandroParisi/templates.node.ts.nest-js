@@ -9,6 +9,7 @@ import {
     UseInterceptors,
     ParseIntPipe,
     Param,
+    Delete,
 } from "@nestjs/common";
 import { ApiTags, ApiResponse, ApiBody, ApiParam } from "@nestjs/swagger";
 
@@ -71,5 +72,14 @@ export class UserController {
     @UseInterceptors(new ResponseMapperInterceptor(FindByIdResponseJson))
     public async findById(@Param("id", ParseIntPipe) id: number): Promise<User> {
         return await this.userFacade.findById(id);
+    }
+
+    @Delete(":id")
+    @ApiResponse({ status: 500, type: UserDatabaseGatewayException })
+    @ApiResponse({ status: 400, type: UserNotFoundBusinessException })
+    @ApiResponse({ status: 200 })
+    @ApiParam({ name: "id", type: "number", required: true })
+    public async deleteById(@Param("id", ParseIntPipe) id: number): Promise<void> {
+        await this.userFacade.deleteById(id);
     }
 }

@@ -8,6 +8,7 @@ import {
     FindAllUserUseCase,
     UpdateUserUseCase,
     FindUserByIdUserUseCase,
+    DeleteUserByIdUseCase,
 } from "../user";
 
 @Injectable()
@@ -17,6 +18,7 @@ export class UserFacade {
         private readonly createUserUseCase: CreateUserUseCase,
         private readonly updateUserUseCase: UpdateUserUseCase,
         private readonly findUserByIdUserUseCase: FindUserByIdUserUseCase,
+        private readonly deleteUserByIdUseCase: DeleteUserByIdUseCase,
         @Inject(LoggerLogGateway)
         private readonly loggerLogGateway: LoggerLogGateway
     ) {}
@@ -58,5 +60,15 @@ export class UserFacade {
         });
 
         return this.findUserByIdUserUseCase.findById(id);
+    }
+
+    public async deleteById(id: number): Promise<void> {
+        this.loggerLogGateway.log({
+            class: UserFacade.name,
+            method: "deleteById",
+            meta: { id },
+        });
+
+        await this.deleteUserByIdUseCase.deleteById(id);
     }
 }

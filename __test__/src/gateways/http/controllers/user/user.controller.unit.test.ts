@@ -61,7 +61,7 @@ describe("Tests of UserController", () => {
         expect(mockedUserFacade.update).toBeCalledWith(userToUpdate);
     });
 
-    it("should by find by id with success", async () => {
+    it("should by finded by id with success", async () => {
         const userFinded = UserDataBuilder.fullUser.build();
         const id = 1;
 
@@ -70,5 +70,15 @@ describe("Tests of UserController", () => {
         const userResponse = await userController.findById(id);
 
         expect(userResponse).toEqual(userFinded);
+    });
+
+    it("should by deleted user with success", async () => {
+        const id = 1;
+
+        mockedUserFacade.deleteById.calledWith(id).mockResolvedValue();
+
+        await userController.deleteById(id);
+
+        expect(mockedUserFacade.deleteById).toBeCalledWith(id);
     });
 });

@@ -2,7 +2,7 @@ import faker from "@faker-js/faker";
 import { INestApplication, CACHE_MANAGER } from "@nestjs/common";
 import { Cache } from "cache-manager";
 import * as request from "supertest";
-import { Repository } from "typeorm";
+import { Repository, EntityNotFoundError } from "typeorm";
 
 import { UserEntity } from "../../../src/gateways/database/data/user.entity";
 import { CreateUserRequestJson } from "../../../src/gateways/http/controllers/user/json/create.user.request.json";
@@ -90,8 +90,6 @@ describe("Tests e2e UserController", () => {
                     .lastName(userEntity.lastName)
                     .build();
             });
-
-            await server.init();
         });
 
         it("Should find all users with success", async () => {
@@ -118,8 +116,6 @@ describe("Tests e2e UserController", () => {
             await deleteAllUsersBeforeTests(userRepository);
 
             usersCreated = await crateUserToUseOnTests(userRepository, userEntities);
-
-            await server.init();
         });
 
         it("Should update user with success", async () => {
@@ -161,11 +157,9 @@ describe("Tests e2e UserController", () => {
                 .id(usersSaved[0].id)
                 .lastName(usersSaved[0].lastName)
                 .build();
-
-            await server.init();
         });
 
-        it("Should find user by id with success", async () => {
+        it("Should be finded user by id with success", async () => {
             const response = await request(server.getHttpServer())
                 .get(`/user/${findByIdResponseJsonExpected.id}`)
                 .send()
@@ -174,10 +168,36 @@ describe("Tests e2e UserController", () => {
             expect(response.body).toEqual(findByIdResponseJsonExpected);
         });
 
-        it("Should find user by id with error user not found", async () => {
+        it("Should be finded user by id with error user not found", async () => {
             const response = await request(server.getHttpServer()).get("/user/111").send();
 
             expect(response.statusCode).toEqual(404);
+        });
+    });
+
+    describe("Should be executed tests to delete user by id", () => {
+        const userEntities = UserEntityDataBuilder.create.buildList(3);
+
+        let userEntityToDelete: UserEntity;
+
+        beforeAll(async () => {
+            await deleteAllUsersBeforeTests(userRepository);
+
+            const usersSaved = await crateUserToUseOnTests(userRepository, userEntities);
+            userEntityToDelete = usersSaved[0];
+        });
+
+        it("Should be deleted user by id with success", async () => {
+            await request(server.getHttpServer())
+                .delete(`/user/${userEntityToDelete.id}`)
+                .send()
+                .expect(200);
+
+            await expect(
+                userRepository.findOneByOrFail({
+                    id: userEntityToDelete.id,
+                })
+            ).rejects.toBeInstanceOf(EntityNotFoundError);
         });
     });
 });

@@ -10,6 +10,7 @@ import { User } from "@domain/user";
 
 import { UserEntity } from "../../data/user.entity";
 import { CreateUserDatabaseGateway } from "../crate.user.database.gateway";
+import { DeleteUserByIdDatabaseGateway } from "../delete.user.by.id.database.gateway";
 import { FindUserByEmailDatabaseGateway } from "../find.user.by.email.gateway";
 import { FindUserByIdDatabaseGateway } from "../find.user.by.id.database.gateway";
 import { FindAllUserDatabaseGateway } from "../findall.user.database.gateway";
@@ -23,7 +24,8 @@ export class UserDatabaseGateway
         FindUserByEmailDatabaseGateway,
         FindAllUserDatabaseGateway,
         UpdateUserDatabaseGateway,
-        FindUserByIdDatabaseGateway
+        FindUserByIdDatabaseGateway,
+        DeleteUserByIdDatabaseGateway
 {
     constructor(
         @InjectRepository(UserEntity)
@@ -141,6 +143,26 @@ export class UserDatabaseGateway
             this.loggerErrorGateway.error({
                 class: UserDatabaseGateway.name,
                 method: "findById",
+                meta: error,
+            });
+
+            throw new UserDatabaseGatewayException(error.stack);
+        }
+    }
+
+    public async deleteById(id: number): Promise<void> {
+        try {
+            this.loggerLogGateway.log({
+                class: UserDatabaseGateway.name,
+                meta: id,
+                method: "deleteById",
+            });
+
+            await this.userEntityRepository.delete({ id });
+        } catch (error) {
+            this.loggerErrorGateway.error({
+                class: UserDatabaseGateway.name,
+                method: "deleteById",
                 meta: error,
             });
 

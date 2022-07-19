@@ -3,6 +3,7 @@ import { mock, mockClear } from "jest-mock-extended";
 import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
 import { UserFacade } from "../../../../src/use-cases/facade/user.facade";
 import { CreateUserUseCase } from "../../../../src/use-cases/user/create.user.usecase";
+import { DeleteUserByIdUseCase } from "../../../../src/use-cases/user/delete.user.by.id.usecase";
 import { FindUserByIdUserUseCase } from "../../../../src/use-cases/user/find.user.by.id.usecase";
 import { FindAllUserUseCase } from "../../../../src/use-cases/user/findall.user.usecase";
 import { UpdateUserUseCase } from "../../../../src/use-cases/user/update.user.usecase";
@@ -14,6 +15,7 @@ describe("Tests of UserFacade", () => {
     const mockedFindAllUserUseCase = mock<FindAllUserUseCase>();
     const mockedUpdateUserUseCase = mock<UpdateUserUseCase>();
     const mockedFindUserByIdUserUseCase = mock<FindUserByIdUserUseCase>();
+    const mockedDeleteUserByIdUseCase = mock<DeleteUserByIdUseCase>();
 
     let userFacade: UserFacade;
 
@@ -28,6 +30,7 @@ describe("Tests of UserFacade", () => {
             mockedCreateUserUseCase,
             mockedUpdateUserUseCase,
             mockedFindUserByIdUserUseCase,
+            mockedDeleteUserByIdUseCase,
             mockedLoggerLogGateway
         );
     });
@@ -79,7 +82,7 @@ describe("Tests of UserFacade", () => {
         });
     });
 
-    it("Should be find user by id", async () => {
+    it("Should be finded user by id", async () => {
         const user = UserDataBuilder.fullUser.build();
         const id = 1;
 
@@ -92,6 +95,22 @@ describe("Tests of UserFacade", () => {
         expect(mockedLoggerLogGateway.log).toBeCalledWith({
             class: "UserFacade",
             method: "findById",
+            meta: { id },
+        });
+    });
+
+    it("Should be deleted user by id", async () => {
+        const id = 1;
+
+        mockedDeleteUserByIdUseCase.deleteById.calledWith(1).mockResolvedValue();
+
+        await userFacade.deleteById(id);
+
+        expect(mockedDeleteUserByIdUseCase.deleteById).toBeCalledWith(id);
+
+        expect(mockedLoggerLogGateway.log).toBeCalledWith({
+            class: "UserFacade",
+            method: "deleteById",
             meta: { id },
         });
     });
