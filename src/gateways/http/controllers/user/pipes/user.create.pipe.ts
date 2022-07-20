@@ -1,8 +1,8 @@
 import { Injectable, PipeTransform } from "@nestjs/common";
 
-import { User } from "@domain/user";
+import { RequestValidationBase } from "@gateways/http/controllers/pipes/request.validation.base";
 
-import { RequestValidationBase } from "@common/pipes/request.validation.base";
+import { User } from "@domain/user";
 
 import { CreateUserRequestJson } from "../json/create.user.request.json";
 import { UserMapper } from "./mappers/user.mapper";
