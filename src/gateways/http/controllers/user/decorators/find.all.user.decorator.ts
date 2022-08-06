@@ -4,8 +4,8 @@ import { ApiResponse } from "@nestjs/swagger";
 
 import { UserDatabaseGatewayException } from "@gateways/database/exceptions/user.database.gateway.exception";
 
-import { JwtAuthGuard } from "../../guards/jwt.auth.guard";
-import { ResponseMapperInterceptor } from "../../interceptors/response.mapper.interceptor";
+import { JwtAuthGuard } from "../../common/guards/jwt.auth.guard";
+import { ResponseMapperInterceptor } from "../../common/interceptors/response.mapper.interceptor";
 import { FindAllResponseJson } from "../json/find.all.response.json";
 
 export function FindAllUserDecorator() {

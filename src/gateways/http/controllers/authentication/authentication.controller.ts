@@ -5,7 +5,7 @@ import { AuthenticationFacade } from "@use-cases/facade/authentication.facade";
 
 import { User } from "@domain/user";
 
-import { RequestLoggerInterceptor } from "../interceptors/request.logger.interceptor";
+import { RequestLoggerInterceptor } from "../common/interceptors/request.logger.interceptor";
 import { LoginDecorator } from "./decorators";
 import { AuthenticationRequestJson } from "./json";
 

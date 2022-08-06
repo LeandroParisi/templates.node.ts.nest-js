@@ -14,7 +14,9 @@ module.exports = {
         "<rootDir>/src/domains/",
         "<rootDir>/src/main.ts",
         "<rootDir>/src/app.ts",
+        "<rootDir>/src/common/environment/",
         "<rootDir>/src/gateways/database/data",
+        "<rootDir>/src/gateways/jwt/jwt.strategy.ts",
         "/json/",
     ],
     transform: {

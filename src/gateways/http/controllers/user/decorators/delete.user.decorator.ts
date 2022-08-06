@@ -6,7 +6,7 @@ import { UserDatabaseGatewayException } from "@gateways/database/exceptions/user
 
 import { UserNotFoundBusinessException } from "@use-cases/exceptions/user.not.found.business.exception";
 
-import { JwtAuthGuard } from "../../guards/jwt.auth.guard";
+import { JwtAuthGuard } from "../../common/guards/jwt.auth.guard";
 
 export function DeleteUserDecorator() {
     return applyDecorators(

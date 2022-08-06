@@ -1,7 +1,7 @@
 import { CallHandler } from "@nestjs/common";
 import { mock } from "jest-mock-extended";
 
-import { RequestLoggerInterceptor } from "../../../../../../src/gateways/http/controllers/interceptors/request.logger.interceptor";
+import { RequestLoggerInterceptor } from "../../../../../../src/gateways/http/controllers/common/interceptors/request.logger.interceptor";
 import { LoggerLogGateway } from "../../../../../../src/gateways/logger/logger.log.gateway";
 
 describe("Tests of RequestLoggerInterceptor", () => {

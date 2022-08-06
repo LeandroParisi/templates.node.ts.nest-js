@@ -1,6 +1,6 @@
 import { Injectable, PipeTransform } from "@nestjs/common";
 
-import { RequestValidationBase } from "@gateways/http/controllers/pipes/request.validation.base";
+import { RequestValidationBase } from "@gateways/http/controllers/common/pipes/request.validation.base";
 
 import { User } from "@domain/user";
 

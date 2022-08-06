@@ -1,7 +1,7 @@
 import { CallHandler } from "@nestjs/common";
 import { mock, anyFunction } from "jest-mock-extended";
 
-import { ResponseMapperInterceptor } from "../../../../../../src/gateways/http/controllers/interceptors/response.mapper.interceptor";
+import { ResponseMapperInterceptor } from "../../../../../../src/gateways/http/controllers/common/interceptors/response.mapper.interceptor";
 import { FindAllResponseJson } from "../../../../../../src/gateways/http/controllers/user/json/find.all.response.json";
 import { UserDataBuilder } from "../../../../../data-builders/domains/index";
 

@@ -3,7 +3,7 @@ import { Builder, IBuilder } from "builder-pattern";
 
 import { User } from "@domain/index";
 
-import { BaseResponseJson } from "../../json/base.response.json";
+import { BaseResponseJson } from "../../common/json/base.response.json";
 
 export class FindByIdResponseJson extends BaseResponseJson<User> {
     @ApiProperty()

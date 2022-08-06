@@ -6,8 +6,8 @@ import { UserDatabaseGatewayException } from "@gateways/database/exceptions/user
 
 import { UserNotFoundBusinessException } from "@use-cases/exceptions/user.not.found.business.exception";
 
-import { JwtAuthGuard } from "../../guards/jwt.auth.guard";
-import { ResponseMapperInterceptor } from "../../interceptors/response.mapper.interceptor";
+import { JwtAuthGuard } from "../../common/guards/jwt.auth.guard";
+import { ResponseMapperInterceptor } from "../../common/interceptors/response.mapper.interceptor";
 import { FindByIdResponseJson } from "../json/find.by.id.response.json";
 
 export function FindUserByIdDecorator() {
