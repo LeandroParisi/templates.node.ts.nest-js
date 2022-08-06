@@ -3,8 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { UserDatabaseGatewayException } from "@gateways/database/exceptions/user.database.gateway.exception";
-import { LoggerErrorGateway } from "@gateways/logger/interfaces/logger.error.gateway";
-import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { User } from "@domain/user";
 
@@ -31,9 +30,7 @@ export class UserDatabaseGateway
         @InjectRepository(UserEntity)
         private readonly userEntityRepository: Repository<UserEntity>,
         @Inject(LoggerLogGateway)
-        private readonly loggerLogGateway: LoggerLogGateway,
-        @Inject(LoggerErrorGateway)
-        private readonly loggerErrorGateway: LoggerErrorGateway
+        private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 
     public async findAll(): Promise<User[]> {
@@ -49,11 +46,6 @@ export class UserDatabaseGateway
                 return UserDatabaseMapper.mapperUserFromUserEntity(userEntity);
             });
         } catch (error) {
-            this.loggerErrorGateway.error({
-                class: UserDatabaseGateway.name,
-                method: "findAll",
-                meta: error,
-            });
             throw new UserDatabaseGatewayException(error.stack);
         }
     }
@@ -70,12 +62,6 @@ export class UserDatabaseGateway
 
             return UserDatabaseMapper.mapperUserFromUserEntity(userEntity);
         } catch (error) {
-            this.loggerErrorGateway.error({
-                class: UserDatabaseGateway.name,
-                method: "findByEmail",
-                meta: error,
-            });
-
             throw new UserDatabaseGatewayException(error.stack);
         }
     }
@@ -92,11 +78,6 @@ export class UserDatabaseGateway
                 UserDatabaseMapper.mapperUserEntityFromUser(user)
             );
         } catch (error) {
-            this.loggerErrorGateway.error({
-                class: UserDatabaseGateway.name,
-                method: "create",
-                meta: error,
-            });
             throw new UserDatabaseGatewayException(error.stack);
         }
     }
@@ -118,12 +99,6 @@ export class UserDatabaseGateway
                 userToUpdateMapped
             );
         } catch (error) {
-            this.loggerErrorGateway.error({
-                class: UserDatabaseGateway.name,
-                method: "update",
-                meta: error,
-            });
-
             throw new UserDatabaseGatewayException(error.stack);
         }
     }
@@ -140,12 +115,6 @@ export class UserDatabaseGateway
 
             return UserDatabaseMapper.mapperUserFromUserEntity(userEntity);
         } catch (error) {
-            this.loggerErrorGateway.error({
-                class: UserDatabaseGateway.name,
-                method: "findById",
-                meta: error,
-            });
-
             throw new UserDatabaseGatewayException(error.stack);
         }
     }
@@ -160,12 +129,6 @@ export class UserDatabaseGateway
 
             await this.userEntityRepository.delete({ id });
         } catch (error) {
-            this.loggerErrorGateway.error({
-                class: UserDatabaseGateway.name,
-                method: "deleteById",
-                meta: error,
-            });
-
             throw new UserDatabaseGatewayException(error.stack);
         }
     }

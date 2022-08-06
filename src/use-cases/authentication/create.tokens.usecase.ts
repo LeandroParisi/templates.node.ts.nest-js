@@ -4,7 +4,7 @@ import { EncryptionGateway } from "@gateways/encryption/encryption.gateway";
 import { JwtPayload } from "@gateways/jwt/jwt.payload";
 import { RefreshTokenGateway } from "@gateways/jwt/refresh.gateway.token";
 import { TokenGateway } from "@gateways/jwt/token.gateway";
-import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 @Injectable()
 export class CreateTokensUseCase {

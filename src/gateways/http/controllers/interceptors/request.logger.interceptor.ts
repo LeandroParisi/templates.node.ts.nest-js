@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor, Inject } from "@nestjs/common";
 import { Observable } from "rxjs";
 
-import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 @Injectable()
 export class RequestLoggerInterceptor implements NestInterceptor {

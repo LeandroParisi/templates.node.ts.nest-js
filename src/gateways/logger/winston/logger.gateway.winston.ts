@@ -4,12 +4,12 @@ import { Logger } from "winston";
 
 import { removeKeyOfObject } from "@gateways/logger/winston/removeKeyOfObject";
 
-import { LoggerDebugGateway } from "../interfaces/logger.debug.gateway";
-import { LoggerErrorGateway } from "../interfaces/logger.error.gateway";
-import { LoggerLogGateway } from "../interfaces/logger.log.gateway";
-import { LoggerMessage } from "../interfaces/logger.message";
-import { LoggerVerboseGateway } from "../interfaces/logger.verbose.gateway";
-import { LoggerWarnGateway } from "../interfaces/logger.warn.gateway";
+import { LoggerDebugGateway } from "../logger.debug.gateway";
+import { LoggerErrorGateway } from "../logger.error.gateway";
+import { LoggerLogGateway } from "../logger.log.gateway";
+import { LoggerMessage } from "../logger.message";
+import { LoggerVerboseGateway } from "../logger.verbose.gateway";
+import { LoggerWarnGateway } from "../logger.warn.gateway";
 
 const fieldsToRemoveFromMeta = ["password"];
 

@@ -5,7 +5,7 @@ import { EnvironmentConfigService } from "../../../../../src/common/environment/
 import { JWTGatewayException } from "../../../../../src/gateways/jwt/exceptions/jwt.gateway.exception";
 import { JwtPayload } from "../../../../../src/gateways/jwt/jwt.payload";
 import { JwtPassport } from "../../../../../src/gateways/jwt/passport/jwt.passport";
-import { LoggerLogGateway } from "../../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "../../../../../src/gateways/logger/logger.log.gateway";
 
 describe("Tests of JwtPassport", () => {
     const email = "anyEmail";

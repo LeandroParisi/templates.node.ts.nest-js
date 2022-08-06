@@ -1,7 +1,7 @@
 import { mock } from "jest-mock-extended";
 
 import { UpdateUserDatabaseGateway } from "../../../../src/gateways/database/user/update.user.database.gateway";
-import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "../../../../src/gateways/logger/logger.log.gateway";
 import { UpdateUserUseCase } from "../../../../src/use-cases/user/update.user.usecase";
 import { UserDataBuilder } from "../../../data-builders/domains/index";
 

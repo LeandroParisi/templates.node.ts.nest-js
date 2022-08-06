@@ -1,7 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Inject } from "@nestjs/common";
 import { Response, Request } from "express";
 
-import { LoggerErrorGateway } from "@gateways/logger/interfaces/logger.error.gateway";
+import { LoggerErrorGateway } from "@gateways/logger/logger.error.gateway";
 
 import { BaseException } from "@common/exceptions/base.exception";
 

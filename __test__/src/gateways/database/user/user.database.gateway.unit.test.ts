@@ -5,28 +5,21 @@ import { User } from "../../../../../src/domain/user";
 import { UserEntity } from "../../../../../src/gateways/database/data/user.entity";
 import { UserDatabaseGatewayException } from "../../../../../src/gateways/database/exceptions/user.database.gateway.exception";
 import { UserDatabaseGateway } from "../../../../../src/gateways/database/user/postgres/user.database.gateway";
-import { LoggerErrorGateway } from "../../../../../src/gateways/logger/interfaces/logger.error.gateway";
-import { LoggerLogGateway } from "../../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "../../../../../src/gateways/logger/logger.log.gateway";
 import { UserEntityDataBuilder } from "../../../../data-builders/data/index";
 import { UserDataBuilder } from "../../../../data-builders/domains/index";
 
 describe("Tests of UserDatabaseGateway", () => {
     const mockedLoggerLogGateway = mock<LoggerLogGateway>();
     const userRepositoryMocked = mock<Repository<UserEntity>>();
-    const logErrorGateway = mock<LoggerErrorGateway>();
 
     let userDatabaseGateway: UserDatabaseGateway;
 
     beforeEach(() => {
         mockReset(mockedLoggerLogGateway);
         mockReset(userRepositoryMocked);
-        mockReset(logErrorGateway);
 
-        userDatabaseGateway = new UserDatabaseGateway(
-            userRepositoryMocked,
-            mockedLoggerLogGateway,
-            logErrorGateway
-        );
+        userDatabaseGateway = new UserDatabaseGateway(userRepositoryMocked, mockedLoggerLogGateway);
     });
 
     it("Should be create user with success", async () => {
@@ -57,12 +50,6 @@ describe("Tests of UserDatabaseGateway", () => {
         );
 
         expect(userRepositoryMocked.insert).toBeCalledWith(userToCreate);
-
-        expect(logErrorGateway.error).toBeCalledWith({
-            class: "UserDatabaseGateway",
-            method: "create",
-            meta: anyObject(),
-        });
     });
 
     it("Should be find user by email with success", async () => {
@@ -128,12 +115,6 @@ describe("Tests of UserDatabaseGateway", () => {
             meta: "anyEmail",
             method: "findByEmail",
         });
-
-        expect(logErrorGateway.error).toBeCalledWith({
-            class: "UserDatabaseGateway",
-            method: "findByEmail",
-            meta: anyObject(),
-        });
     });
 
     it("Should be find all users with success", async () => {
@@ -172,12 +153,6 @@ describe("Tests of UserDatabaseGateway", () => {
             class: "UserDatabaseGateway",
             method: "findAll",
         });
-
-        expect(logErrorGateway.error).toBeCalledWith({
-            class: "UserDatabaseGateway",
-            method: "findAll",
-            meta: anyObject(),
-        });
     });
 
     it("Should be update user with success", async () => {
@@ -214,12 +189,6 @@ describe("Tests of UserDatabaseGateway", () => {
             class: "UserDatabaseGateway",
             method: "update",
             meta: userToUpdate,
-        });
-
-        expect(logErrorGateway.error).toBeCalledWith({
-            class: "UserDatabaseGateway",
-            method: "update",
-            meta: anyObject(),
         });
     });
 
@@ -268,12 +237,6 @@ describe("Tests of UserDatabaseGateway", () => {
             meta: id,
             method: "findById",
         });
-
-        expect(logErrorGateway.error).toBeCalledWith({
-            class: "UserDatabaseGateway",
-            method: "findById",
-            meta: anyObject(),
-        });
     });
 
     it("Should be deleted user by id with error", async () => {
@@ -288,12 +251,6 @@ describe("Tests of UserDatabaseGateway", () => {
         expect(mockedLoggerLogGateway.log).toBeCalledWith({
             class: "UserDatabaseGateway",
             meta: id,
-            method: "deleteById",
-        });
-
-        expect(logErrorGateway.error).toBeCalledWith({
-            class: "UserDatabaseGateway",
-            meta: anyObject(),
             method: "deleteById",
         });
     });

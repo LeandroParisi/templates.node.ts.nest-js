@@ -1,7 +1,7 @@
 import { mock, MockProxy } from "jest-mock-extended";
 import { Logger } from "winston";
 
-import { LoggerMessage } from "../../../../../src/gateways/logger/interfaces/logger.message";
+import { LoggerMessage } from "../../../../../src/gateways/logger/logger.message";
 import { LoggerGatewayWinston } from "../../../../../src/gateways/logger/winston/logger.gateway.winston";
 
 describe("Tests of LoggerGatewayNest", () => {

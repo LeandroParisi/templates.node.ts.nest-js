@@ -4,7 +4,7 @@ import { mock, anyString } from "jest-mock-extended";
 import { DefaultException } from "../../../../src/common/exceptions/default.exception";
 import { ExceptionHandler } from "../../../../src/common/filters/exception/exception.filter";
 import { UserDatabaseGatewayException } from "../../../../src/gateways/database/exceptions/user.database.gateway.exception";
-import { LoggerErrorGateway } from "../../../../src/gateways/logger/interfaces/logger.error.gateway";
+import { LoggerErrorGateway } from "../../../../src/gateways/logger/logger.error.gateway";
 
 describe("Tests of ExceptionHandler", () => {
     beforeEach(() => {
