@@ -1,15 +1,18 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { FindUserByEmailDatabaseGateway } from "@gateways/database/user/find.user.by.email.gateway";
-import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import {
+    FindUserByEmailDatabaseGatewayKey,
+    FindUserByEmailDatabaseGateway,
+} from "@gateways/database/user/find.user.by.email.gateway";
+import { LoggerLogGatewayKey, LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 @Injectable()
 export class FindUserByEmailUseCase {
     constructor(
-        @Inject(FindUserByEmailDatabaseGateway)
+        @Inject(FindUserByEmailDatabaseGatewayKey)
         private readonly findUserByEmailDatabaseGateway: FindUserByEmailDatabaseGateway,
-        @Inject(LoggerLogGateway)
+        @Inject(LoggerLogGatewayKey)
         private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 
@@ -20,6 +23,6 @@ export class FindUserByEmailUseCase {
             method: "find",
         });
 
-        return await this.findUserByEmailDatabaseGateway.findByEmail(email);
+        return this.findUserByEmailDatabaseGateway.findByEmail(email);
     }
 }

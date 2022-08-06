@@ -1,5 +1,4 @@
-import { Put, UseGuards } from "@nestjs/common";
-import { applyDecorators } from "@nestjs/common";
+import { Put, UseGuards, applyDecorators } from "@nestjs/common";
 import { ApiResponse, ApiBody } from "@nestjs/swagger";
 
 import { UserDatabaseGatewayException } from "@gateways/database/exceptions/user.database.gateway.exception";

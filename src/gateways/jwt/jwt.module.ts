@@ -7,8 +7,8 @@ import { EnvironmentConfigModule } from "@common/environment/app.configuration.m
 import { LoggerModule } from "../logger/logger.module";
 import { JwtStrategy } from "./jwt.strategy";
 import { JwtPassport } from "./passport/jwt.passport";
-import { RefreshTokenGateway } from "./refresh.gateway.token";
-import { TokenGateway } from "./token.gateway";
+import { RefreshTokenGatewayKey } from "./refresh.gateway.token";
+import { TokenGatewayKey } from "./token.gateway";
 
 @Module({
     imports: [
@@ -21,15 +21,15 @@ import { TokenGateway } from "./token.gateway";
     ],
     providers: [
         {
-            provide: TokenGateway,
+            provide: TokenGatewayKey,
             useClass: JwtPassport,
         },
         {
-            provide: RefreshTokenGateway,
+            provide: RefreshTokenGatewayKey,
             useClass: JwtPassport,
         },
         JwtStrategy,
     ],
-    exports: [TokenGateway, RefreshTokenGateway],
+    exports: [TokenGatewayKey, RefreshTokenGatewayKey],
 })
 export class JwtModule {}

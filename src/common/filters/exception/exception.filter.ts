@@ -1,7 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Inject } from "@nestjs/common";
 import { Response, Request } from "express";
 
-import { LoggerErrorGateway } from "@gateways/logger/logger.error.gateway";
+import { LoggerErrorGateway, LoggerErrorGatewayKey } from "@gateways/logger/logger.error.gateway";
 
 import { BaseException } from "@common/exceptions/base.exception";
 
@@ -12,7 +12,7 @@ import { FilterMeta } from "./filter.meta";
 @Catch()
 export class ExceptionHandler implements ExceptionFilter {
     constructor(
-        @Inject(LoggerErrorGateway)
+        @Inject(LoggerErrorGatewayKey)
         private readonly loggerErrorGateway: LoggerErrorGateway
     ) {}
 
@@ -46,8 +46,7 @@ export class ExceptionHandler implements ExceptionFilter {
         const { stack } = httpException;
         const statusCode = httpException.getStatus();
         const message = httpException.message;
-        const codes =
-            (httpException as PipeException).codes && (httpException as PipeException).codes;
+        const codes = (httpException as PipeException).codes || [];
 
         this.loggerErrorGateway.error({
             class: ExceptionHandler.name,

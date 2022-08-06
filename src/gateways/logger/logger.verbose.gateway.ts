@@ -4,4 +4,4 @@ export interface LoggerVerboseGateway {
     verbose(loggerMessage: LoggerMessage): void;
 }
 
-export const LoggerVerboseGateway = Symbol("LoggerVerboseGateway");
+export const LoggerVerboseGatewayKey = Symbol("LoggerVerboseGateway");

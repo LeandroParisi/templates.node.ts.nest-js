@@ -18,7 +18,7 @@ export class ResponseAuthMapperInterceptor implements NestInterceptor {
         return next.handle().pipe(
             map((user: User) => {
                 contextResponse.setHeader("ACCESS_TOKEN", user.accessToken);
-                contextResponse.setHeader("REFRESH_TOKEN", user.accessToken);
+                contextResponse.setHeader("REFRESH_TOKEN", user.refreshToken);
 
                 return AuthenticationResponseJson.builder()
                     .email(user.email)

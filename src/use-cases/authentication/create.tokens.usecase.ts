@@ -1,19 +1,19 @@
 import { Injectable, Inject } from "@nestjs/common";
 
-import { EncryptionGateway } from "@gateways/encryption/encryption.gateway";
+import { EncryptionGatewayKey, EncryptionGateway } from "@gateways/encryption/encryption.gateway";
 import { JwtPayload } from "@gateways/jwt/jwt.payload";
-import { RefreshTokenGateway } from "@gateways/jwt/refresh.gateway.token";
-import { TokenGateway } from "@gateways/jwt/token.gateway";
-import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import { RefreshTokenGatewayKey, RefreshTokenGateway } from "@gateways/jwt/refresh.gateway.token";
+import { TokenGatewayKey, TokenGateway } from "@gateways/jwt/token.gateway";
+import { LoggerLogGatewayKey, LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 @Injectable()
 export class CreateTokensUseCase {
     constructor(
-        @Inject(TokenGateway) private readonly tokenGateway: TokenGateway,
-        @Inject(RefreshTokenGateway) private readonly refreshTokenGateway: RefreshTokenGateway,
-        @Inject(LoggerLogGateway)
+        @Inject(TokenGatewayKey) private readonly tokenGateway: TokenGateway,
+        @Inject(RefreshTokenGatewayKey) private readonly refreshTokenGateway: RefreshTokenGateway,
+        @Inject(LoggerLogGatewayKey)
         private readonly loggerLogGateway: LoggerLogGateway,
-        @Inject(EncryptionGateway)
+        @Inject(EncryptionGatewayKey)
         private readonly encryptionGateway: EncryptionGateway
     ) {}
 

@@ -206,7 +206,7 @@ describe("Tests e2e UserController", () => {
 
         it("Should be finded user by id with error user not found", async () => {
             const response = await request(server.getHttpServer())
-                .get("/user/111")
+                .get("/user/0")
                 .set("Authorization", `Bearer ${accessToken}`)
                 .send();
 

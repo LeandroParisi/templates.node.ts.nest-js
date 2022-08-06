@@ -1,7 +1,10 @@
 import { Injectable, Inject } from "@nestjs/common";
 
-import { FindUserByIdDatabaseGateway } from "@gateways/database/user/find.user.by.id.database.gateway";
-import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import {
+    FindUserByIdDatabaseGatewayKey,
+    FindUserByIdDatabaseGateway,
+} from "@gateways/database/user/find.user.by.id.database.gateway";
+import { LoggerLogGatewayKey, LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { User } from "@domain/user";
 
@@ -10,9 +13,9 @@ import { UserNotFoundBusinessException } from "../exceptions/user.not.found.busi
 @Injectable()
 export class FindUserByIdUserUseCase {
     constructor(
-        @Inject(FindUserByIdDatabaseGateway)
+        @Inject(FindUserByIdDatabaseGatewayKey)
         private readonly findUserByIdDatabaseGateway: FindUserByIdDatabaseGateway,
-        @Inject(LoggerLogGateway)
+        @Inject(LoggerLogGatewayKey)
         private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 

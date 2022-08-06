@@ -4,4 +4,4 @@ export interface FindAllUserDatabaseGateway {
     findAll(): Promise<User[]>;
 }
 
-export const FindAllUserDatabaseGateway = Symbol("FindAllUserDatabaseGateway");
+export const FindAllUserDatabaseGatewayKey = Symbol("FindAllUserDatabaseGateway");

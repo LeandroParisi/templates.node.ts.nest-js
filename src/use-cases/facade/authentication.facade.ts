@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import { LoggerLogGatewayKey, LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { AuthenticationUseCase } from "../authentication/authentication.usecase";
 
@@ -9,7 +9,7 @@ import { AuthenticationUseCase } from "../authentication/authentication.usecase"
 export class AuthenticationFacade {
     constructor(
         private readonly authenticationUseCase: AuthenticationUseCase,
-        @Inject(LoggerLogGateway)
+        @Inject(LoggerLogGatewayKey)
         private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 

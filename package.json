@@ -13,9 +13,9 @@
     "start:dev": "export NODE_ENV=development && yarn apply:dev:keys && nest start --watch",
     "start:debug": "export NODE_ENV=development && yarn apply:dev:keys && nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" -f json -o reports/eslint-report.json  --quiet --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "test": "export NODE_ENV=test && jest --detectOpenHandles --forceExit",
+    "test": "export NODE_ENV=test && jest --detectOpenHandles --forceExit --coverage --testResultsProcessor jest-sonar-reporter",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config jest.config.e2e.js --detectOpenHandles --forceExit",
     "test:e2e:docker": "yarn apply:test:keys && export NODE_ENV=test && docker-compose --env-file .env.test -f docker-compose.e2e.yml up --abort-on-container-exit --exit-code-from app",
@@ -93,6 +93,7 @@
     "jest-mock-extended": "^2.0.6",
     "jest-sonar-reporter": "^2.0.0",
     "jest-when": "^3.5.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.4.1",
     "sonarqube-scanner": "^2.8.1",
     "source-map-support": "^0.5.20",
@@ -106,7 +107,7 @@
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
-      "npm run lint"
+      "yarn eslint"
     ]
   },
   "jestSonar": {

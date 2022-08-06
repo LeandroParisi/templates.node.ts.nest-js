@@ -1,0 +1,78 @@
+image: node:latest
+
+stages:
+    - install
+    - test
+    - e2eTest
+    - lint
+    - sonar
+
+
+install:
+    stage: install
+    cache: 
+        key: $CI_PROJECT_DIR
+        paths:
+            - node_modules/
+    script:
+        - yarn install
+    only:
+        changes:
+            - yarn.lock
+test:
+    stage: test
+    cache: 
+        key: $CI_PROJECT_DIR
+        paths:
+            - node_modules/
+        policy: pull
+    script:
+        - yarn test
+    artifacts:
+        when: on_success
+        paths:
+            - reports/test-report.xml
+            - coverage/lcov.info
+        expire_in: 1 week
+
+lint:    
+    stage: lint
+    cache: 
+        key: $CI_PROJECT_DIR
+        paths:
+            - node_modules/
+        policy: pull
+    script:
+        - yarn lint        
+    artifacts:
+        when: on_success
+        paths:
+            - reports/eslint-report.json
+        expire_in: 1 week
+
+e2eTest:
+    stage: e2eTest
+    image: docker/compose:latest
+    services:
+        - docker:dind
+    script:
+        - apk add gettext
+        - envsubst < app-env-keys.txt > .env.test
+        - docker-compose --env-file .env.test -f docker-compose.e2e.yml up --abort-on-container-exit --exit-code-from app
+    rules:
+        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+sonar:
+    stage: sonar
+    image:
+        name: sonarsource/sonar-scanner-cli:latest
+        entrypoint: [""]
+    variables:
+        GIT_DEPTH: 0
+        SONAR_PROJECT_BASE_DIR: ./
+    script:
+        - pwd
+        - ls -l
+        - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.sources=$SONAR_SOURCES
+    rules:
+        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'

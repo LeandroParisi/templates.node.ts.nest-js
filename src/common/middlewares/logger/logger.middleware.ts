@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware, Inject } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
 import * as requestIp from "request-ip";
 
-import { LoggerErrorGateway } from "@gateways/logger/logger.error.gateway";
+import { LoggerErrorGatewayKey } from "@gateways/logger/logger.error.gateway";
 import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { LoggerMeta } from "./logger.meta";
@@ -10,7 +10,7 @@ import { LoggerMeta } from "./logger.meta";
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
     constructor(
-        @Inject(LoggerErrorGateway)
+        @Inject(LoggerErrorGatewayKey)
         private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 

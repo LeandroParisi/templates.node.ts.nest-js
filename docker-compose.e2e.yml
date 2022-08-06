@@ -11,8 +11,7 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     working_dir: /usr/src/app
-    command: >
-        sh -c "yarn && yarn test:e2e"
+    command: yarn test:e2e
     networks:
       - webnet
     depends_on:

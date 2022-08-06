@@ -4,21 +4,21 @@ import { PassportModule } from "@nestjs/passport";
 import { EnvironmentConfigModule } from "@common/environment/app.configuration.module";
 
 import { CryptoGateway } from "./crypto/crypto.gateway";
-import { DecryptionGateway } from "./decryption.gateway";
-import { EncryptionGateway } from "./encryption.gateway";
+import { DecryptionGatewayKey } from "./decryption.gateway";
+import { EncryptionGatewayKey } from "./encryption.gateway";
 
 @Module({
     imports: [EnvironmentConfigModule, PassportModule],
     providers: [
         {
-            provide: EncryptionGateway,
+            provide: EncryptionGatewayKey,
             useClass: CryptoGateway,
         },
         {
-            provide: DecryptionGateway,
+            provide: DecryptionGatewayKey,
             useClass: CryptoGateway,
         },
     ],
-    exports: [DecryptionGateway, EncryptionGateway],
+    exports: [DecryptionGatewayKey, EncryptionGatewayKey],
 })
 export class EncryptionGatewayModule {}

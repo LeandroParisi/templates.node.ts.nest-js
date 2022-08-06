@@ -4,4 +4,4 @@ export interface FindUserByIdDatabaseGateway {
     findById(id: number): Promise<User | null>;
 }
 
-export const FindUserByIdDatabaseGateway = Symbol("FindUserByIdDatabaseGateway");
+export const FindUserByIdDatabaseGatewayKey = Symbol("FindUserByIdDatabaseGateway");

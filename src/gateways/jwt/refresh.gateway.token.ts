@@ -4,4 +4,4 @@ export interface RefreshTokenGateway {
     createRefreshToken(jwtPayload: JwtPayload): string;
 }
 
-export const RefreshTokenGateway = Symbol("RefreshTokenGateway");
+export const RefreshTokenGatewayKey = Symbol("RefreshTokenGateway");

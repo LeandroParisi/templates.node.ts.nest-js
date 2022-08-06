@@ -1,16 +1,19 @@
 import { Injectable, Inject } from "@nestjs/common";
 
-import { DeleteUserByIdDatabaseGateway } from "@gateways/database/user/delete.user.by.id.database.gateway";
-import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import {
+    DeleteUserByIdDatabaseGatewayKey,
+    DeleteUserByIdDatabaseGateway,
+} from "@gateways/database/user/delete.user.by.id.database.gateway";
+import { LoggerLogGatewayKey, LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { FindUserByIdUserUseCase } from "./find.user.by.id.usecase";
 
 @Injectable()
 export class DeleteUserByIdUseCase {
     constructor(
-        @Inject(DeleteUserByIdDatabaseGateway)
+        @Inject(DeleteUserByIdDatabaseGatewayKey)
         private readonly deleteUserByIdDatabaseGateway: DeleteUserByIdDatabaseGateway,
-        @Inject(LoggerLogGateway)
+        @Inject(LoggerLogGatewayKey)
         private readonly loggerLogGateway: LoggerLogGateway,
         private readonly findUserByIdUserUseCase: FindUserByIdUserUseCase
     ) {}

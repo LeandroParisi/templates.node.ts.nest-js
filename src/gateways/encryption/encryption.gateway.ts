@@ -2,4 +2,4 @@ export interface EncryptionGateway {
     encrypt(value: string): Promise<string>;
 }
 
-export const EncryptionGateway = Symbol("EncryptionGateway");
+export const EncryptionGatewayKey = Symbol("EncryptionGateway");

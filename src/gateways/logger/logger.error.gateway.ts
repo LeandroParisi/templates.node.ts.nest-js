@@ -4,4 +4,4 @@ export interface LoggerErrorGateway {
     error(loggerMessage: LoggerMessage): void;
 }
 
-export const LoggerErrorGateway = Symbol("LoggerErrorGateway");
+export const LoggerErrorGatewayKey = Symbol("LoggerErrorGateway");

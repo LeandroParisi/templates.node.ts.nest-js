@@ -38,8 +38,7 @@ export async function deleteAllUsersBeforeTests(userRepository: Repository<UserE
 export async function authenticate(email: string, password: string) {
     const authenticationResponse = await request(server.getHttpServer())
         .post("/auth/login")
-        .send({ email, password })
-        .expect(201);
+        .send({ email, password });
 
     return authenticationResponse.headers["access_token"];
 }

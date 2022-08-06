@@ -1,15 +1,18 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { FindAllUserDatabaseGateway } from "@gateways/database/user/findall.user.database.gateway";
-import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import {
+    FindAllUserDatabaseGatewayKey,
+    FindAllUserDatabaseGateway,
+} from "@gateways/database/user/findall.user.database.gateway";
+import { LoggerLogGatewayKey, LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 @Injectable()
 export class FindAllUserUseCase {
     constructor(
-        @Inject(FindAllUserDatabaseGateway)
+        @Inject(FindAllUserDatabaseGatewayKey)
         private readonly findAllUserDatabaseGateway: FindAllUserDatabaseGateway,
-        @Inject(LoggerLogGateway)
+        @Inject(LoggerLogGatewayKey)
         private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 
@@ -19,6 +22,6 @@ export class FindAllUserUseCase {
             method: "findAll",
         });
 
-        return await this.findAllUserDatabaseGateway.findAll();
+        return this.findAllUserDatabaseGateway.findAll();
     }
 }

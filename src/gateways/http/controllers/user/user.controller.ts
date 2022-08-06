@@ -28,7 +28,7 @@ export class UserController {
 
     @FindAllUserDecorator()
     public async findAll(): Promise<User[]> {
-        return await this.userFacade.findAll();
+        return this.userFacade.findAll();
     }
 
     @UpdateUserDecorator()
@@ -38,7 +38,7 @@ export class UserController {
 
     @FindUserByIdDecorator()
     public async findById(@Param("id", ParseIntPipe) id: number): Promise<User> {
-        return await this.userFacade.findById(id);
+        return this.userFacade.findById(id);
     }
 
     @DeleteUserDecorator()

@@ -1,16 +1,19 @@
 import { Injectable, Inject } from "@nestjs/common";
 
-import { UpdateUserDatabaseGateway } from "@gateways/database/user/update.user.database.gateway";
-import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import {
+    UpdateUserDatabaseGatewayKey,
+    UpdateUserDatabaseGateway,
+} from "@gateways/database/user/update.user.database.gateway";
+import { LoggerLogGatewayKey, LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { User } from "@domain/user";
 
 @Injectable()
 export class UpdateUserUseCase {
     constructor(
-        @Inject(UpdateUserDatabaseGateway)
+        @Inject(UpdateUserDatabaseGatewayKey)
         private readonly updateUserDatabaseGateway: UpdateUserDatabaseGateway,
-        @Inject(LoggerLogGateway)
+        @Inject(LoggerLogGatewayKey)
         private readonly loggerLogGateway: LoggerLogGateway
     ) {}
 

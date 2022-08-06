@@ -4,4 +4,4 @@ export interface LoggerWarnGateway {
     warn(LoggerMessage: LoggerMessage): void;
 }
 
-export const LoggerWarnGateway = Symbol("LoggerWarnGateway");
+export const LoggerWarnGatewayKey = Symbol("LoggerWarnGateway");

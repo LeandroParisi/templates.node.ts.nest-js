@@ -4,8 +4,8 @@ import {
     MiddlewareConsumer,
     CacheModule,
     CacheModuleOptions,
+    CacheInterceptor,
 } from "@nestjs/common";
-import { CacheInterceptor } from "@nestjs/common";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import * as redisStore from "cache-manager-redis-store";
 

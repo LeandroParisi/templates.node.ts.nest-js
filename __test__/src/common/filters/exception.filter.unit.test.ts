@@ -43,7 +43,7 @@ describe("Tests of ExceptionHandler", () => {
                 statusCode: 500,
                 message: exception.message,
                 stack: stack,
-                codes: undefined,
+                codes: [],
             },
             method: "logError",
         });
@@ -65,7 +65,7 @@ describe("Tests of ExceptionHandler", () => {
                 statusCode: 500,
                 message: exception.message,
                 stack: anyString(),
-                codes: undefined,
+                codes: [],
             },
             method: "logError",
         });
@@ -118,7 +118,7 @@ describe("Tests of ExceptionHandler", () => {
                 statusCode: 500,
                 message: "Open Finance Default Error.",
                 stack: anyString(),
-                codes: undefined,
+                codes: [],
             },
             method: "logError",
         });

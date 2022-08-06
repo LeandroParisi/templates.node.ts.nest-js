@@ -400,3 +400,4 @@ Temporary Items
 .env.*
 dist
 ./log
+reports/

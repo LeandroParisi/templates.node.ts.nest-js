@@ -3,7 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 
 import { EnvironmentConfigService } from "@common/environment/app.configuration.service";
 
-import { LoggerLogGateway } from "../../logger/logger.log.gateway";
+import { LoggerLogGatewayKey, LoggerLogGateway } from "../../logger/logger.log.gateway";
 import { JWTGatewayException } from "../exceptions/jwt.gateway.exception";
 import { JwtPayload } from "../jwt.payload";
 import { RefreshTokenGateway } from "../refresh.gateway.token";
@@ -12,7 +12,7 @@ import { TokenGateway } from "../token.gateway";
 @Injectable()
 export class JwtPassport implements TokenGateway, RefreshTokenGateway {
     constructor(
-        @Inject(LoggerLogGateway)
+        @Inject(LoggerLogGatewayKey)
         private readonly loggerLogGateway: LoggerLogGateway,
         private readonly jwtTokenService: JwtService,
         private readonly environmentConfigService: EnvironmentConfigService
