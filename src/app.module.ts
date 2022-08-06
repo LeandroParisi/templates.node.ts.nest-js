@@ -10,11 +10,12 @@ import { APP_INTERCEPTOR } from "@nestjs/core";
 import * as redisStore from "cache-manager-redis-store";
 
 import { TypeOrmPostgresConfigModule } from "@gateways/database/user/postgres/typeorm.postgres.module";
+import { AuthenticationControllerModule } from "@gateways/http/controllers/authentication/authentication.controller.module";
 import { UserControllerModule } from "@gateways/http/controllers/user/user.controller.module";
 import { LoggerModule } from "@gateways/logger/logger.module";
 
-import { EnvironmentConfigService } from "@common/environment/app-configuration.service";
 import { EnvironmentConfigModule } from "@common/environment/app.configuration.module";
+import { EnvironmentConfigService } from "@common/environment/app.configuration.service";
 import { LoggerMiddleware } from "@common/middlewares/logger/logger.middleware";
 
 const redisFactory = (config: EnvironmentConfigService): CacheModuleOptions => {
@@ -30,6 +31,7 @@ const redisFactory = (config: EnvironmentConfigService): CacheModuleOptions => {
 @Module({
     imports: [
         UserControllerModule,
+        AuthenticationControllerModule,
         EnvironmentConfigModule,
         TypeOrmPostgresConfigModule,
         LoggerModule,

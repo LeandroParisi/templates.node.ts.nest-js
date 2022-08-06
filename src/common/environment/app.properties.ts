@@ -13,4 +13,9 @@ export type AppProperties = {
     REDIS_HOST: string;
     REDIS_PORT: number;
     REDIS_PASSWORD: string;
+    JWT_SECRET: string;
+    JWT_EXPIRATION_TIME: number;
+    JWT_REFRESH_TOKEN_EXPIRATION_TIME: number;
+    ENCRYPTION_PASSWORD: string;
+    ENCRYPTION_IV: string;
 };

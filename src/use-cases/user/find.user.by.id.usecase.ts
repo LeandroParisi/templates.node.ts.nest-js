@@ -5,7 +5,7 @@ import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway
 
 import { User } from "@domain/user";
 
-import { UserNotFoundBusinessException } from "../exceptions/user.not.found.business.execption";
+import { UserNotFoundBusinessException } from "../exceptions/user.not.found.business.exception";
 
 @Injectable()
 export class FindUserByIdUserUseCase {

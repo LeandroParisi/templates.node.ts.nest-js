@@ -10,7 +10,12 @@ import { FindAllResponseJson } from "../../../src/gateways/http/controllers/user
 import { FindByIdResponseJson } from "../../../src/gateways/http/controllers/user/json/find.by.id.response.json";
 import { UpdateUserRequestJson } from "../../../src/gateways/http/controllers/user/json/update.user.request.json";
 import { UserEntityDataBuilder } from "../../data-builders/data/index";
-import { startTestServer } from "../utils";
+import {
+    startTestServer,
+    crateUserToUseOnTests,
+    deleteAllUsersBeforeTests,
+    authenticate,
+} from "../utils";
 
 describe("Tests e2e UserController", () => {
     let server: INestApplication;
@@ -75,12 +80,18 @@ describe("Tests e2e UserController", () => {
 
         let expectedUsersResponse: FindAllResponseJson[];
 
+        let accessToken = "";
+
         beforeAll(async () => {
             cache = server.get(CACHE_MANAGER);
 
             await deleteAllUsersBeforeTests(userRepository);
 
             const usersSaved = await crateUserToUseOnTests(userRepository, userEntities);
+
+            const userToAuthenticate = usersSaved[0];
+
+            accessToken = await authenticate(userToAuthenticate.email, userToAuthenticate.password);
 
             expectedUsersResponse = usersSaved.map((userEntity) => {
                 return FindAllResponseJson.builder()
@@ -95,13 +106,21 @@ describe("Tests e2e UserController", () => {
         it("Should find all users with success", async () => {
             cache.del(process.env.CACHE_USERS_KEY || "");
 
-            const response = await request(server.getHttpServer()).get("/user").send().expect(200);
+            const response = await request(server.getHttpServer())
+                .get("/user")
+                .set("Authorization", `Bearer ${accessToken}`)
+                .send()
+                .expect(200);
 
             expect(response.body).toEqual(expectedUsersResponse);
         });
 
         it("Should find all users with cache", async () => {
-            const response = await request(server.getHttpServer()).get("/user").send().expect(200);
+            const response = await request(server.getHttpServer())
+                .get("/user")
+                .set("Authorization", `Bearer ${accessToken}`)
+                .send()
+                .expect(200);
 
             expect(response.body).toEqual(expectedUsersResponse);
         });
@@ -110,24 +129,34 @@ describe("Tests e2e UserController", () => {
     describe("Should be executed tests to update user", () => {
         const userEntities = UserEntityDataBuilder.create.buildList(1);
 
-        let usersCreated: UserEntity[];
+        let usersSaved: UserEntity[];
+
+        let accessToken = "";
 
         beforeAll(async () => {
             await deleteAllUsersBeforeTests(userRepository);
 
-            usersCreated = await crateUserToUseOnTests(userRepository, userEntities);
+            usersSaved = await crateUserToUseOnTests(userRepository, userEntities);
+
+            const userToAuthenticate = usersSaved[0];
+
+            accessToken = await authenticate(userToAuthenticate.email, userToAuthenticate.password);
         });
 
         it("Should update user with success", async () => {
             const userToUpdate = UpdateUserRequestJson.builder()
-                .email(usersCreated[0].email)
-                .firstName(usersCreated[0].firstName)
+                .email(usersSaved[0].email)
+                .firstName(usersSaved[0].firstName)
                 .lastName(faker.name.findName())
-                .password(usersCreated[0].password)
-                .id(usersCreated[0].id || 0)
+                .password(usersSaved[0].password)
+                .id(usersSaved[0].id || 0)
                 .build();
 
-            await request(server.getHttpServer()).put("/user").send(userToUpdate).expect(200);
+            await request(server.getHttpServer())
+                .put("/user")
+                .set("Authorization", `Bearer ${accessToken}`)
+                .send(userToUpdate)
+                .expect(200);
 
             const userToUpdateFinded = await userRepository.findOne({
                 where: { id: userToUpdate.id },
@@ -146,10 +175,16 @@ describe("Tests e2e UserController", () => {
 
         let findByIdResponseJsonExpected: FindByIdResponseJson;
 
+        let accessToken = "";
+
         beforeAll(async () => {
             await deleteAllUsersBeforeTests(userRepository);
 
             const usersSaved = await crateUserToUseOnTests(userRepository, userEntities);
+
+            const userToAuthenticate = usersSaved[0];
+
+            accessToken = await authenticate(userToAuthenticate.email, userToAuthenticate.password);
 
             findByIdResponseJsonExpected = FindAllResponseJson.builder()
                 .email(usersSaved[0].email)
@@ -162,6 +197,7 @@ describe("Tests e2e UserController", () => {
         it("Should be finded user by id with success", async () => {
             const response = await request(server.getHttpServer())
                 .get(`/user/${findByIdResponseJsonExpected.id}`)
+                .set("Authorization", `Bearer ${accessToken}`)
                 .send()
                 .expect(200);
 
@@ -169,7 +205,10 @@ describe("Tests e2e UserController", () => {
         });
 
         it("Should be finded user by id with error user not found", async () => {
-            const response = await request(server.getHttpServer()).get("/user/111").send();
+            const response = await request(server.getHttpServer())
+                .get("/user/111")
+                .set("Authorization", `Bearer ${accessToken}`)
+                .send();
 
             expect(response.statusCode).toEqual(404);
         });
@@ -180,16 +219,23 @@ describe("Tests e2e UserController", () => {
 
         let userEntityToDelete: UserEntity;
 
+        let accessToken = "";
+
         beforeAll(async () => {
             await deleteAllUsersBeforeTests(userRepository);
 
             const usersSaved = await crateUserToUseOnTests(userRepository, userEntities);
             userEntityToDelete = usersSaved[0];
+
+            const userToAuthenticate = usersSaved[1];
+
+            accessToken = await authenticate(userToAuthenticate.email, userToAuthenticate.password);
         });
 
         it("Should be deleted user by id with success", async () => {
             await request(server.getHttpServer())
                 .delete(`/user/${userEntityToDelete.id}`)
+                .set("Authorization", `Bearer ${accessToken}`)
                 .send()
                 .expect(200);
 
@@ -201,18 +247,3 @@ describe("Tests e2e UserController", () => {
         });
     });
 });
-
-async function crateUserToUseOnTests(
-    userRepository: Repository<UserEntity>,
-    userEntities: UserEntity[]
-) {
-    return await userRepository.save(userEntities);
-}
-
-async function deleteAllUsersBeforeTests(userRepository: Repository<UserEntity>) {
-    const allUsers = await userRepository.find();
-
-    for (const user of allUsers) {
-        await userRepository.remove([user]);
-    }
-}

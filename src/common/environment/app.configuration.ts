@@ -13,4 +13,9 @@ export interface AppConfiguration {
     getRedisHost(): string;
     getRedisPort(): number;
     getRedisPassword(): string;
+    getJwtSecret(): string;
+    getJwtExpirationTime(): number;
+    getJwtRefreshTokenExpirationTime(): number;
+    getEncryptionPassword(): string;
+    getEncryptionIV(): string;
 }
