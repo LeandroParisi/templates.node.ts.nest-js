@@ -2,8 +2,8 @@ import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
 import { CreateUserDatabaseGateway } from "@gateways/database/user/crate.user.database.gateway";
-import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
-import { LoggerWarnGateway } from "@gateways/logger/interfaces/logger.warn.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
+import { LoggerWarnGateway } from "@gateways/logger/logger.warn.gateway";
 
 import { EmailAlreadyExistsBusinessException } from "../exceptions/email.already.register.business.exception";
 import { FindUserByEmailUseCase } from "./find.user.by.email.usecase";

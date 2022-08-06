@@ -1,7 +1,7 @@
 import { mock, mockReset } from "jest-mock-extended";
 
 import { User } from "../../../../src/domain/user";
-import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "../../../../src/gateways/logger/logger.log.gateway";
 import { AuthenticationUseCase } from "../../../../src/use-cases/authentication/authentication.usecase";
 import { CreateTokensUseCase } from "../../../../src/use-cases/authentication/create.tokens.usecase";
 import { IncorrectCredentialsBusinessException } from "../../../../src/use-cases/authentication/exceptions/incorrect.credentials.business.exception";

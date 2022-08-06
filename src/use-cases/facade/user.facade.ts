@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { User } from "src/domain/index";
 
-import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import {
     CreateUserUseCase,

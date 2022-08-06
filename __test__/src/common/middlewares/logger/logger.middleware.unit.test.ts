@@ -3,7 +3,7 @@ import { when } from "jest-when";
 import * as RequestIp from "request-ip";
 
 import { LoggerMiddleware } from "../../../../../src/common/middlewares/logger/logger.middleware";
-import { LoggerLogGateway } from "../../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "../../../../../src/gateways/logger/logger.log.gateway";
 
 describe("Tests of LoggerMiddleware", () => {
     beforeEach(() => {

@@ -2,7 +2,7 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as cookieParser from "cookie-parser";
 
-import { LoggerErrorGateway } from "@gateways/logger/interfaces/logger.error.gateway";
+import { LoggerErrorGateway } from "@gateways/logger/logger.error.gateway";
 
 import { ExceptionHandler } from "@common/filters/exception/exception.filter";
 

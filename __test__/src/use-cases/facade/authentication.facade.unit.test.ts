@@ -1,6 +1,6 @@
 import { mock, mockReset } from "jest-mock-extended";
 
-import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "../../../../src/gateways/logger/logger.log.gateway";
 import { AuthenticationUseCase } from "../../../../src/use-cases/authentication/authentication.usecase";
 import { AuthenticationFacade } from "../../../../src/use-cases/facade/authentication.facade";
 import { UserDataBuilder } from "../../../data-builders/domains/index";

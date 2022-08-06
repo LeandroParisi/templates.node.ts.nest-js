@@ -4,7 +4,7 @@ import { EncryptionGateway } from "../../../../src/gateways/encryption/encryptio
 import { JwtPayload } from "../../../../src/gateways/jwt/jwt.payload";
 import { RefreshTokenGateway } from "../../../../src/gateways/jwt/refresh.gateway.token";
 import { TokenGateway } from "../../../../src/gateways/jwt/token.gateway";
-import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "../../../../src/gateways/logger/logger.log.gateway";
 import { CreateTokensUseCase } from "../../../../src/use-cases/authentication/create.tokens.usecase";
 
 describe("Tests of CreateTokensUseCase", () => {

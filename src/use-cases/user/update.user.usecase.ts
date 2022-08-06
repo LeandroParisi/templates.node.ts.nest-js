@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
 
 import { UpdateUserDatabaseGateway } from "@gateways/database/user/update.user.database.gateway";
-import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { User } from "@domain/user";
 

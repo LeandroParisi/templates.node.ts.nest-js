@@ -3,7 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 
 import { EnvironmentConfigService } from "@common/environment/app.configuration.service";
 
-import { LoggerLogGateway } from "../../logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "../../logger/logger.log.gateway";
 import { JWTGatewayException } from "../exceptions/jwt.gateway.exception";
 import { JwtPayload } from "../jwt.payload";
 import { RefreshTokenGateway } from "../refresh.gateway.token";

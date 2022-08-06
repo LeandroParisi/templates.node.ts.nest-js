@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
 
 import { DeleteUserByIdDatabaseGateway } from "@gateways/database/user/delete.user.by.id.database.gateway";
-import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "@gateways/logger/logger.log.gateway";
 
 import { FindUserByIdUserUseCase } from "./find.user.by.id.usecase";
 

@@ -1,7 +1,7 @@
 import { mock, mockClear } from "jest-mock-extended";
 
 import { FindUserByIdDatabaseGateway } from "../../../../src/gateways/database/user/find.user.by.id.database.gateway";
-import { LoggerLogGateway } from "../../../../src/gateways/logger/interfaces/logger.log.gateway";
+import { LoggerLogGateway } from "../../../../src/gateways/logger/logger.log.gateway";
 import { UserNotFoundBusinessException } from "../../../../src/use-cases/exceptions/user.not.found.business.exception";
 import { FindUserByIdUserUseCase } from "../../../../src/use-cases/user/find.user.by.id.usecase";
 import { UserDataBuilder } from "../../../data-builders/domains/index";
