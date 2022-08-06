@@ -3,8 +3,8 @@ import { Repository, InsertResult } from "typeorm";
 
 import { User } from "../../../../../src/domain/user";
 import { UserEntity } from "../../../../../src/gateways/database/data/user.entity";
+import { UserDatabaseGatewayException } from "../../../../../src/gateways/database/exceptions/user.database.gateway.exception";
 import { UserDatabaseGateway } from "../../../../../src/gateways/database/user/postgres/user.database.gateway";
-import { UserDatabaseGatewayException } from "../../../../../src/gateways/exceptions/user.database.gateway.exception";
 import { LoggerErrorGateway } from "../../../../../src/gateways/logger/interfaces/logger.error.gateway";
 import { LoggerLogGateway } from "../../../../../src/gateways/logger/interfaces/logger.log.gateway";
 import { UserEntityDataBuilder } from "../../../../data-builders/data/index";

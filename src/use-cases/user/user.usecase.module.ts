@@ -29,4 +29,4 @@ import { UpdateUserUseCase } from "./update.user.usecase";
         DeleteUserByIdUseCase,
     ],
 })
-export class UserUseCasesModule {}
+export class UserUseCaseModule {}

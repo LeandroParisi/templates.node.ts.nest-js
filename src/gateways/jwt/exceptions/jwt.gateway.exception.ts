@@ -3,17 +3,17 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { BaseException } from "@common/exceptions/base.exception";
 
-const code = "open.finance.error.database.user";
-const message = "Error to access user database.";
+const code = "open.finance.error.generate.jwt";
+const message = "Error to generate token.";
 
-export class UserDatabaseGatewayException extends BaseException {
+export class JWTGatewayException extends BaseException {
     @ApiProperty({ default: code })
     public readonly code: string;
 
     @ApiProperty({ default: message })
     public readonly message: string;
 
-    constructor(stack: string) {
+    constructor(stack?: string) {
         super(HttpStatus.INTERNAL_SERVER_ERROR);
         this.stack = stack;
         this.code = code;

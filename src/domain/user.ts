@@ -6,6 +6,8 @@ export class User {
     public readonly lastName: string;
     public readonly email: string;
     public readonly password: string;
+    public readonly accessToken?: string;
+    public readonly refreshToken?: string;
 
     public static builder(): IBuilder<User> {
         return Builder<User>();

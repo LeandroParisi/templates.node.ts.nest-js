@@ -2,7 +2,7 @@ import { Injectable, Inject } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import { UserDatabaseGatewayException } from "@gateways/exceptions/user.database.gateway.exception";
+import { UserDatabaseGatewayException } from "@gateways/database/exceptions/user.database.gateway.exception";
 import { LoggerErrorGateway } from "@gateways/logger/interfaces/logger.error.gateway";
 import { LoggerLogGateway } from "@gateways/logger/interfaces/logger.log.gateway";
 

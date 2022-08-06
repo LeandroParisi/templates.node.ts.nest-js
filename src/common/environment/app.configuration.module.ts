@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 
-import { EnvironmentConfigService } from "./app-configuration.service";
+import { EnvironmentConfigService } from "./app.configuration.service";
 
 @Module({
     imports: [

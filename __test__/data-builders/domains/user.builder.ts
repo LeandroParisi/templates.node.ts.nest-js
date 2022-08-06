@@ -16,7 +16,7 @@ export const createdUser = factory.Sync.makeFactory<User>({
     firstName: factory.each(() => faker.name.firstName()),
     id: factory.each(() => faker.datatype.number()),
     lastName: factory.each(() => faker.name.lastName()),
-    password: undefined,
+    password: factory.each(() => faker.internet.password()),
 });
 
 export const userToCreate = factory.Sync.makeFactory<User>({
