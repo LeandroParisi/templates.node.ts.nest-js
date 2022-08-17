@@ -20,6 +20,7 @@
     "test:e2e": "jest --config jest.config.e2e.js --detectOpenHandles --forceExit",
     "test:e2e:docker": "yarn apply:test:keys && export NODE_ENV=test && docker-compose --env-file .env.test -f docker-compose.e2e.yml up --abort-on-container-exit --exit-code-from app",
     "prepare": "husky install",
+    "sonar": "yarn test && yarn lint && node sonar-scanner-local.js",
     "coverage": "jest --forceExit --detectOpenHandles --verbose --coverage && open ./coverage/lcov-report/index.html"
   },
   "dependencies": {
