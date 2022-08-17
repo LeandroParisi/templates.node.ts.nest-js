@@ -8,19 +8,19 @@ services:
     restart: always
     image: redis:alpine
     ports:
-      - ${REDIS_PORT}
+      - ${REDIS_PORT}:${REDIS_PORT}
 
   redis-manager:
     container_name: redis-manager
     restart: always
     image: redislabs/redisinsight:latest
     ports:
-      - ${REDIS_MANAGER_PORT}
+      - ${REDIS_MANAGER_PORT}:${REDIS_MANAGER_PORT}
 
   pgsql:
     image: postgres:alpine
     ports:
-      - ${DATABASE_PORT}
+      - ${DATABASE_PORT}:${DATABASE_PORT}
     container_name: pgsql
     restart: always
     volumes:
@@ -33,7 +33,7 @@ services:
   pgsql-sonar:
     image: postgres:alpine
     ports:
-      - ${SONAR_DATABASE_PORT}
+      - ${SONAR_DATABASE_PORT}:${SONAR_DATABASE_PORT}
     container_name: pgsql-sonar
     restart: always
     volumes:
@@ -43,12 +43,16 @@ services:
       POSTGRES_PASSWORD: ${SONAR_DATABASE_PASSWORD}
       POSTGRES_DB: ${SONAR_DATABASE_NAME}
 
-  adminer:
-    container_name: postgres-manager
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+  pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgadmin
+        environment: 
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+        ports: 
+            - ${PGADMIN_PORT}
+        depends_on: 
+            - pgsql    
 
   sonarqube:
     image: sonarqube:community
