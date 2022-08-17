@@ -31,21 +31,19 @@ services:
 
   postgres-test:
     container_name: postgres-test
-    image: postgres:14
+    image: postgres:alpine
     ports:
-      - '5433:5432'
+      - '5434:5434'
     networks:
       - webnet
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      PG_DATA: /var/lib/postgresql/data
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/test
 
 networks:
   webnet:
 
 volumes:
   pgdata:
-  logs:

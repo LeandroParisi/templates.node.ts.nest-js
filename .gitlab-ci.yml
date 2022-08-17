@@ -73,6 +73,4 @@ sonar:
     script:
         - pwd
         - ls -l
-        - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.sources=$SONAR_SOURCES
-    rules:
-        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+        - sonar-scanner -Dsonar.branch.name=$SONAR_BRANCH -Dsonar.qualitygate.wait=true -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.sources=$SONAR_SOURCES

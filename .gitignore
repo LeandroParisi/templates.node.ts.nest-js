@@ -401,3 +401,4 @@ Temporary Items
 dist
 ./log
 reports/
+.scannerwork/*
