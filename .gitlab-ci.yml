@@ -56,12 +56,11 @@ e2eTest:
         - docker:dind
     script:
         - apt-get update
-        - apt-get install nodejs -y
-        - npm install -g typescript
+        - apt install curl -y
+        - curl -sL https://deb.nodesource.com/setup_16.x | bash -
+        - apt-get install nodejs npm -y
         - npm install --global yarn
         - yarn install
-        - yarn apply:test:env
-        - ls 
         - npm run test:e2e:docker
 
 sonar:
