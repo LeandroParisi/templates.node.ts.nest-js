@@ -1,12 +1,11 @@
 image: node:latest
 
 stages:
+    - e2eTest
     - install
     - test
-    - e2eTest
     - lint
     - sonar
-
 
 install:
     stage: install
@@ -52,15 +51,17 @@ lint:
 
 e2eTest:
     stage: e2eTest
-    image: docker/compose:latest
+    image: docker/compose:debian-1.29.2
     services:
         - docker:dind
     script:
-        - apk add gettext
-        - envsubst < app-env-keys.txt > .env.test
-        - docker-compose --env-file .env.test -f docker-compose.e2e.yml up --abort-on-container-exit --exit-code-from app
-    rules:
-        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+        - apt-get update
+        - apt install curl -y
+        - curl -sL https://deb.nodesource.com/setup_16.x | bash -
+        - apt-get install nodejs npm -y
+        - npm install --global yarn
+        - yarn install
+        - npm run test:e2e:docker
 
 sonar:
     stage: sonar
