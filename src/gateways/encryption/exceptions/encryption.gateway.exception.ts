@@ -3,7 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { BaseException } from "@common/exceptions/base.exception";
 
-const code = "open.finance.error.encryption";
+const code = "clean.architecture.example.error.encryption";
 const message = "Error to encryption value.";
 
 export class EncryptionGatewayException extends BaseException {

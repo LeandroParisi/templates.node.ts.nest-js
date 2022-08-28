@@ -116,7 +116,7 @@ describe("Tests of ExceptionHandler", () => {
                 path: path,
                 method: method,
                 statusCode: 500,
-                message: "Open Finance Default Error.",
+                message: "Clean Architecture Example Default Error.",
                 stack: anyString(),
                 codes: [],
             },

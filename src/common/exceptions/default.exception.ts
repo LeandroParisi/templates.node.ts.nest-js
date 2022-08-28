@@ -1,8 +1,8 @@
 import { HttpStatus, HttpException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 
-const defaultErrorMessage = "Open Finance Default Error.";
-const defaultErrorCode = "open.finance.error.default";
+const defaultErrorMessage = "Clean Architecture Example Default Error.";
+const defaultErrorCode = "clean.architecture.example.error.default";
 
 export class DefaultException extends HttpException {
     @ApiProperty({ default: defaultErrorCode })

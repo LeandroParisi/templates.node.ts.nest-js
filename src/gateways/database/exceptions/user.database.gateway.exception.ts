@@ -3,7 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { BaseException } from "@common/exceptions/base.exception";
 
-const code = "open.finance.error.database.user";
+const code = "clean.architecture.example.database.user";
 const message = "Error to access user database.";
 
 export class UserDatabaseGatewayException extends BaseException {

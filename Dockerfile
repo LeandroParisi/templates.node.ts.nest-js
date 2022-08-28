@@ -1,4 +1,4 @@
-FROM node:alpine As openfinance
+FROM node:alpine As example-clean-architecture
 
 RUN apk update && apk upgrade
 RUN apk add python3 g++ make

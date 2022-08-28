@@ -1,10 +1,10 @@
 image: node:latest
 
 stages:
-    - e2eTest
     - install
     - test
     - lint
+    - e2eTest
     - sonar
 
 install:
@@ -33,6 +33,8 @@ test:
             - reports/test-report.xml
             - coverage/lcov.info
         expire_in: 1 week
+    dependencies:
+        - install
 
 lint:    
     stage: lint
@@ -48,6 +50,8 @@ lint:
         paths:
             - reports/eslint-report.json
         expire_in: 1 week
+    dependencies:
+        - install
 
 e2eTest:
     stage: e2eTest
@@ -62,6 +66,9 @@ e2eTest:
         - npm install --global yarn
         - yarn install
         - npm run test:e2e:docker
+    dependencies:
+        - install
+        - lint
 
 sonar:
     stage: sonar
@@ -75,3 +82,7 @@ sonar:
         - pwd
         - ls -l
         - sonar-scanner -Dsonar.branch.name=$SONAR_BRANCH -Dsonar.qualitygate.wait=true -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.sources=$SONAR_SOURCES
+    dependencies:
+        - install
+        - lint
+        - e2eTest

@@ -2,9 +2,10 @@ const scanner = require('sonarqube-scanner');
 
 scanner(
   {    
-    token : "sqp_e781cac1898c1fd83773a5de65e85d9e134e827a",
+    token : process.env.SONAR_TOKEN,
     options:{
-      "sonar.projectKey":"local-open-finance-user",
+      "sonar.projectKey":process.env.SONAR_PROJECT_KEY,
+      "sonar.sources": "./src",
     }
   },
   () => process.exit()
