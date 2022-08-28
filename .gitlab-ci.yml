@@ -7,7 +7,6 @@ stages:
     - sonar
     - e2eTest
 
-
 install:
     stage: install
     cache: 
@@ -53,6 +52,20 @@ lint:
         expire_in: 1 week
     dependencies:
         - install
+sonar:
+    stage: sonar
+    image:
+        name: sonarsource/sonar-scanner-cli:latest
+        entrypoint: [""]
+    variables:
+        GIT_DEPTH: 0
+        SONAR_PROJECT_BASE_DIR: ./
+    script:
+        - sonar-scanner -Dsonar.branch.name=$SONAR_BRANCH -Dsonar.qualitygate.wait=true -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.sources=$SONAR_SOURCES
+    dependencies:
+        - install
+        - test
+        - lint
 
 e2eTest:
     stage: e2eTest
@@ -70,22 +83,4 @@ e2eTest:
     dependencies:
         - install
         - lint
-    rules:
-        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-
-sonar:
-    stage: sonar
-    image:
-        name: sonarsource/sonar-scanner-cli:latest
-        entrypoint: [""]
-    variables:
-        GIT_DEPTH: 0
-        SONAR_PROJECT_BASE_DIR: ./
-    script:
-        - pwd
-        - ls -l
-        - sonar-scanner -Dsonar.branch.name=$SONAR_BRANCH -Dsonar.qualitygate.wait=true -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.sources=$SONAR_SOURCES
-    dependencies:
-        - install
-        - lint
-        - e2eTest
+        - sonar
