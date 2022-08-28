@@ -2,11 +2,11 @@ version: '3.8'
 
 services:
   app:
-    container_name: openfinance
+    container_name: example-clean-architecture
     image: node:alpine
     build:
       context: .
-      target: openfinance
+      target: example-clean-architecture
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

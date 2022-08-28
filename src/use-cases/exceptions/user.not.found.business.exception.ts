@@ -3,7 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { BaseException } from "@common/exceptions/base.exception";
 
-const code = "open.finance.error.business.usernotfound";
+const code = "clean.architecture.example.error.business.usernotfound";
 const message = "User not found.";
 
 export class UserNotFoundBusinessException extends BaseException {
