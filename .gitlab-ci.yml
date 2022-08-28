@@ -4,8 +4,9 @@ stages:
     - install
     - test
     - lint
-    - e2eTest
     - sonar
+    - e2eTest
+
 
 install:
     stage: install
@@ -69,6 +70,8 @@ e2eTest:
     dependencies:
         - install
         - lint
+    rules:
+        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 sonar:
     stage: sonar
